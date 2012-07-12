@@ -1,0 +1,9 @@
+A collection of small mathematical tools for everyday problem solving.
+
+Two main aspects: 3D geometry and small, statically sized matrices.
+
+Based on concepts used in code developed during my time at CERN.
+
+Author: Juan Palacios juan.palacios.puyana@gmail.com
+
+License: LGPL.
