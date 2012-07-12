@@ -1,6 +1,6 @@
 //
 // Copyright (c) 2012 Juan Palacios juan.palacios.puyana@gmail.com
-// This file is part of minimath.
+// This file is part of minimathlibs.
 // Subject to the Lesser GNU Public License 
 // - see < http://www.gnu.org/licenses/lgpl.html>
 //
@@ -28,7 +28,7 @@ template <typename T>
 class MatrixInvertor<T, 1, 1> {
  public:
   template <typename M>
-  bool operator()(M& mat) 
+  bool operator()(M& mat) const 
   {
     typedef typename M::value_type value_type;
     if (mat(0,0) == value_type()) return false;
@@ -40,7 +40,7 @@ template <typename T>
 class MatrixInvertor<T, 2, 2> {
  public:
   template <typename M>
-  bool operator()(M& mat) 
+  bool operator()(M& mat) const
   {
     typedef typename M::value_type value_type;
     value_type det = mat(0,0)*mat(1,1) - mat(0,1)*mat(1,0);
@@ -58,7 +58,7 @@ template <typename T>
 class MatrixInvertor<T, 3, 3> {
  public:
   template <typename M>
-  bool operator()(M& mat) 
+  bool operator()(M& mat) const 
   {
 
     typedef typename M::value_type value_type;

@@ -1,6 +1,6 @@
 //
 // Copyright (c) 2012 Juan Palacios juan.palacios.puyana@gmail.com
-// This file is part of minimath.
+// This file is part of minimathlibs.
 // Subject to the Lesser GNU Public License 
 // - see < http://www.gnu.org/licenses/lgpl.html>
 //
@@ -9,8 +9,8 @@
 #ifndef MATH_TRANSFORM3D_H__
 #define MATH_TRANSFORM3D_H__
 
-#include "Rotation3D.h"
-#include "Translation3D.h"
+#include "Math/Rotation3D.h"
+#include "Math/Translation3D.h"
 #include "Math/Point3D.h"
 
 namespace Math {
