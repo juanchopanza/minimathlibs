@@ -25,6 +25,11 @@ class Translation3D {
     // apply a translation
     return Point( point + m_trans );
   }
+  Translation3D operator*(const Translation3D& rhs) const {
+    // apply a translation
+    return Translation3D( m_trans + rhs.m_trans );
+  }
+
 
   bool operator==(const Translation3D& rhs) 
   {
