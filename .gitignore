@@ -1,0 +1,19 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+
+# Compiled Dynamic libraries
+*.so
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+# editor backup files
+*~
+*.swp
+
+# known build directories
+Math/Tests/Build
