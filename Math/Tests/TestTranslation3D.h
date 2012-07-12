@@ -8,6 +8,9 @@
 #ifndef TESTS_TRANSLATION3D_H__
 #define TESTS_TRANSLATION3D_H__
 
+#include <vector>
+#include <numeric>
+#include <functional>
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
@@ -30,6 +33,7 @@ class TestTranslation3D : public CppUnit::TestFixture {
   CPPUNIT_TEST(testAssignment);
   CPPUNIT_TEST(testNullTranslation);
   CPPUNIT_TEST(testTranslatePoint);
+  CPPUNIT_TEST(testCompoundTranslation);
   CPPUNIT_TEST_SUITE_END();
 
  protected:
@@ -64,9 +68,31 @@ class TestTranslation3D : public CppUnit::TestFixture {
   }
 
   void testTranslatePoint() {
-    PointXYZD p(11, 22, 33);
-    Translation3D t(PointXYZD(100, 200, 300));
-    CPPUNIT_ASSERT(PointXYZD(111, 222, 333) == t*p);
+    for (int i = 0; i < 100; ++i)
+    {
+      PointXYZD p(11, 22, 33);
+      Translation3D t1(PointXYZD(i, i, i));
+      CPPUNIT_ASSERT(PointXYZD(11+i, 22+i, 33+i) == t1*p);
+      Translation3D t2(PointXYZD(-i, -i, -i));
+      CPPUNIT_ASSERT(PointXYZD(11-i, 22-i, 33-i) == t2*p);
+    }
+  }
+
+  void testCompoundTranslation()
+  {
+    // make a vector of many translations
+    std::vector<Translation3D> v;
+    int sum = 0;
+    for (int i = 0; i<10; ++i)
+    {
+      sum += i;
+      v.push_back(Translation3D(PointXYZD(i,i,i)));
+    }
+    // multiply all the translations together
+    Translation3D t = std::accumulate(v.begin(), v.end(),
+                                      Translation3D(), 
+                                      std::multiplies<Translation3D>());
+    CPPUNIT_ASSERT(PointXYZD(sum, sum, sum) == t*PointXYZD());
   }
 
 };
