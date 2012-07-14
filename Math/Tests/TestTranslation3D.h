@@ -34,6 +34,8 @@ class TestTranslation3D : public CppUnit::TestFixture {
   CPPUNIT_TEST(testNullTranslation);
   CPPUNIT_TEST(testTranslatePoint);
   CPPUNIT_TEST(testCompoundTranslation);
+  CPPUNIT_TEST(testInverse);
+  CPPUNIT_TEST(testInvert);
   CPPUNIT_TEST_SUITE_END();
 
  protected:
@@ -93,6 +95,15 @@ class TestTranslation3D : public CppUnit::TestFixture {
                                       Translation3D(), 
                                       std::multiplies<Translation3D>());
     CPPUNIT_ASSERT(PointXYZD(sum, sum, sum) == t*PointXYZD());
+  }
+
+  void testInverse()
+  {
+    CPPUNIT_ASSERT_MESSAGE("Not implemented", false);
+  }
+  void testInvert()
+  {
+    CPPUNIT_ASSERT_MESSAGE("Not implemented", false);
   }
 
 };

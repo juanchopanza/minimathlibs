@@ -57,6 +57,8 @@ class TestTransform3D : public CppUnit::TestFixture {
   CPPUNIT_TEST(testTranslationAndRotationY);
   CPPUNIT_TEST(testTranslationAndRotationZ);
 
+  CPPUNIT_TEST(testInverse);
+  CPPUNIT_TEST(testInvert);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -406,6 +408,14 @@ class TestTransform3D : public CppUnit::TestFixture {
       PointXYZD res001 = rot*translation + rot*p001;
       CPPUNIT_ASSERT(Math::equalXYZ(pTest, res001));
     }
+  }
+  void testInverse()
+  {
+    CPPUNIT_ASSERT_MESSAGE("Not implemented", false);
+  }
+  void testInvert()
+  {
+    CPPUNIT_ASSERT_MESSAGE("Not implemented", false);
   }
 
 };

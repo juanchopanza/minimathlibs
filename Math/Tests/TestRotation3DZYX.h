@@ -39,7 +39,8 @@ class TestRotation3DZYX : public CppUnit::TestFixture {
   CPPUNIT_TEST(testAssignRotation3DX);
   CPPUNIT_TEST(testAssignRotation3DY);
   CPPUNIT_TEST(testAssignRotation3DZ);
-
+  CPPUNIT_TEST(testInverse);
+  CPPUNIT_TEST(testInvert);
   CPPUNIT_TEST_SUITE_END();
 
  protected:
@@ -221,6 +222,14 @@ class TestRotation3DZYX : public CppUnit::TestFixture {
     }
   }
 
+  void testInverse()
+  {
+    CPPUNIT_ASSERT_MESSAGE("Not implemented", false);
+  }
+  void testInvert()
+  {
+    CPPUNIT_ASSERT_MESSAGE("Not implemented", false);
+  }
 
 };
 

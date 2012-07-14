@@ -30,6 +30,8 @@ class TestRotation3DZ : public CppUnit::TestFixture {
   CPPUNIT_TEST(testRotatePoint45);
   CPPUNIT_TEST(testRotatePoint90);
   CPPUNIT_TEST(testRotatePoint180);
+  CPPUNIT_TEST(testInverse);
+  CPPUNIT_TEST(testInvert);
   CPPUNIT_TEST_SUITE_END();
 
  protected:
@@ -107,6 +109,15 @@ class TestRotation3DZ : public CppUnit::TestFixture {
 
     pTest = rotx5*p001;
     CPPUNIT_ASSERT(pTest == PointXYZD(0., 0., 1.));
+  }
+
+  void testInverse()
+  {
+    CPPUNIT_ASSERT_MESSAGE("Not implemented", false);
+  }
+  void testInvert()
+  {
+    CPPUNIT_ASSERT_MESSAGE("Not implemented", false);
   }
 
 
