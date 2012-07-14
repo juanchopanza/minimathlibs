@@ -120,7 +120,29 @@ std::ostream& operator << (std::ostream& out, const Point3D<T, CoordSystem>& poi
   return out << "Point3D XYZ( " << point.x() << ", " << point.y() << ", " << point.z() << ")";
 }
 
+// scalar multiplication
+template <typename T, template <typename> class C>
+Point3D<T, C> operator*(const Point3D<T, C>&  point,
+                        const typename Point3D<T,C>::scalar_type& scalar)
+{
+  return Point3D<T,C>(point) *= typename Point3D<T,C>::scalar_type(scalar);
+}
 
+// scalar multiplication
+template <typename T, template <typename> class C>
+Point3D<T, C> operator*(const typename Point3D<T,C>::scalar_type& scalar,
+                        const Point3D<T, C>&  point)
+{
+  return Point3D<T,C>(point) *= typename Point3D<T,C>::scalar_type(scalar);
+}
+
+// scalar division: only allow Point on RHS
+template <typename T, template <typename> class C>
+Point3D<T, C> operator/(const Point3D<T, C>&  point,
+                        const typename Point3D<T,C>::scalar_type& scalar)
+{
+  return Point3D<T,C>(point) /= typename Point3D<T,C>::scalar_type(scalar);
+}
 
 typedef Point3D<double, CoordSystemXYZ> PointXYZD;
 typedef Point3D<float, CoordSystemXYZ> PointXYZF;

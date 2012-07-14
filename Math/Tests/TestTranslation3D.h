@@ -99,11 +99,14 @@ class TestTranslation3D : public CppUnit::TestFixture {
 
   void testInverse()
   {
-    CPPUNIT_ASSERT_MESSAGE("Not implemented", false);
+    Translation3D t0(PointXYZD(1., 2., 3.));
+    CPPUNIT_ASSERT(t0.Inverse() == Translation3D(PointXYZD(-1., -2., -3.)));
   }
   void testInvert()
   {
-    CPPUNIT_ASSERT_MESSAGE("Not implemented", false);
+    Translation3D t0(PointXYZD(1., 2., 3.));
+    t0.Invert();
+    CPPUNIT_ASSERT(t0 == Translation3D(PointXYZD(-1., -2., -3.)));
   }
 
 };

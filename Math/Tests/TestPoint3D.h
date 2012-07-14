@@ -31,6 +31,8 @@ class TestPoint3D : public CppUnit::TestFixture {
   CPPUNIT_TEST(testMinusEquals);
   CPPUNIT_TEST(testTimesEqualsScalar);
   CPPUNIT_TEST(testDivideEqualsScalar);
+  CPPUNIT_TEST(testTimesScalar);
+  CPPUNIT_TEST(testDivideScalar);
   CPPUNIT_TEST(testMagnitudeSquared);
   CPPUNIT_TEST(testDistanceSquared);
   CPPUNIT_TEST(testDotProduct);
@@ -101,6 +103,20 @@ class TestPoint3D : public CppUnit::TestFixture {
     pd /= 10;
     CPPUNIT_ASSERT( pd == Math::PointXYZD(10,20,30));
   }
+
+  void testTimesScalar()
+  {
+    Math::PointXYZD pd = Math::PointXYZD(1, 2, 3) * 11;
+    CPPUNIT_ASSERT( pd == Math::PointXYZD(11,22,33));
+
+  }
+
+  void testDivideScalar()
+  {
+    Math::PointXYZD pd = Math::PointXYZD(100, 200, 300)/10;
+    CPPUNIT_ASSERT( pd == Math::PointXYZD(10,20,30));
+  }
+
 
   void testMagnitudeSquared()
   {

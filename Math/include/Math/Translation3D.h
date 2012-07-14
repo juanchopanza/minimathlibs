@@ -37,6 +37,17 @@ class Translation3D {
     return Translation3D( m_trans + rhs.m_trans );
   }
 
+  Translation3D Inverse() const {
+    return Translation3D( m_trans * -1 );
+  }
+
+  Translation3D& Invert() {
+    m_trans *= -1;
+    return *this;
+  }
+
+
+
   bool operator==(const Translation3D& rhs) 
   {
     return m_trans == rhs.m_trans;
