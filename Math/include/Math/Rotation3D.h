@@ -29,7 +29,7 @@ class AxisAngle3DBase {
   bool operator==(const AxisAngle3DBase& rhs) const {
     return (m_sin == rhs.sinAlpha() && m_cos == rhs.cosAlpha());
   }
-  AxisAngle3DBase& Invert()
+  AxisAngle3DBase& invert()
   {
     m_sin *= -1;
     return *this;
@@ -51,14 +51,14 @@ class Rotation3DX  : public AxisAngle3DBase {
                  cosAlpha()*point.y() - sinAlpha()*point.z(), 
                  cosAlpha()*point.z() + sinAlpha()*point.y() );
   }
-  Rotation3DX& Invert()
+  Rotation3DX& invert()
   {
-    AxisAngle3DBase::Invert();
+    AxisAngle3DBase::invert();
     return *this;
   }
-  Rotation3DX Inverse() const
+  Rotation3DX inverse() const
   {
-    return Rotation3DX(*this).Invert();
+    return Rotation3DX(*this).invert();
   }
 };
 
@@ -77,14 +77,14 @@ class Rotation3DY : public AxisAngle3DBase {
                  cosAlpha()*point.z() - sinAlpha()*point.x() );
   }
 
-  Rotation3DY& Invert()
+  Rotation3DY& invert()
   {
-    AxisAngle3DBase::Invert();
+    AxisAngle3DBase::invert();
     return *this;
   }
-  Rotation3DY Inverse() const
+  Rotation3DY inverse() const
   {
-    return Rotation3DY(*this).Invert();
+    return Rotation3DY(*this).invert();
   }
 
 };
@@ -104,14 +104,14 @@ class Rotation3DZ : public AxisAngle3DBase {
                  point.z()                          );
   }
 
-  Rotation3DZ& Invert()
+  Rotation3DZ& invert()
   {
-    AxisAngle3DBase::Invert();
+    AxisAngle3DBase::invert();
     return *this;
   }
-  Rotation3DZ Inverse() const
+  Rotation3DZ inverse() const
   {
-    return Rotation3DZ(*this).Invert();
+    return Rotation3DZ(*this).invert();
   }
 
 };
@@ -187,6 +187,16 @@ class Rotation3D {
     m_rot(1,0) =  sinA;
   }
 
+  // Invert this Rotation3D
+  Rotation3D& invert()
+  {
+    m_rot.invert();
+    return *this;
+  }
+  // Return the inverse Rotation3D
+  Rotation3D inverse() const {
+    return Rotation3D(*this).invert();
+  }
   // multiplication by another Rotation3D
   Rotation3D& operator*=(const Rotation3D& rhs) {
     m_rot *= rhs.m_rot;
@@ -207,8 +217,6 @@ class Rotation3D {
  private:
   Matrix<double, 3, 3> m_rot;
 };
-
-
 
 
 }

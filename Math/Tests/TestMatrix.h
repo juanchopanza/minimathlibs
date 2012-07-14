@@ -431,10 +431,10 @@ int test() {
 
   // inversion. Only square matrices smaller than 4x4 should compile
   M3x3 m3x3Inv;
-  m3x3Inv.Invert();
+  m3x3Inv.invert();
 
   M5x5 m5x5Inv;
-  //m5x5Inv.Invert();
+  //m5x5Inv.invert();
 
   M2x2 m2x2Test;
   for (unsigned int i = 0; i < m2x2Test.size(); ++i) {
@@ -442,7 +442,7 @@ int test() {
   }
   M2x2 m2x2InvTest = m2x2Test;
   std::cout << "Invert this matrix:\n" << m2x2Test << "\n";;
-  std::cout << m2x2InvTest.Invert() << "\n";;
+  std::cout << m2x2InvTest.invert() << "\n";;
   std::cout << m2x2InvTest << "\n"; 
   std::cout << "Product of matrix with its own inverse:\n";
   std::cout << (m2x2Test*m2x2InvTest) << "\n";
@@ -455,7 +455,7 @@ int test() {
   }
   M3x3 m3x3InvTest = m3x3Test;
   std::cout << "Invert this matrix:\n" << m3x3Test << "\n";;
-  std::cout << m3x3InvTest.Invert() << "\n";
+  std::cout << m3x3InvTest.invert() << "\n";
   std::cout << m3x3InvTest << "\n"; 
   std::cout << "Product of matrix with its own inverse:\n";
   std::cout << (m3x3Test*m3x3InvTest) << "\n";
@@ -464,7 +464,7 @@ int test() {
   std::cout << std::numeric_limits<M3x3::value_type>::epsilon() << "\n";
 
   bool iFlag=true;
-  M3x3 m3x3InvTest2 = m3x3Test.Inverse(iFlag);
+  M3x3 m3x3InvTest2 = m3x3Test.inverse(iFlag);
   std::cout << "compare Inverse and Invert: " << iFlag << " " << (m3x3InvTest2==m3x3InvTest) << "\n";
 
   std::cout << "Multiply and assign by inverse. Reference:\n" 
