@@ -113,13 +113,13 @@ class TestRotation3DZ : public CppUnit::TestFixture {
 
   void testInverse()
   {
-    CPPUNIT_ASSERT_MESSAGE("Not implemented", false);
-  }
-  void testInvert()
-  {
-    CPPUNIT_ASSERT_MESSAGE("Not implemented", false);
+    CPPUNIT_ASSERT(TestUtils::testInverse<Rotation3DZ>());
   }
 
+  void testInvert()
+  {
+    CPPUNIT_ASSERT(TestUtils::testInvert<Rotation3DZ>());
+  }
 
 };
 

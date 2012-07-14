@@ -18,6 +18,7 @@
 #include "Math/Point3D.h"
 
 #include "Defines.h"
+#include "TestRotation3DUtils.h"
 
 class TestRotation3DX : public CppUnit::TestFixture {
 
@@ -113,11 +114,12 @@ class TestRotation3DX : public CppUnit::TestFixture {
 
   void testInverse()
   {
-    CPPUNIT_ASSERT_MESSAGE("Not implemented", false);
+    CPPUNIT_ASSERT(TestUtils::testInverse<Rotation3DX>());
   }
+
   void testInvert()
   {
-    CPPUNIT_ASSERT_MESSAGE("Not implemented", false);
+    CPPUNIT_ASSERT(TestUtils::testInvert<Rotation3DX>());
   }
 
 };

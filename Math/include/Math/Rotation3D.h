@@ -29,6 +29,11 @@ class AxisAngle3DBase {
   bool operator==(const AxisAngle3DBase& rhs) const {
     return (m_sin == rhs.sinAlpha() && m_cos == rhs.cosAlpha());
   }
+  AxisAngle3DBase& Invert()
+  {
+    m_sin *= -1;
+    return *this;
+  }
  private:
   double m_sin, m_cos;
 };
@@ -46,6 +51,15 @@ class Rotation3DX  : public AxisAngle3DBase {
                  cosAlpha()*point.y() - sinAlpha()*point.z(), 
                  cosAlpha()*point.z() + sinAlpha()*point.y() );
   }
+  Rotation3DX& Invert()
+  {
+    AxisAngle3DBase::Invert();
+    return *this;
+  }
+  Rotation3DX Inverse() const
+  {
+    return Rotation3DX(*this).Invert();
+  }
 };
 
 // rotation about the Y axis
@@ -62,6 +76,17 @@ class Rotation3DY : public AxisAngle3DBase {
                  point.y(), 
                  cosAlpha()*point.z() - sinAlpha()*point.x() );
   }
+
+  Rotation3DY& Invert()
+  {
+    AxisAngle3DBase::Invert();
+    return *this;
+  }
+  Rotation3DY Inverse() const
+  {
+    return Rotation3DY(*this).Invert();
+  }
+
 };
 
 // rotation about the Z axis
@@ -77,6 +102,16 @@ class Rotation3DZ : public AxisAngle3DBase {
     return Point(cosAlpha()*point.x() - sinAlpha()*point.y(), 
                  cosAlpha()*point.y() + sinAlpha()*point.x(), 
                  point.z()                          );
+  }
+
+  Rotation3DZ& Invert()
+  {
+    AxisAngle3DBase::Invert();
+    return *this;
+  }
+  Rotation3DZ Inverse() const
+  {
+    return Rotation3DZ(*this).Invert();
   }
 
 };
