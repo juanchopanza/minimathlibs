@@ -100,12 +100,12 @@ class TestTranslation3D : public CppUnit::TestFixture {
   void testInverse()
   {
     Translation3D t0(PointXYZD(1., 2., 3.));
-    CPPUNIT_ASSERT(t0.Inverse() == Translation3D(PointXYZD(-1., -2., -3.)));
+    CPPUNIT_ASSERT(t0.inverse() == Translation3D(PointXYZD(-1., -2., -3.)));
   }
   void testInvert()
   {
     Translation3D t0(PointXYZD(1., 2., 3.));
-    t0.Invert();
+    t0.invert();
     CPPUNIT_ASSERT(t0 == Translation3D(PointXYZD(-1., -2., -3.)));
   }
 

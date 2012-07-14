@@ -30,6 +30,19 @@ class Transform3D {
     //return (m_trans*point);
   }
 
+  Transform3D& invert()
+  {
+    m_rot.invert();
+    m_trans.invert();
+    m_trans = m_rot*m_trans;
+    return *this;
+  }
+
+  Transform3D inverse() const
+  {
+    return Transform3D(*this).invert();
+  }
+
  private:
   Rotation3D m_rot;
   Translation3D m_trans;

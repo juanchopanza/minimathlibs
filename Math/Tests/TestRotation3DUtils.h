@@ -10,6 +10,7 @@
 
 #include "Math/Point3D.h"
 #include "Math/Rotation3D.h"
+#include "Math/Transform3D.h"
 #include "Defines.h"
 
 namespace TestUtils
@@ -81,6 +82,51 @@ bool testInvertRotation3D()
     bool test = isInverse(rot, rotInv);
     if (!test) return false;
   }
+  return true;
+}
+
+template <typename R>
+bool testInverseTransform3D()
+{
+  for (unsigned int i = 1; i<9; ++i) 
+  {
+    Math::Transform3D trans(R(PI/i), Math::Translation3D(111,222,333));
+    Math::Transform3D transInv(trans.inverse());
+    bool test = isInverse(trans, transInv);
+    if (!test) return false;
+  }
+
+  for (unsigned int i = 1; i<9; ++i) 
+  {
+    Math::Transform3D trans(Math::Translation3D(111,222,333), R(PI/i));
+    Math::Transform3D transInv(trans.inverse());
+    bool test = isInverse(trans, transInv);
+    if (!test) return false;
+  }
+  return true;
+}
+
+template <typename R>
+bool testInvertTransform3D()
+{
+  for (unsigned int i = 1; i<9; ++i) 
+  {
+    Math::Transform3D trans(R(PI/i), Math::Translation3D(111, 222, 333));
+    Math::Transform3D transInv = trans;
+    transInv.invert();
+    bool test = isInverse(trans, transInv);
+    if (!test) return false;
+  }
+
+  for (unsigned int i = 1; i<9; ++i) 
+  {
+    Math::Transform3D trans(Math::Translation3D(111,222,333), R(PI/i));
+    Math::Transform3D transInv = trans;
+    transInv.invert();
+    bool test = isInverse(trans, transInv);
+    if (!test) return false;
+  }
+
   return true;
 }
 
