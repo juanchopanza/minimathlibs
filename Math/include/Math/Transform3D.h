@@ -21,9 +21,8 @@ class Transform3D {
   Transform3D() {}
   explicit Transform3D(const Rotation3D& rot) : m_rot(rot), m_trans() {}
   explicit Transform3D(const Translation3D& trans) : m_rot(), m_trans(trans) {}
-  Transform3D(const Rotation3D& rot, const Translation3D trans) : m_rot(rot), m_trans(trans) {
-
-  };
+  Transform3D(const Rotation3D& rot, const Translation3D trans) : m_rot(rot), m_trans(trans) {}
+  Transform3D(const Translation3D& trans, const Rotation3D& rot) : m_rot(rot), m_trans(rot*trans) {}
   template <typename Point>
   Point operator*(const Point& point) const {
     // apply a rotation and translation

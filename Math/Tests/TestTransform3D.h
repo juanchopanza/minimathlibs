@@ -8,6 +8,9 @@
 #ifndef TESTS_TRANSFORM3D_H__
 #define TESTS_TRANSFORM3D_H__
 
+#include <iostream>
+#include <iomanip>
+
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
 
@@ -49,12 +52,19 @@ class TestTransform3D : public CppUnit::TestFixture {
   CPPUNIT_TEST(testRotationYAndTranslation);
   CPPUNIT_TEST(testRotationZAndTranslation);
 
+  CPPUNIT_TEST(testTranslationAndNullRotation);
+  CPPUNIT_TEST(testTranslationAndRotationX);
+  CPPUNIT_TEST(testTranslationAndRotationY);
+  CPPUNIT_TEST(testTranslationAndRotationZ);
+
+
   CPPUNIT_TEST_SUITE_END();
 
  public:
   
   void setUp()
   {
+    std::cout << std::setprecision(18);
     p100 = PointXYZD(1,0,0);
     p010 = PointXYZD(0,1,0);
     p001 = PointXYZD(0,0,1);
@@ -308,6 +318,93 @@ class TestTransform3D : public CppUnit::TestFixture {
 
       pTest = transf*p001;
       CPPUNIT_ASSERT(Math::equalXYZ(pTest, rot*p001 + translation));
+    }
+  }
+
+  void testTranslationAndNullRotation()
+  {
+    Transform3D transf(Translation3D(111., 222, 333.), Rotation3D());
+    PointXYZD p;
+    p = transf*p;
+    CPPUNIT_ASSERT(p==PointXYZD(111., 222., 333.));
+  }
+
+
+  void testTranslationAndRotationX()
+  {
+    for (unsigned int i = 1; i<9; ++i) 
+    {
+      Rotation3DX rot(PI/i);
+      PointXYZD translation(999.,999.,999.);
+      Transform3D transf(Translation3D(translation), rot);
+
+      PointXYZD pTest = transf*p100;
+      bool test = Math::equalXYZ(pTest, (rot*translation) + rot*p100, 2);
+      if (!test) {
+        std::cout << "\nFail i = " << i 
+                  << "\n pTest = " << pTest
+                  << "\n rot*p100 = " << (rot*p100) 
+                  << "\n rot*trans = " << (rot*translation); 
+        std::cout << "\n rot*trans + rot*p100 = " << (rot*translation + rot*p100 ) << "\n"; 
+      }
+      PointXYZD res100 = rot*translation + rot*p100;
+      CPPUNIT_ASSERT(Math::equalXYZ(pTest, res100));
+
+      pTest = transf*p010;
+      PointXYZD res010 = rot*translation + rot*p010;
+      CPPUNIT_ASSERT(Math::equalXYZ(pTest, res010));
+
+      pTest = transf*p001;
+      PointXYZD res001 = rot*translation + rot*p001;
+      CPPUNIT_ASSERT(Math::equalXYZ(pTest, res001));
+
+    }
+
+  }
+ 
+  void testTranslationAndRotationY()
+  {
+    for (unsigned int i = 1; i<9; ++i) 
+    {
+      Rotation3DY rot(PI/i);
+      PointXYZD translation(999.,999.,999.);
+      Transform3D transf(Translation3D(translation), rot);
+
+      PointXYZD pTest = transf*p100;
+      PointXYZD res100 = rot*translation + rot*p100;
+      CPPUNIT_ASSERT(Math::equalXYZ(pTest, res100, 200));
+
+      pTest = transf*p010;
+      PointXYZD res010 = rot*translation + rot*p010;
+      CPPUNIT_ASSERT(Math::equalXYZ(pTest, res010));
+
+      pTest = transf*p001;
+      PointXYZD res001 = rot*translation + rot*p001;
+      CPPUNIT_ASSERT(Math::equalXYZ(pTest, res001));
+
+    }
+
+  }
+
+  void testTranslationAndRotationZ()
+  {
+    for (unsigned int i = 1; i<9; ++i) 
+    {
+      Rotation3DZ rot(PI/i);
+      PointXYZD translation(999.,999.,999.);
+      Transform3D transf(Translation3D(translation), rot);
+
+      PointXYZD pTest = transf*p100;
+      PointXYZD res100 = rot*translation + rot*p100;
+      CPPUNIT_ASSERT(Math::equalXYZ(pTest, res100, 2000));
+
+      pTest = transf*p010;
+      PointXYZD res010 = rot*translation + rot*p010;
+      CPPUNIT_ASSERT(Math::equalXYZ(pTest, res010));
+
+      pTest = transf*p001;
+      PointXYZD res001 = rot*translation + rot*p001;
+      CPPUNIT_ASSERT(Math::equalXYZ(pTest, res001));
     }
   }
 
