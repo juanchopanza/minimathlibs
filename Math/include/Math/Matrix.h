@@ -162,10 +162,10 @@ class Matrix {
   }
 
   // return an invrse matrix
-  Matrix inverse(bool& fail) const 
+  Matrix inverse(bool& success) const 
   { 
     Matrix tmp = *this;
-    fail = tmp.invert();
+    success = tmp.invert();
     return tmp;
   }
 
