@@ -15,17 +15,28 @@
 
 namespace Math {
 
-// compare two xyz for equality
+///
+/// Equality comparison between two 3D points.
+/// The x, y and z coordinates are compared for equality, , according to a 
+/// tolerance level tol:
+/// bool equals =  std::abs(x1-x0) <= tol;
+///
+/// @param lhs: 3D point
+/// @param rhs: 3D point
+/// @param nEpsilon: number of epsilons to be used for tolerance calculation. 
+///                  One epsilon is defined as 
+///                  std::numeric_limits<T>::epsilon().
+///
 template <typename P1, typename P2>
-bool equalXYZ(const P1& lhs, 
-              const P2& rhs,
-              unsigned int nEpsilons = 1) 
+bool equal(const P1& lhs, 
+           const P2& rhs,
+           unsigned int nEpsilons = 0) 
 {
-
-  typename P1::scalar_type eps = std::numeric_limits<typename P1::scalar_type>::epsilon() * nEpsilons;  
-  return (std::abs(lhs.x()-rhs.x()) < eps &&
-          std::abs(lhs.y()-rhs.y()) < eps &&
-          std::abs(lhs.z()-rhs.z()) < eps );
+  typedef  typename P1::scalar_type scalar_type;
+  scalar_type eps = std::numeric_limits<scalar_type>::epsilon() * nEpsilons;  
+  return (std::abs(lhs.x()-rhs.x()) <= eps &&
+          std::abs(lhs.y()-rhs.y()) <= eps &&
+          std::abs(lhs.z()-rhs.z()) <= eps );
 } 
 
 // Square of the magnitude of a point

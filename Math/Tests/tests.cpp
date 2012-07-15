@@ -16,6 +16,7 @@
 #include "TestTranslation3D.h"
 #include "TestTransform3D.h"
 #include "TestMatrix.h"
+#include "TestMatrixOps.h"
 
 // CppUnit includes
 #include <cppunit/TestCase.h>
@@ -40,6 +41,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION( TestRotation3D );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestTransform3D );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestTranslation3D );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestMatrix );
+CPPUNIT_TEST_SUITE_REGISTRATION( TestMatrixOps );
 
 int main() 
 {

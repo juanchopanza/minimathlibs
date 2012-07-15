@@ -49,13 +49,13 @@ class Point3D {
   // equality operator
   template <typename Point>
   bool operator==(const Point& rhs) const {
-    return equalXYZ(*this, rhs);
+    return equal(*this, rhs, 1);
   }
 
   // inequality operator
   template <typename Point>
   bool operator!=(const Point& rhs) const {
-    return !equalXYZ(*this, rhs);
+    return !equal(*this, rhs, 1);
   }
 
 

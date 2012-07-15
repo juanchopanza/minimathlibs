@@ -40,31 +40,31 @@ class TestCoordSystem3D : public CppUnit::TestFixture {
 
   void testEquality()
   {
-    CPPUNIT_ASSERT(Math::equalXYZ(CoordsXYZ(), CoordsXYZ()));
+    CPPUNIT_ASSERT(Math::equal(CoordsXYZ(), CoordsXYZ()));
     CoordsXYZ c1(1, 2, 3);
     CoordsXYZ c2(1,2,3);
-    CPPUNIT_ASSERT( Math::equalXYZ(c1, c2));
+    CPPUNIT_ASSERT( Math::equal(c1, c2));
   }
 
   void testInequality()
   {
     CoordsXYZ c1(10, 20, 30);
     CoordsXYZ c2(1,2,3);
-    CPPUNIT_ASSERT( !Math::equalXYZ(c1, c2));
+    CPPUNIT_ASSERT( !Math::equal(c1, c2));
   }
 
   void testCopyConstruction() 
   {
     CoordsXYZ c1(1,2,3);
     CoordsXYZ c2 = c1;
-    CPPUNIT_ASSERT( Math::equalXYZ(c1, c2));
+    CPPUNIT_ASSERT( Math::equal(c1, c2));
   }
   
   void testAssignment()  {
     CoordsXYZ c1(1,2,3);
     CoordsXYZ c2;
     c2 = c1;
-    CPPUNIT_ASSERT( Math::equalXYZ(c1, c2));
+    CPPUNIT_ASSERT( Math::equal(c1, c2));
   }
 
   void testComponents()  {

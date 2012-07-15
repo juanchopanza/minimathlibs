@@ -270,20 +270,20 @@ class TestTransform3D : public CppUnit::TestFixture {
       Transform3D transf(rot, Translation3D(111., 222, 333.));
       PointXYZD translation(111.,222.,333.);
       PointXYZD pTest = transf*p100;
-      CPPUNIT_ASSERT(Math::equalXYZ(pTest, rot*p100 + translation));
+      CPPUNIT_ASSERT(Math::equal(pTest, rot*p100 + translation));
 
       pTest = transf*p010;
-      bool test = Math::equalXYZ(pTest, rot*p010 + translation);
+      bool test = Math::equal(pTest, rot*p010 + translation);
       if (!test) {
         std::cout << "\nFail i = " << i << " pTest = " << pTest
                   << " rot*p010 = " << (rot*p010) << "\n"; 
         std::cout << " rot*p010 + trans = " << (rot*p010 + translation) << "\n"; 
       }
 
-      CPPUNIT_ASSERT(Math::equalXYZ(pTest, rot*p010 + translation));
+      CPPUNIT_ASSERT(Math::equal(pTest, rot*p010 + translation));
 
       pTest = transf*p001;
-      CPPUNIT_ASSERT(Math::equalXYZ(pTest,rot*p001 + translation));
+      CPPUNIT_ASSERT(Math::equal(pTest,rot*p001 + translation));
     }
   }
 
@@ -295,13 +295,13 @@ class TestTransform3D : public CppUnit::TestFixture {
       Transform3D transf(rot, Translation3D(111., 222, 333.));
       PointXYZD translation(111.,222.,333.);
       PointXYZD pTest = transf*p100;
-      CPPUNIT_ASSERT(Math::equalXYZ(pTest, rot*p100 + translation));
+      CPPUNIT_ASSERT(Math::equal(pTest, rot*p100 + translation));
 
       pTest = transf*p010;
-      CPPUNIT_ASSERT(Math::equalXYZ(pTest, rot*p010 + translation));
+      CPPUNIT_ASSERT(Math::equal(pTest, rot*p010 + translation));
 
       pTest = transf*p001;
-      CPPUNIT_ASSERT(Math::equalXYZ(pTest, rot*p001 + translation));
+      CPPUNIT_ASSERT(Math::equal(pTest, rot*p001 + translation));
     }
   }
 
@@ -313,13 +313,13 @@ class TestTransform3D : public CppUnit::TestFixture {
       Transform3D transf(rot, Translation3D(111., 222, 333.));
       PointXYZD translation(111.,222.,333.);
       PointXYZD pTest = transf*p100;
-      CPPUNIT_ASSERT(Math::equalXYZ(pTest, rot*p100 + translation));
+      CPPUNIT_ASSERT(Math::equal(pTest, rot*p100 + translation));
 
       pTest = transf*p010;
-      CPPUNIT_ASSERT(Math::equalXYZ(pTest, rot*p010 + translation));
+      CPPUNIT_ASSERT(Math::equal(pTest, rot*p010 + translation));
 
       pTest = transf*p001;
-      CPPUNIT_ASSERT(Math::equalXYZ(pTest, rot*p001 + translation));
+      CPPUNIT_ASSERT(Math::equal(pTest, rot*p001 + translation));
     }
   }
 
@@ -341,7 +341,7 @@ class TestTransform3D : public CppUnit::TestFixture {
       Transform3D transf(Translation3D(translation), rot);
 
       PointXYZD pTest = transf*p100;
-      bool test = Math::equalXYZ(pTest, (rot*translation) + rot*p100, 2);
+      bool test = Math::equal(pTest, (rot*translation) + rot*p100, 2);
       if (!test) {
         std::cout << "\nFail i = " << i 
                   << "\n pTest = " << pTest
@@ -350,15 +350,15 @@ class TestTransform3D : public CppUnit::TestFixture {
         std::cout << "\n rot*trans + rot*p100 = " << (rot*translation + rot*p100 ) << "\n"; 
       }
       PointXYZD res100 = rot*translation + rot*p100;
-      CPPUNIT_ASSERT(Math::equalXYZ(pTest, res100));
+      CPPUNIT_ASSERT(Math::equal(pTest, res100));
 
       pTest = transf*p010;
       PointXYZD res010 = rot*translation + rot*p010;
-      CPPUNIT_ASSERT(Math::equalXYZ(pTest, res010));
+      CPPUNIT_ASSERT(Math::equal(pTest, res010));
 
       pTest = transf*p001;
       PointXYZD res001 = rot*translation + rot*p001;
-      CPPUNIT_ASSERT(Math::equalXYZ(pTest, res001));
+      CPPUNIT_ASSERT(Math::equal(pTest, res001));
 
     }
 
@@ -374,15 +374,15 @@ class TestTransform3D : public CppUnit::TestFixture {
 
       PointXYZD pTest = transf*p100;
       PointXYZD res100 = rot*translation + rot*p100;
-      CPPUNIT_ASSERT(Math::equalXYZ(pTest, res100, 200));
+      CPPUNIT_ASSERT(Math::equal(pTest, res100, 200));
 
       pTest = transf*p010;
       PointXYZD res010 = rot*translation + rot*p010;
-      CPPUNIT_ASSERT(Math::equalXYZ(pTest, res010));
+      CPPUNIT_ASSERT(Math::equal(pTest, res010));
 
       pTest = transf*p001;
       PointXYZD res001 = rot*translation + rot*p001;
-      CPPUNIT_ASSERT(Math::equalXYZ(pTest, res001));
+      CPPUNIT_ASSERT(Math::equal(pTest, res001));
 
     }
 
@@ -398,15 +398,15 @@ class TestTransform3D : public CppUnit::TestFixture {
 
       PointXYZD pTest = transf*p100;
       PointXYZD res100 = rot*translation + rot*p100;
-      CPPUNIT_ASSERT(Math::equalXYZ(pTest, res100, 2000));
+      CPPUNIT_ASSERT(Math::equal(pTest, res100, 2000));
 
       pTest = transf*p010;
       PointXYZD res010 = rot*translation + rot*p010;
-      CPPUNIT_ASSERT(Math::equalXYZ(pTest, res010));
+      CPPUNIT_ASSERT(Math::equal(pTest, res010));
 
       pTest = transf*p001;
       PointXYZD res001 = rot*translation + rot*p001;
-      CPPUNIT_ASSERT(Math::equalXYZ(pTest, res001));
+      CPPUNIT_ASSERT(Math::equal(pTest, res001));
     }
   }
   
