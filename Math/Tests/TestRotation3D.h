@@ -18,6 +18,7 @@
 #include "Math/MatrixOps.h"
 #include "Math/Rotation3D.h"
 #include "Math/Point3D.h"
+#include "Math/Geom3DOps.h"
 
 #include "Defines.h"
 
@@ -41,6 +42,8 @@ class TestRotation3D : public CppUnit::TestFixture {
   CPPUNIT_TEST(testInvert);
   CPPUNIT_TEST(testInverse);
   CPPUNIT_TEST(testFindTransformationRotX);
+  CPPUNIT_TEST(testFindTransformationRotY);
+  CPPUNIT_TEST(testFindTransformationRotZ);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -217,27 +220,17 @@ class TestRotation3D : public CppUnit::TestFixture {
 
   void testFindTransformationRotX()
   {
-    for (int i = 1; i<9; ++i)
-    {
-      Math::Rotation3D rot = Math::Rotation3DX(PI/i);
-      Math::Matrix<double,3> orig;
-      //Math::setColumn(orig, p100, 0);
-      //Math::setColumn(orig, p010, 1);
-      //Math::setColumn(orig, p111, 2);
-      Math::Matrix<double,3> prime = rot*orig; // problem here
-      bool success = true;
+    TestUtils::testFindTransformationAxisRot<Rotation3DX>();
+  }
 
-/*
-      Math::Matrix<double,3> rot2 = Math::transformation(orig, prime, success);
-      if (success)
-      {
-        CPPUNIT_ASSERT(Math::equal(rot, rot2, 1));
-      } else {
-        std::cout << "\nInversion failed for angle: PI/" << i;
-        std::cout <<"\nOriginal matrix:\n " << orig << "\n";
-      }
-      */
-    }
+  void testFindTransformationRotY()
+  {
+    TestUtils::testFindTransformationAxisRot<Rotation3DY>();
+  }
+
+  void testFindTransformationRotZ()
+  {
+    TestUtils::testFindTransformationAxisRot<Rotation3DZ>();
   }
 
 

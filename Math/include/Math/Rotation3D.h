@@ -11,6 +11,7 @@
 
 #include "Math/Point3D.h"
 #include "Math/Matrix.h"
+#include "Math/MatrixOps.h"
 #include "Math/Geom3DOps.h"
 #include <cmath>
 
@@ -154,6 +155,8 @@ class Rotation3D {
 
  public:
 
+  typedef double scalar_type;
+
   // default construction is identity transformation
   Rotation3D() : m_rot(IdentityMatrix()) {}
 
@@ -222,6 +225,17 @@ class Rotation3D {
   Matrix<T,3,C> operator*(const Matrix<T,3,C>& mat) const {
     return m_rot*mat;
   }
+
+  // equality comparison with tolerance
+  bool equal(const Rotation3D& rhs, int nEpsilons=1) const {
+    return Math::equal(m_rot, rhs.m_rot, nEpsilons);
+  }
+  // equality comparison with tolerance
+  bool equal(const Matrix<double,3,3>& mat, int nEpsilons=1) const {
+    return Math::equal(m_rot, mat, nEpsilons);
+  }
+
+
 
  private:
   Matrix<double, 3, 3> m_rot;

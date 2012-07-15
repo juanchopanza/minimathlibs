@@ -9,6 +9,8 @@
 #define TESTS_TESTROTATION3DUTILS_H__
 
 #include "Math/Point3D.h"
+#include "Math/Matrix.h"
+#include "Math/MatrixOps.h"
 #include "Math/Rotation3D.h"
 #include "Math/Transform3D.h"
 #include "Defines.h"
@@ -138,6 +140,24 @@ bool testInvertTransform3D()
   return true;
 }
 
+template <typename R>
+void testFindTransformationAxisRot()
+{
+  for (int i = 1; i<9; ++i)
+  {
+    Math::Rotation3D rot = R(PI/i);
+    Math::Matrix<double,3> orig;
+    Math::setColumn(orig, p100, 0);
+    Math::setColumn(orig, p010, 1);
+    Math::setColumn(orig, p111, 2);
+    Math::Matrix<double,3> prime = rot*orig;
+    bool success = true;
+
+    Math::Matrix<double,3> rot2 = Math::transformation(orig, prime, success);
+    CPPUNIT_ASSERT_MESSAGE("Inversion failed", success);
+    CPPUNIT_ASSERT(rot.equal(rot2, 1));
+  }
+}
 
 
 } // namespace TestUtils

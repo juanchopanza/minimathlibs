@@ -57,6 +57,18 @@ Translation3D operator*(const Matrix<T,3>& rot,
 
 } 
 
+///
+/// Find the transformation matrix T such that
+/// T * lhs = rhs
+///
+template <typename T1, typename T2>
+T1 transformation(T1 lhs, 
+                  const T2& rhs,
+                  bool& success)
+{
+  return rhs*(lhs.inverse(success)); 
+}
+
 
 }
 
