@@ -19,6 +19,26 @@
 
 #include "Defines.h"
 
+namespace
+{
+
+//
+// Check that a RotationZYX defined by angles phi, theta, psi has the same
+// effect on a point as individual Z, Y and X rotations.
+//
+bool testRotationZYX(const Math::PointXYZD& point,
+                     double phi, 
+                     double theta, 
+                     double psi)
+{ 
+  Rotation3DZYX rot1(phi, theta, psi);
+  PointXYZD ref = Rotation3DX(psi) *
+                  ( Rotation3DY(theta) * (Rotation3DZ(phi)*point) );
+  return rot1*point == ref;
+}
+
+}
+
 class TestRotation3DZYX : public CppUnit::TestFixture {
 
   CPPUNIT_TEST_SUITE(TestRotation3DZYX);
@@ -39,6 +59,7 @@ class TestRotation3DZYX : public CppUnit::TestFixture {
   CPPUNIT_TEST(testAssignRotation3DX);
   CPPUNIT_TEST(testAssignRotation3DY);
   CPPUNIT_TEST(testAssignRotation3DZ);
+  CPPUNIT_TEST(testZYXRotations);
   CPPUNIT_TEST(testInverse);
   CPPUNIT_TEST(testInvert);
   CPPUNIT_TEST_SUITE_END();
@@ -219,6 +240,35 @@ class TestRotation3DZYX : public CppUnit::TestFixture {
   {
      for (int i = 1; i < 9; ++i) {
       CPPUNIT_ASSERT(Rotation3DZYX(PI/i, 0, 0) == Rotation3DZ(PI/i));
+    }
+  }
+
+  void testZYXRotations()
+  {
+    for (int i = 1; i < 9; ++i) {
+ 
+      const double angle = PI/i;
+ 
+      CPPUNIT_ASSERT(testRotationZYX(p100, angle, angle, angle));
+      CPPUNIT_ASSERT(testRotationZYX(p010, angle, angle, angle));
+      CPPUNIT_ASSERT(testRotationZYX(p001, angle, angle, angle)); 
+
+      CPPUNIT_ASSERT(testRotationZYX(p100, -angle, angle, angle));
+      CPPUNIT_ASSERT(testRotationZYX(p010, angle, angle, angle));
+      CPPUNIT_ASSERT(testRotationZYX(p001, angle, angle, angle)); 
+
+      CPPUNIT_ASSERT(testRotationZYX(p100, angle, angle, angle));
+      CPPUNIT_ASSERT(testRotationZYX(p010, -angle, angle, angle));
+      CPPUNIT_ASSERT(testRotationZYX(p001, angle, angle, angle)); 
+
+      CPPUNIT_ASSERT(testRotationZYX(p100, angle, -angle, angle));
+      CPPUNIT_ASSERT(testRotationZYX(p010, angle, -angle, angle));
+      CPPUNIT_ASSERT(testRotationZYX(p001, angle, -angle, angle)); 
+
+      CPPUNIT_ASSERT(testRotationZYX(p100, -angle, -angle, -angle));
+      CPPUNIT_ASSERT(testRotationZYX(p010, -angle, -angle, -angle));
+      CPPUNIT_ASSERT(testRotationZYX(p001, -angle, -angle, -angle)); 
+
     }
   }
 
