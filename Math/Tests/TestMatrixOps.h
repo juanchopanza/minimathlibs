@@ -26,28 +26,6 @@ namespace
 
   typedef Math::Matrix<double,3,1> Point3D;
 
-  template <typename T, unsigned int R, unsigned int C>
-  void setRow(Math::Matrix<T,R,C>& m, 
-              const Math::Matrix<T, 1, C>& r,
-              unsigned int index)
-  {
-    for (unsigned int i = 0; i < C; ++i)
-    {
-      m(index, i) = r(0, i);
-    }
-  }
-
-  template <typename T, unsigned int R, unsigned int C>
-  void setColumn(Math::Matrix<T,R,C>& m, 
-                 const Math::Matrix<T, R, 1>& c,
-                 unsigned int index)
-  {
-    for (unsigned int i = 0; i < R; ++i)
-    {
-      m(i, index) = c(i, 0);
-    }
-  }
-
   Math::Matrix<double, 3> rotation3DX(double angle)
   {
     Math::Matrix<double, 3> m = Math::IdentityMatrix();
@@ -116,9 +94,9 @@ class TestMatrixOps : public CppUnit::TestFixture
     {
       Math::Matrix<double,3> rot = rotation3DX(PI/i);
       Math::Matrix<double,3> orig;
-      setColumn(orig, p100, 0);
-      setColumn(orig, p010, 1);
-      setColumn(orig, p111, 2);
+      Math::setColumn(orig, p100, 0);
+      Math::setColumn(orig, p010, 1);
+      Math::setColumn(orig, p111, 2);
 
       Math::Matrix<double,3> prime = rot*orig;
       bool success = true;
@@ -139,9 +117,9 @@ class TestMatrixOps : public CppUnit::TestFixture
     {
       Math::Matrix<double,3> rot = rotation3DY(PI/i);
       Math::Matrix<double,3> orig;
-      setColumn(orig, p100, 0);
-      setColumn(orig, p010, 1);
-      setColumn(orig, p111, 2);
+      Math::setColumn(orig, p100, 0);
+      Math::setColumn(orig, p010, 1);
+      Math::setColumn(orig, p111, 2);
 
       Math::Matrix<double,3> prime = rot*orig;
       bool success = true;
@@ -162,9 +140,9 @@ class TestMatrixOps : public CppUnit::TestFixture
     {
       Math::Matrix<double,3> rot = rotation3DZ(PI/i);
       Math::Matrix<double,3> orig;
-      setColumn(orig, p100, 0);
-      setColumn(orig, p010, 1);
-      setColumn(orig, p111, 2);
+      Math::setColumn(orig, p100, 0);
+      Math::setColumn(orig, p010, 1);
+      Math::setColumn(orig, p111, 2);
 
       Math::Matrix<double,3> prime = rot*orig;
       bool success = true;
