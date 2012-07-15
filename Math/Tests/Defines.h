@@ -14,6 +14,7 @@
   const PointXYZD p100(1.,0.,0);
   const PointXYZD p010(0.,1.,0);
   const PointXYZD p001(0.,0.,1);
+  const PointXYZD p111(1.,1.,1);
 
   const double cos45 = std::sqrt(2)/2.;
   const double PI = std::atan(1.0)*4;

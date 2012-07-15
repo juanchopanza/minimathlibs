@@ -28,11 +28,17 @@ template <typename T>
 class MatrixInvertor<T, 1, 1> {
  public:
   template <typename M>
-  bool operator()(M& mat) const 
+  M& operator()(M& mat, bool& success) const 
   {
     typedef typename M::value_type value_type;
-    if (mat(0,0) == value_type()) return false;
-    mat(0.0) = value_type(1)/mat(0,0);
+    if (mat(0,0) == value_type()) 
+    {
+      success = false;
+      return mat;
+  }
+  success = true;
+  mat(0.0) = value_type(1)/mat(0,0);
+  return mat;
   }
 };
 
@@ -40,16 +46,21 @@ template <typename T>
 class MatrixInvertor<T, 2, 2> {
  public:
   template <typename M>
-  bool operator()(M& mat) const
+  M& operator()(M& mat, bool& success) const
   {
     typedef typename M::value_type value_type;
     value_type det = mat(0,0)*mat(1,1) - mat(0,1)*mat(1,0);
-    if (det == value_type()) return false;
+    if (det == value_type()) 
+    {
+      success = false;
+      return mat;
+    }
     std::swap(mat(0,0), mat(1,1)); 
     mat(0,1)*=-1;
     mat(1,0) *= -1;
     mat /= det;
-    return true; 
+    success = true;
+    return mat; 
   }
 
 };
@@ -58,7 +69,7 @@ template <typename T>
 class MatrixInvertor<T, 3, 3> {
  public:
   template <typename M>
-  bool operator()(M& mat) const 
+  M& operator()(M& mat, bool& success) const 
   {
 
     typedef typename M::value_type value_type;
@@ -68,8 +79,11 @@ class MatrixInvertor<T, 3, 3> {
 
     value_type det = a*mat(0,0) + b*mat(0,1) + c*mat(0,2);
 
-    if (det == value_type()) return false;
-
+    if (det == value_type()) 
+    {
+      success = false;
+      return mat;
+    }
     value_type d = mat(0,2)*mat(2,1) - mat(0,1)*mat(2,2); // ch - bk
     value_type e = mat(0,0)*mat(2,2) - mat(0,2)*mat(2,0); // ak - cg
     value_type f = mat(2,0)*mat(0,1) - mat(0,0)*mat(2,1); // gb - ah
@@ -89,8 +103,8 @@ class MatrixInvertor<T, 3, 3> {
     mat(2,2) = k;
 
     mat /= det;
-
-    return true;
+    success = true;
+    return mat;
   }
 
 };

@@ -29,9 +29,10 @@ class AxisAngle3DBase {
   bool operator==(const AxisAngle3DBase& rhs) const {
     return (m_sin == rhs.sinAlpha() && m_cos == rhs.cosAlpha());
   }
-  AxisAngle3DBase& invert()
+  AxisAngle3DBase& invert(bool& success)
   {
     m_sin *= -1;
+    success = true;
     return *this;
   }
  private:
@@ -51,15 +52,17 @@ class Rotation3DX  : public AxisAngle3DBase {
                  cosAlpha()*point.y() - sinAlpha()*point.z(), 
                  cosAlpha()*point.z() + sinAlpha()*point.y() );
   }
-  Rotation3DX& invert()
+
+  Rotation3DX& invert(bool& success)
   {
-    AxisAngle3DBase::invert();
+    AxisAngle3DBase::invert(success);
     return *this;
   }
-  Rotation3DX inverse() const
+  Rotation3DX inverse(bool& success) const
   {
-    return Rotation3DX(*this).invert();
+    return Rotation3DX(*this).invert(success);
   }
+
 };
 
 // rotation about the Y axis
@@ -77,14 +80,14 @@ class Rotation3DY : public AxisAngle3DBase {
                  cosAlpha()*point.z() - sinAlpha()*point.x() );
   }
 
-  Rotation3DY& invert()
+  Rotation3DY& invert(bool& success)
   {
-    AxisAngle3DBase::invert();
+    AxisAngle3DBase::invert(success);
     return *this;
   }
-  Rotation3DY inverse() const
+  Rotation3DY inverse(bool& success) const
   {
-    return Rotation3DY(*this).invert();
+    return Rotation3DY(*this).invert(success);
   }
 
 };
@@ -104,14 +107,14 @@ class Rotation3DZ : public AxisAngle3DBase {
                  point.z()                          );
   }
 
-  Rotation3DZ& invert()
+  Rotation3DZ& invert(bool& success)
   {
-    AxisAngle3DBase::invert();
+    AxisAngle3DBase::invert(success);
     return *this;
   }
-  Rotation3DZ inverse() const
+  Rotation3DZ inverse(bool& success) const
   {
-    return Rotation3DZ(*this).invert();
+    return Rotation3DZ(*this).invert(success);
   }
 
 };
@@ -188,14 +191,14 @@ class Rotation3D {
   }
 
   // Invert this Rotation3D
-  Rotation3D& invert()
+  Rotation3D& invert(bool& success)
   {
-    m_rot.invert();
+    m_rot.invert(success);
     return *this;
   }
   // Return the inverse Rotation3D
-  Rotation3D inverse() const {
-    return Rotation3D(*this).invert();
+  Rotation3D inverse(bool& success) const {
+    return Rotation3D(*this).invert(success);
   }
   // multiplication by another Rotation3D
   Rotation3D& operator*=(const Rotation3D& rhs) {
@@ -208,10 +211,16 @@ class Rotation3D {
     return m_rot == rhs.m_rot;
   }
 
+  /// apply a rotation to a point
   template <typename Point>
   Point operator*(const Point& point) const {
-    // apply a rotation
     return m_rot*point;
+  }
+  
+  /// apply a rotation to a 3 row matrix
+  template <typename T, unsigned int C>
+  Matrix<T,3,C> operator*(const Matrix<T,3,C>& mat) const {
+    return m_rot*mat;
   }
 
  private:

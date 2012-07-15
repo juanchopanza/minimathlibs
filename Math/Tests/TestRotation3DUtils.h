@@ -37,8 +37,9 @@ bool testInverse()
   for (unsigned int i = 1; i<9; ++i) 
   {
     R rot(PI/i);
-    R rotInv(rot.inverse());
-    bool test = isInverse(rot, rotInv);
+    bool test = true;
+    R rotInv(rot.inverse(test));
+    test = test && isInverse(rot, rotInv);
     if (!test) return false;
   }
   return true;
@@ -51,8 +52,9 @@ bool testInvert()
   {
     R rot(PI/i);
     R rotInv = rot;
-    rotInv.invert();
-    bool test = isInverse(rot, rotInv);
+    bool test = true;
+    rotInv.invert(test);
+    test = test && isInverse(rot, rotInv);
     if (!test) return false;
   }
   return true;
@@ -64,8 +66,9 @@ bool testInverseRotation3D()
   for (unsigned int i = 1; i<9; ++i) 
   {
     Math::Rotation3D rot(R(PI/i));
-    Math::Rotation3D rotInv(rot.inverse());
-    bool test = isInverse(rot, rotInv);
+    bool test = true;
+    Math::Rotation3D rotInv(rot.inverse(test));
+    test = test &&isInverse(rot, rotInv);
     if (!test) return false;
   }
   return true;
@@ -78,8 +81,9 @@ bool testInvertRotation3D()
   {
     Math::Rotation3D rot(R(PI/i));
     Math::Rotation3D rotInv = rot;
-    rotInv.invert();
-    bool test = isInverse(rot, rotInv);
+    bool test = true;
+    rotInv.invert(test);
+    test = test && isInverse(rot, rotInv);
     if (!test) return false;
   }
   return true;
@@ -91,16 +95,18 @@ bool testInverseTransform3D()
   for (unsigned int i = 1; i<9; ++i) 
   {
     Math::Transform3D trans(R(PI/i), Math::Translation3D(111,222,333));
-    Math::Transform3D transInv(trans.inverse());
-    bool test = isInverse(trans, transInv);
+    bool test = true;
+    Math::Transform3D transInv(trans.inverse(test));
+    test = test && isInverse(trans, transInv);
     if (!test) return false;
   }
 
   for (unsigned int i = 1; i<9; ++i) 
   {
     Math::Transform3D trans(Math::Translation3D(111,222,333), R(PI/i));
-    Math::Transform3D transInv(trans.inverse());
-    bool test = isInverse(trans, transInv);
+    bool test = true;
+    Math::Transform3D transInv(trans.inverse(test));
+    test = test && isInverse(trans, transInv);
     if (!test) return false;
   }
   return true;
@@ -113,8 +119,9 @@ bool testInvertTransform3D()
   {
     Math::Transform3D trans(R(PI/i), Math::Translation3D(111, 222, 333));
     Math::Transform3D transInv = trans;
-    transInv.invert();
-    bool test = isInverse(trans, transInv);
+    bool test = true;
+    transInv.invert(test);
+    test = test && isInverse(trans, transInv);
     if (!test) return false;
   }
 
@@ -122,8 +129,9 @@ bool testInvertTransform3D()
   {
     Math::Transform3D trans(Math::Translation3D(111,222,333), R(PI/i));
     Math::Transform3D transInv = trans;
-    transInv.invert();
-    bool test = isInverse(trans, transInv);
+    bool test;
+    transInv.invert(test);
+    test = test && isInverse(trans, transInv);
     if (!test) return false;
   }
 

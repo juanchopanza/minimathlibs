@@ -156,17 +156,15 @@ class Matrix {
   }
 
   // invert the matrix. Return false if inversion fails.
-  bool invert()
+  Matrix& invert(bool& success)
   {
-    return detail::MatrixInvertor<T,N1,N2>()(*this);
+    return detail::MatrixInvertor<T,N1,N2>()(*this, success);
   }
 
   // return an invrse matrix
   Matrix inverse(bool& success) const 
-  { 
-    Matrix tmp = *this;
-    success = tmp.invert();
-    return tmp;
+  {
+    return Matrix(*this).invert(success);
   }
 
   const T* data() const { return m_data; }

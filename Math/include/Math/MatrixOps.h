@@ -78,6 +78,42 @@ void setColumn(Math::Matrix<T,R,C>& m,
   }
 }
 
+///////////////
+///
+/// Set a row of a matrix to an array-like
+///
+/// @param m:     Matrix whose row will be set
+/// @param a:     Array-like object whose values will be copied into m
+/// @param index: Index of the row to set
+///
+template <typename T, unsigned int R, unsigned int C, typename A>
+void setRow(Math::Matrix<T,R,C>& m, 
+            const A& a,
+            unsigned int index)
+{
+  for (unsigned int i = 0; i < C; ++i)
+  {
+    m(index, i) = a[i];
+  }
+}
+
+///
+/// Set a column of a matrix to an array-like object
+///
+/// @param m:     Matrix whose column will be set
+/// @param a:     Array-like object whose values will be copied into m
+/// @param index: Index of the column to set
+///
+template <typename T, unsigned int R, unsigned int C, typename A>
+void setColumn(Math::Matrix<T,R,C>& m, 
+               const A& a,
+               unsigned int index)
+{
+  for (unsigned int i = 0; i < R; ++i)
+  {
+    m(i, index) = a[i];
+  }
+}
 
 ///
 /// Find the transformation matrix T such that
