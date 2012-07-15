@@ -5,8 +5,8 @@
 // - see < http://www.gnu.org/licenses/lgpl.html>
 //
 
-#ifndef TESTS_MATRIX3D_H__
-#define TESTS_MATRIX3D_H__
+#ifndef TESTS_MATRIX_H__
+#define TESTS_MATRIX_H__
 
 
 #include <cmath>
