@@ -1,8 +1,8 @@
 //
 // Copyright (c) 2012 Juan Palacios juan.palacios.puyana@gmail.com
 // This file is part of minimathlibs.
-// Subject to the Lesser GNU Public License 
-// - see < http://www.gnu.org/licenses/lgpl.html>
+// Subject to the BSD 2-Clause License 
+// - see < http://opensource.org/licenses/BSD-2-Clause>
 //
 
 // Test fixtures
