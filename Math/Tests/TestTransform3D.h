@@ -341,7 +341,10 @@ class TestTransform3D : public CppUnit::TestFixture {
       Transform3D transf(Translation3D(translation), rot);
 
       PointXYZD pTest = transf*p100;
-      bool test = Math::equal(pTest, (rot*translation) + rot*p100, 2);
+      
+      PointXYZD res100 = rot*translation + rot*p100;
+/*
+      bool test = Math::equal(pTest, res100, 100);
       if (!test) {
         std::cout << "\nFail i = " << i 
                   << "\n pTest = " << pTest
@@ -349,7 +352,7 @@ class TestTransform3D : public CppUnit::TestFixture {
                   << "\n rot*trans = " << (rot*translation); 
         std::cout << "\n rot*trans + rot*p100 = " << (rot*translation + rot*p100 ) << "\n"; 
       }
-      PointXYZD res100 = rot*translation + rot*p100;
+*/
       CPPUNIT_ASSERT(Math::equal(pTest, res100));
 
       pTest = transf*p010;

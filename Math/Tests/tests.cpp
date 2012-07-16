@@ -17,7 +17,7 @@
 #include "TestTransform3D.h"
 #include "TestMatrix.h"
 #include "TestMatrixOps.h"
-
+#include "TestAlignment.h"
 // CppUnit includes
 #include <cppunit/TestCase.h>
 #include <cppunit/TestFixture.h>
@@ -42,6 +42,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION( TestTransform3D );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestTranslation3D );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestMatrix );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestMatrixOps );
+CPPUNIT_TEST_SUITE_REGISTRATION( TestAlignment );
 
 int main() 
 {

@@ -12,7 +12,6 @@
 #include "Math/Point3D.h"
 #include "Math/Matrix.h"
 #include "Math/MatrixOps.h"
-#include "Math/Geom3DOps.h"
 #include <cmath>
 
 namespace Math {
@@ -193,6 +192,9 @@ class Rotation3D {
     m_rot(1,0) =  sinA;
   }
 
+  // construct from a 3x3 matrix
+  explicit Rotation3D(const Matrix<double, 3>& mat) : m_rot(mat) {}
+
   // Invert this Rotation3D
   Rotation3D& invert(bool& success)
   {
@@ -235,7 +237,11 @@ class Rotation3D {
     return Math::equal(m_rot, mat, nEpsilons);
   }
 
-
+  // element access
+  const double& operator()(unsigned int i, unsigned int j) const
+  {
+    return m_rot(i,j);
+  }
 
  private:
   Matrix<double, 3, 3> m_rot;
