@@ -109,6 +109,7 @@ class TestMatrix : public CppUnit::TestFixture
   CPPUNIT_TEST(testMatrixTimesScalar);
 
   CPPUNIT_TEST(testTranspose);
+  CPPUNIT_TEST(testLeftInverse);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -358,6 +359,18 @@ class TestMatrix : public CppUnit::TestFixture
         CPPUNIT_ASSERT(m(r,c)==mT(c,r));
       }
     }
+  }
+
+  void testLeftInverse()
+  {
+    M4x3 m;
+    for (unsigned int i = 0; i< m.size(); ++i) {
+      m[i] = std::rand()%m.size();
+    }
+    bool success = true;
+    M3x4 mInv = Math::leftInverse(m, success);
+    CPPUNIT_ASSERT(success);
+    CPPUNIT_ASSERT(Math::equal(mInv*m, M3x3(Math::IdentityMatrix()), 4));
   }
 };
 

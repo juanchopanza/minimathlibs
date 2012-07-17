@@ -115,6 +115,13 @@ void setColumn(Math::Matrix<T,R,C>& m,
   }
 }
 
+template <typename T, unsigned int N1, unsigned int N2>
+Matrix<T,N2,N1> leftInverse(const Matrix<T,N1,N2>& mat, bool& success)
+{
+  Matrix<T,N2,N1> matT = mat.transpose();
+  return ((matT*mat).inverse(success)) * matT;
+}
+
 ///
 /// Find the transformation matrix T such that
 /// T * lhs = rhs
