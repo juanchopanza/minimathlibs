@@ -242,6 +242,12 @@ class Rotation3D {
   {
     return m_rot(i,j);
   }
+  // element access
+  double& operator()(unsigned int i, unsigned int j)
+  {
+    return m_rot(i,j);
+  }
+
 
  private:
   Matrix<double, 3, 3> m_rot;
