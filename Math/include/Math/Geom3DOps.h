@@ -10,6 +10,9 @@
 #ifndef MATH_GEOM3DOPS_H__
 #define MATH_GEOM3DOPS_H__
 
+#include <tr1/array>
+#include <iterator>
+
 #include "Math/Rotation3D.h"
 #include "Math/Point3D.h"
 #include "Math/Translation3D.h"
@@ -61,24 +64,6 @@ Point3D<T, C> operator*(const Matrix<T,3,4>& rot,
 } 
 
 
-// multiplication between a 3x3 matrix and a 3D point
-template <typename T>
-Translation3D operator*(const Matrix<T,3>& rot, 
-                        const Translation3D&  point) 
-{
-  typedef Translation3D::vector_type vector_type_;
-  double elements[3];
-  for (unsigned int row = 0; row < 3; ++row) {
-    double element = 0;
-    for (unsigned int i = 0; i < 3; ++i) {
-      element+= rot(row,i) * point[i];
-    }
-    elements[row] = element; // dot prod of LHS row, RHS col
-  }
-  return Translation3D(vector_type_(elements[0], elements[1], elements[2]));
-
-} 
-
 ///
 /// Find the transformation matrix T such that
 /// T * lhs = rhs
@@ -91,36 +76,50 @@ T1 transformation(T1 lhs,
   return rhs*(lhs.inverse(success)); 
 }
 
-//
-// Utils to find 3D alignment from 3 reference points and 3 measured points
-//
-
-Transform3D transformation(std::pair<PointXYZD, PointXYZD> p0,
-                           std::pair<PointXYZD, PointXYZD> p1,
-                           std::pair<PointXYZD, PointXYZD> p2,
-                           bool& success)
+///
+/// Find the 3D transformation that maps a set of points P to 
+/// a set of points P'
+/// The points must be paired up in a sequence, such that each element of
+/// the sequence contains p and p'. The pairs must make the points accessible
+/// via operator[](size_t) such that, for a given element,
+///
+/// elem[0] is the reference point
+/// elem[1] is the transformed point
+/// elem[1][2] is the third component of the transformed point
+///
+/// @param begin   : forward iterator at start of point pair sequence
+/// @param end     : forward iterator one past the end of point pair sequence
+/// @param success : boolean success flag
+/// @return        : Transform3D with transformation. Identits transformation
+///                  if procesure fails.
+///
+template <typename IT>
+Transform3D transformation(IT begin, IT end, bool& success)
 {
-  
+ 
+  unsigned int length = std::distance(begin, end);
+  if (length != 3) {
+    std::cerr << "Math::transformation only implemented for 3 poitn system\n";
+    return Transform3D();
+  }
+
   Math::Matrix<double,4,3> ref; // 4x3 to allow for rotation + translation
-  // to-do write something to assign elements to matrix
-  ref(0,0) = p0.first[0];
-  ref(1,0) = p0.first[1];
-  ref(2,0) = p0.first[2];
-  ref(3,0) = 1;
-  ref(0,1) = p1.first[0];
-  ref(1,1) = p1.first[1];
-  ref(2,1) = p1.first[2];
-  ref(3,1) = 1;
-  ref(0,2) = p2.first[0];
-  ref(1,2) = p2.first[1];
-  ref(2,2) = p2.first[2];
-  ref(3,2) = 1;
-
   Math::Matrix<double,3> meas;
-  Math::setColumn(meas, p0.second, 0);
-  Math::setColumn(meas, p1.second, 1);
-  Math::setColumn(meas, p2.second, 2);
 
+  unsigned int index = 0;
+
+  // to-do write something to assign elements to matrix
+  for (IT iPair = begin; iPair !=end; ++iPair)
+  {
+    for (unsigned int i = 0; i < 3; ++i)
+    {
+      ref(i, index) = (*iPair)[0][i];
+      meas(i, index) = (*iPair)[1][i];
+    }
+    ++index;
+  }
+  Math::setRow(ref, PointXYZD(1,1,1), 3);
+  
   // find rotation!
   Matrix<double, 3, 4> rot = transformation(ref, meas, success);
   

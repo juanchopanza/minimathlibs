@@ -10,6 +10,7 @@
 #define MATH_TRANSLATION3D_H__
 
 #include "Math/Point3D.h"
+#include "Math/Matrix.h"
 
 namespace Math {
 
@@ -67,6 +68,27 @@ class Translation3D {
 
   vector_type m_trans;
 };
+
+// some useful operations
+
+/// multiplication between a 3x3 matrix and a 3D translation 
+template <typename T>
+Translation3D operator*(const Matrix<T,3>& rot, 
+                        const Translation3D&  point) 
+{
+  typedef Translation3D::vector_type vector_type_;
+  double elements[3];
+  for (unsigned int row = 0; row < 3; ++row) {
+    double element = 0;
+    for (unsigned int i = 0; i < 3; ++i) {
+      element+= rot(row,i) * point[i];
+    }
+    elements[row] = element; // dot prod of LHS row, RHS col
+  }
+  return Translation3D(vector_type_(elements[0], elements[1], elements[2]));
+
+} 
+
 
 }
 

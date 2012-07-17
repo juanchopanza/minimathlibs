@@ -21,6 +21,7 @@
 #include "Math/Geom3DOps.h"
 
 #include "Defines.h"
+#include <tr1/array>
 
 namespace
 {
@@ -34,10 +35,18 @@ void testTransformation(const T& transf)
   PointXYZD pB = transf*p010;
   PointXYZD pC = transf*p001;
   bool success = true;
-  Transform3D transf1 = transformation(std::make_pair(p100, pA),
-                                       std::make_pair(p010, pB),
-                                       std::make_pair(p001, pC),
+
+  typedef std::tr1::array<PointXYZD, 2> PointXYTPair;
+
+  PointXYZDPair p0 = { {p100, pA} };
+  PointXYZDPair p1 = { {p010, pB} };
+  PointXYZDPair p2 = { {p001, pC} };
+  std::tr1::array<PointXYZDPair, 3> pointPairs = { {p0, p1, p2} };
+
+  Transform3D transf1 = transformation(pointPairs.begin(),
+                                       pointPairs.end(),
                                        success);
+
   CPPUNIT_ASSERT(success);
   CPPUNIT_ASSERT(Math::equal(transf1*p100, pA, 64));
   CPPUNIT_ASSERT(Math::equal(transf1*p010, pB, 64));
