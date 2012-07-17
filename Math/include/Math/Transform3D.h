@@ -83,6 +83,13 @@ class Transform3D {
     return (m_mat*point);
   }
 
+  /// Apply trnasformation to a 4xN matrix
+  template <typename T, unsigned int N>
+  Matrix<T,3,N> operator*(const Matrix<T,4,N>& rhs)
+  {
+    return m_mat*rhs;
+  }
+
   Transform3D& invert(bool& success)
   {
     // we need Tr^-1 * R`-1
