@@ -77,6 +77,9 @@ class Transform3D {
     }
   }
 
+  /// Construct from a 3x4 matrix
+  explicit Transform3D(const Matrix<double, 3, 4>& mat) : m_mat(mat) {}
+
   /// Apply the transformation to a 3D point
   template <typename Point>
   Point operator*(const Point& point) const {
