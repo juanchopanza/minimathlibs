@@ -125,6 +125,7 @@ Matrix<T,N2,N1> leftInverse(const Matrix<T,N1,N2>& mat, bool& success)
 ///
 /// Find the transformation matrix T such that
 /// T * lhs = rhs
+/// where lhs is a square matrix
 ///
 template <typename T, unsigned int N>
 Matrix<T,N> transformation(Matrix<T,N> lhs, 
@@ -133,6 +134,20 @@ Matrix<T,N> transformation(Matrix<T,N> lhs,
 {
   return rhs*(lhs.inverse(success)); 
 }
+
+///
+/// Find the transformation matrix T such that
+/// T * lhs = rhs
+/// where lhs is an N1xN2 matrix and N1>N2
+
+template <typename T, unsigned int N1, unsigned int N2>
+Matrix<T, N2, N1> transformation(const Matrix<T, N1, N2>& ref,
+                                 const Matrix<T, N2, N2>& meas,
+                                 bool& success)
+{
+  return meas*Math::leftInverse(ref, success);
+}
+
 
 } // namespace Math
 
