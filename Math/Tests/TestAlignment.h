@@ -36,7 +36,7 @@ void testTransformation(const T& transf)
   PointXYZD pC = transf*p001;
   bool success = true;
 
-  typedef std::tr1::array<PointXYZD, 2> PointXYTPair;
+  typedef std::tr1::array<PointXYZD, 2> PointXYZDPair;
 
   PointXYZDPair p0 = { {p100, pA} };
   PointXYZDPair p1 = { {p010, pB} };
