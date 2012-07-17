@@ -129,10 +129,20 @@ class Transform3D {
     return Translation3D(PointXYZD(m_mat(0,3), m_mat(1,3), m_mat(2,3)));
   }
 
+  std::ostream& print(std::ostream& out) const
+  {
+    return out << m_mat;
+  }
  private:
   Matrix<double,3,4> m_mat;
 
 };
+
+std::ostream& operator<<(std::ostream& out, const Transform3D& t)
+{
+  out << "Math::Transform3D\n";
+  return t.print(out) << "\n";
+}
 
 }
 

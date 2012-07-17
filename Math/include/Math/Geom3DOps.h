@@ -12,6 +12,7 @@
 
 #include <tr1/array>
 #include <iterator>
+#include <iostream>
 
 #include "Math/Rotation3D.h"
 #include "Math/Point3D.h"
