@@ -22,8 +22,6 @@ class Transform3D {
   explicit Transform3D(const Rotation3D& rot) 
   : 
   m_mat()
-  //m_rot(rot), 
-  //m_trans() 
   {
     for (unsigned int r = 0; r < 3; ++r)
     {
@@ -37,8 +35,6 @@ class Transform3D {
   explicit Transform3D(const Translation3D& trans) 
   :
   m_mat(IdentityMatrix()) 
-  //m_rot(), 
-  //m_trans(trans) 
   {
     for (unsigned int r = 0; r < 3; ++r)
     {
@@ -46,11 +42,10 @@ class Transform3D {
     }
   }
 
+  /// Construct from a rotation and a translation.
   Transform3D(const Rotation3D& rot, const Translation3D trans) 
   :
   m_mat() 
-  //m_rot(rot), 
-  //m_trans(trans)
   {
     for (unsigned int r = 0; r < 3; ++r)
     {
@@ -63,11 +58,13 @@ class Transform3D {
 
   }
 
+  ///
+  /// Construct the equivalent of a translation followed by a rotation.
+  /// Internally converted to a rotation followed by a translation.
+  ///
   Transform3D(const Translation3D& trans, const Rotation3D& rot) 
   :
   m_mat() 
-  //m_rot(rot), 
-  //m_trans(rot*trans) 
   {
     Translation3D trans_ = rot*trans; 
     for (unsigned int r = 0; r < 3; ++r)
@@ -80,19 +77,20 @@ class Transform3D {
     }
   }
 
+  /// Apply the transformation to a 3D point
   template <typename Point>
   Point operator*(const Point& point) const {
-    // apply a rotation and translation
-    //return m_trans*(m_rot*point);
     return (m_mat*point);
   }
 
   Transform3D& invert(bool& success)
   {
-    //m_rot.invert(success);
-    //m_trans.invert();
-    //m_trans = m_rot*m_trans;
-    success = false;
+    // we need Tr^-1 * R`-1
+    Transform3D tmp(translation().inverse(), rotation().inverse(success));
+    if (success)
+    {
+      m_mat = tmp.m_mat;
+    }
     return *this;
   }
 
@@ -101,10 +99,28 @@ class Transform3D {
     return Transform3D(*this).invert(success);
   }
 
+  /// return the underlying 3D rotation
+  Rotation3D rotation() const 
+  {
+    Rotation3D tmp;
+    for (unsigned int r = 0; r < 3; ++r)
+    {
+      for (unsigned int c = 0; c < 3; ++c)
+      {
+        tmp(r,c) = m_mat(r,c);
+      }
+    }
+    return tmp;
+  }
+
+  /// return the underlying 3D translation
+  Translation3D translation() const
+  {
+    return Translation3D(PointXYZD(m_mat(0,3), m_mat(1,3), m_mat(2,3)));
+  }
+
  private:
   Matrix<double,3,4> m_mat;
-  //Rotation3D m_rot;
-  //Translation3D m_trans;
 
 };
 
