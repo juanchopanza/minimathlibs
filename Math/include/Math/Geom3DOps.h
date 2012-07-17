@@ -91,16 +91,6 @@ T1 transformation(T1 lhs,
   return rhs*(lhs.inverse(success)); 
 }
 
-template <typename T, unsigned int N1, unsigned int N2>
-Matrix<T,N1,N2> transformationX(Matrix<T,N1,N2> lhs, 
-                               const Matrix<T,N2>& rhs,
-                               bool& success)
-{
-  return lhs*(rhs.inverse(success)); 
-}
-
-
-
 //
 // Utils to find 3D alignment from 3 reference points and 3 measured points
 //
@@ -110,42 +100,31 @@ Transform3D transformation(std::pair<PointXYZD, PointXYZD> p0,
                            std::pair<PointXYZD, PointXYZD> p2,
                            bool& success)
 {
-  // shift by position of one
-  PointXYZD transl = p0.second - p0.first;
-  // shift all measured points
-  p0.second -= transl;
-  p1.second -= transl;
-  p2.second -= transl;
-
-  Translation3D toOrigin(p0.first*-1);
-
-  // move all points to origin
-  p0.first = toOrigin*p0.first;
-  p1.first = toOrigin*p1.first;
-  p2.first = toOrigin*p2.first;
-
-  p0.second = toOrigin*p0.second;
-  p1.second = toOrigin*p1.second;
-  p2.second = toOrigin*p2.second;
-
-  Math::Matrix<double,3,3> ref; // 4x3 to allow for rotation + translation
-  Math::setColumn(ref, p0.first, 0);
-  Math::setColumn(ref, p1.first, 1);
-  Math::setColumn(ref, p2.first, 2);
-//  Math::setRow(ref, PointXYZD(1,1,1), 3);
-  std::cout << "\nReference matrix:\n" << ref << "\n";
+  
+  Math::Matrix<double,4,3> ref; // 4x3 to allow for rotation + translation
+  // to-do write something to assign elements to matrix
+  ref(0,0) = p0.first[0];
+  ref(1,0) = p0.first[1];
+  ref(2,0) = p0.first[2];
+  ref(3,0) = 1;
+  ref(0,1) = p1.first[0];
+  ref(1,1) = p1.first[1];
+  ref(2,1) = p1.first[2];
+  ref(3,1) = 1;
+  ref(0,2) = p2.first[0];
+  ref(1,2) = p2.first[1];
+  ref(2,2) = p2.first[2];
+  ref(3,2) = 1;
 
   Math::Matrix<double,3> meas;
   Math::setColumn(meas, p0.second, 0);
   Math::setColumn(meas, p1.second, 1);
   Math::setColumn(meas, p2.second, 2);
-  std::cout << "\nMeasured matrix:\n" << meas << "\n";
 
   // find rotation!
-  Matrix<double,3,3> rot = transformation(ref, meas, success);
-
-  std::cout << "Success? "<< success << "\nRotation matrix:\n" << rot << "\n";
-  return success ? Transform3D()
+  Matrix<double, 3, 4> rot = transformation(ref, meas, success);
+  
+  return success ? Transform3D(rot)
                  : Transform3D();
 
 }
