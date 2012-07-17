@@ -81,6 +81,8 @@ class TestMatrix : public CppUnit::TestFixture
   typedef Math::Matrix<double, 4,3> M4x3;
   typedef Math::Matrix<double, 5,4> M5x4;
 
+  typedef Math::Matrix<double, 3,4> M3x4;
+  typedef Math::Matrix<double, 4,5> M4x5;
 
   CPPUNIT_TEST_SUITE(TestMatrix);
   CPPUNIT_TEST(testDefaultConstruction);
@@ -105,6 +107,8 @@ class TestMatrix : public CppUnit::TestFixture
   CPPUNIT_TEST(testScalarMinusMatrix);
 
   CPPUNIT_TEST(testMatrixTimesScalar);
+
+  CPPUNIT_TEST(testTranspose);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -340,6 +344,21 @@ class TestMatrix : public CppUnit::TestFixture
     }
   }
 
+  void testTranspose()
+  {
+    M4x3 m;
+    for (unsigned int i = 0; i< m.size(); ++i) {
+      m[i] = i;
+    }
+    M3x4 mT = m.transpose();
+    for (unsigned int r = 0; r < m.rows(); ++r)
+    {
+      for (unsigned int c = 0; c < m.cols(); ++c)
+      {
+        CPPUNIT_ASSERT(m(r,c)==mT(c,r));
+      }
+    }
+  }
 };
 
 #endif

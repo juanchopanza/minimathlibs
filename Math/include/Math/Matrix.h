@@ -155,6 +155,19 @@ class Matrix {
     return *this;
   }
 
+  // return the transpose of this matrix
+  Matrix<T,N2,N1> transpose() const
+  {
+    Matrix<T,N2,N1> transp;
+    for (unsigned int r = 0; r < rows(); ++r)
+    {
+      for (unsigned int c = 0; c < cols(); ++c)
+      {
+        transp(c,r) = operator()(r,c);
+      }
+    }
+    return transp;
+  }
   // invert the matrix. Return false if inversion fails.
   Matrix& invert(bool& success)
   {
