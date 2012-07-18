@@ -50,6 +50,33 @@ Matrix<double,3,3> rotZ(double cosA, double sinA)
   return rot;
 }
 
+template <typename V>
+Matrix<double,3,3> axisAngle(V axis, double cosA, double sinA)
+{
+  double mag = std::sqrt(Math::mag2(axis));
+  axis /= mag;
+
+  Matrix<double,3,3> rot;
+
+  const double cosComp = 1. - cosA;
+  const double x = axis[0];
+  const double y = axis[1];
+  const double z = axis[2];
+
+  rot(0,0) = cosComp * x * x  +  cosA;
+  rot(0,1) = cosComp * x * y  -  sinA * z;
+  rot(0,2) = cosComp * x * z  +  sinA * y;
+  rot(1,0) = cosComp * y * x  +  sinA * z;
+  rot(1,1) = cosComp * y * y  +  cosA;
+  rot(1,2) = cosComp * y * z  -  sinA * x;
+  rot(2,0) = cosComp * z * x  -  sinA * y;
+  rot(2,1) = cosComp * z * y  +  sinA * x;
+  rot(2,2) = cosComp * z * z  +  cosA;
+
+  return rot;
+}
+
+
 } // namespace detail
 
 /// create a 3x3 matrix representing a rotation of alpha radians
@@ -81,20 +108,32 @@ Matrix<double,3,3> rotationZ(double alpha)
   return detail::rotZ(c,s); 
 }
 
-class AxisAngle3DBase {
+/// create a 3x3 matrix representing a rotation of alpha radians
+/// about an axis
+template <typename Axis>
+Matrix<double,3,3> axisAngle(const Axis& axis, double alpha)
+{
+  Matrix<double,3,3> rot = IdentityMatrix();
+  const double c = std::cos(alpha);
+  const double s = std::sin(alpha);
+  return detail::axisAngle(axis, c, s); 
+}
+
+
+class AxisAngleBase {
 
  public:
 
-  AxisAngle3DBase() : m_sin(0.), m_cos(1.) {}
-  explicit AxisAngle3DBase(double angle) : m_sin(std::sin(angle)), m_cos(std::cos(angle)) {}
+  AxisAngleBase() : m_sin(0.), m_cos(1.) {}
+  explicit AxisAngleBase(double angle) : m_sin(std::sin(angle)), m_cos(std::cos(angle)) {}
 
   double cosAlpha() const { return m_cos; };
   double sinAlpha() const { return m_sin; };
 
-  bool operator==(const AxisAngle3DBase& rhs) const {
+  bool operator==(const AxisAngleBase& rhs) const {
     return (m_sin == rhs.sinAlpha() && m_cos == rhs.cosAlpha());
   }
-  AxisAngle3DBase& invert(bool& success)
+  AxisAngleBase& invert(bool& success)
   {
     m_sin *= -1;
     success = true;
@@ -104,12 +143,54 @@ class AxisAngle3DBase {
   double m_sin, m_cos;
 };
 
-// rotation about the X axis
-class Rotation3DX  : public AxisAngle3DBase {
+/// Simple class representing a rotation about an
+/// axis. 
+class AxisAngle : public AxisAngleBase {
 
  public:
-  Rotation3DX() : AxisAngle3DBase() {}
-  explicit Rotation3DX(double angle) : AxisAngle3DBase(angle) {}
+
+  typedef PointXYZD axis_type;
+
+ public:
+
+  AxisAngle() : AxisAngleBase(), m_axis(0,0,1) {}
+
+  AxisAngle(const axis_type& axis) : AxisAngleBase(), m_axis(axis) {}
+
+  AxisAngle(double angle) : AxisAngleBase(angle), m_axis() {}
+
+  AxisAngle(const axis_type& axis, double angle) 
+  :
+  AxisAngleBase(angle), 
+  m_axis(axis)
+  {
+  }
+
+  const axis_type& axis() const { return m_axis; }
+
+  AxisAngle& invert(bool& success)
+  {
+    AxisAngleBase::invert(success);
+    return *this;
+  }
+  AxisAngle inverse(bool& success) const
+  {
+    return AxisAngle(*this).invert(success);
+  }
+
+
+ private:
+
+  axis_type m_axis;
+
+};
+
+// rotation about the X axis
+class Rotation3DX  : public AxisAngleBase {
+
+ public:
+  Rotation3DX() : AxisAngleBase() {}
+  explicit Rotation3DX(double angle) : AxisAngleBase(angle) {}
   template <typename Point>
   Point operator*(const Point& point) const {
     // apply a rotation
@@ -120,7 +201,7 @@ class Rotation3DX  : public AxisAngle3DBase {
 
   Rotation3DX& invert(bool& success)
   {
-    AxisAngle3DBase::invert(success);
+    AxisAngleBase::invert(success);
     return *this;
   }
   Rotation3DX inverse(bool& success) const
@@ -131,11 +212,11 @@ class Rotation3DX  : public AxisAngle3DBase {
 };
 
 // rotation about the Y axis
-class Rotation3DY : public AxisAngle3DBase {
+class Rotation3DY : public AxisAngleBase {
 
  public:
-  Rotation3DY() : AxisAngle3DBase() {}
-  explicit Rotation3DY(double angle) : AxisAngle3DBase(angle) {}
+  Rotation3DY() : AxisAngleBase() {}
+  explicit Rotation3DY(double angle) : AxisAngleBase(angle) {}
 
   template <typename Point>
   Point operator*(const Point& point) const {
@@ -147,7 +228,7 @@ class Rotation3DY : public AxisAngle3DBase {
 
   Rotation3DY& invert(bool& success)
   {
-    AxisAngle3DBase::invert(success);
+    AxisAngleBase::invert(success);
     return *this;
   }
   Rotation3DY inverse(bool& success) const
@@ -158,11 +239,11 @@ class Rotation3DY : public AxisAngle3DBase {
 };
 
 // rotation about the Z axis
-class Rotation3DZ : public AxisAngle3DBase {
+class Rotation3DZ : public AxisAngleBase {
 
  public:
-  Rotation3DZ() : AxisAngle3DBase() {}
-  explicit Rotation3DZ(double angle) : AxisAngle3DBase(angle) {}
+  Rotation3DZ() : AxisAngleBase() {}
+  explicit Rotation3DZ(double angle) : AxisAngleBase(angle) {}
 
   template <typename Point>
   Point operator*(const Point& point) const {
@@ -174,7 +255,7 @@ class Rotation3DZ : public AxisAngle3DBase {
 
   Rotation3DZ& invert(bool& success)
   {
-    AxisAngle3DBase::invert(success);
+    AxisAngleBase::invert(success);
     return *this;
   }
   Rotation3DZ inverse(bool& success) const
@@ -280,6 +361,11 @@ class Rotation3D {
   Rotation3D(const Rotation3DZ& rot)
   :
   m_rot(detail::rotZ(rot.cosAlpha(), rot.sinAlpha())) {}
+
+  // Construct from a rotation about any axis
+  Rotation3D(const AxisAngle& rot)
+  :
+  m_rot(detail::axisAngle(rot.axis(), rot.cosAlpha(), rot.sinAlpha())) {}
 
   // Construct from a rotation about the Z, Y' and X" axes
   Rotation3D(const Rotation3DZYX& rot)
