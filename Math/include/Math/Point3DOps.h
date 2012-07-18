@@ -51,6 +51,16 @@ typename P1::value_type dot(const P1& p1, const P2& p2) {
   return p1.x()*p2.x() + p1.y()*p2.y() + p1.z()*p2.z();
 }
 
+// cross product between two points
+template <typename P1, typename P2>
+P1 cross(const P1& p1, const P2& p2) {
+  typedef typename P1::value_type value_type;
+  value_type det0 = p1[1]*p2[2] - p1[2]*p2[1];
+  value_type det1 = p1[0]*p2[2] - p1[2]*p2[0];
+  value_type det2 = p1[0]*p2[1] - p1[1]*p2[0];
+  return P1(det0, -det1, det2); 
+}
+
 // distance squared between two points
 template <typename P1, typename P2>
 typename P1::value_type dist2(const P1& p1, const P2& p2)
