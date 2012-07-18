@@ -16,6 +16,71 @@
 
 namespace Math {
 
+namespace detail
+{
+
+Matrix<double,3,3> rotX(double cosA, double sinA)
+{
+  Matrix<double,3,3> rot = IdentityMatrix();
+  rot(1,1) =  cosA;
+  rot(2,2) =  cosA;
+  rot(1,2) = -sinA;
+  rot(2,1) =  sinA;
+  return rot; 
+
+}
+
+Matrix<double,3,3> rotY(double cosA, double sinA)
+{
+  Matrix<double,3,3> rot = IdentityMatrix();
+  rot(0,0) =  cosA;
+  rot(2,2) =  cosA;
+  rot(2,0) = -sinA;
+  rot(0,2) =  sinA;
+  return rot; 
+}
+
+Matrix<double,3,3> rotZ(double cosA, double sinA)
+{
+  Matrix<double,3,3> rot = IdentityMatrix();
+  rot(0,0) =  cosA;
+  rot(1,1) =  cosA;
+  rot(0,1) = -sinA;
+  rot(1,0) =  sinA;
+  return rot;
+}
+
+} // namespace detail
+
+/// create a 3x3 matrix representing a rotation of alpha radians
+/// about the X axis
+Matrix<double,3,3> rotationX(double alpha)
+{
+  const double c = std::cos(alpha);
+  const double s = std::sin(alpha);
+  return detail::rotX(c, s); 
+}
+
+/// create a 3x3 matrix representing a rotation of alpha radians
+/// about the Y axis
+Matrix<double,3,3> rotationY(double alpha)
+{
+  Matrix<double,3,3> rot = IdentityMatrix();
+  const double c = std::cos(alpha);
+  const double s = std::sin(alpha);
+  return detail::rotY(c, s); 
+}
+
+/// create a 3x3 matrix representing a rotation of alpha radians
+/// about the Z axis
+Matrix<double,3,3> rotationZ(double alpha)
+{
+  Matrix<double,3,3> rot = IdentityMatrix();
+  const double c = std::cos(alpha);
+  const double s = std::sin(alpha);
+  return detail::rotZ(c,s); 
+}
+
 class AxisAngle3DBase {
 
  public:
@@ -119,35 +184,77 @@ class Rotation3DZ : public AxisAngle3DBase {
 
 };
 
-// euler rotation about Y, Y', X".
-// should we replace implementation by a matrix?
+// euler rotation about Z, Y', X".
 class Rotation3DZYX {
 
  public:
 
-  Rotation3DZYX(const Rotation3DX& rot) : m_rotX(rot) {}
-  Rotation3DZYX(const Rotation3DY& rot) : m_rotY(rot) {}
-  Rotation3DZYX(const Rotation3DZ& rot) : m_rotZ(rot) {}
-  Rotation3DZYX(double phi, double theta, double psi) : m_rotZ(phi), m_rotY(theta), m_rotX(psi) {}
-  Rotation3DZYX() {}
+  Rotation3DZYX(const Rotation3DX& rot) 
+  : 
+  m_rot(detail::rotX(rot.cosAlpha(), rot.sinAlpha()))
+  {
+  }
+
+  Rotation3DZYX(const Rotation3DY& rot)  
+  : 
+  m_rot(detail::rotY(rot.cosAlpha(), rot.sinAlpha()))
+  {
+  }
+
+  Rotation3DZYX(const Rotation3DZ& rot)
+  : 
+  m_rot(detail::rotZ(rot.cosAlpha(), rot.sinAlpha()))
+  {
+  }
+
+  Rotation3DZYX(double phi, double theta, double psi) 
+  : 
+  m_rot(rotationX(psi)*rotationY(theta)*rotationZ(phi))
+  {
+  }
+
+  Rotation3DZYX() : m_rot(IdentityMatrix()) {}
+
+  // construct from a 3x3 matrix
+  explicit Rotation3DZYX(const Matrix<double, 3>& mat) : m_rot(mat) {}
+
+
   template <typename Point>
   Point operator*(const Point& point) const {
     // apply a rotation about X, Y', Z"
-    return m_rotX*(m_rotY*(m_rotZ*point));
+    return m_rot*point;
   }
 
   // equality comparison
   bool operator==(const Rotation3DZYX& rhs) const {
-    return (m_rotZ == rhs.m_rotZ) && 
-           (m_rotY == rhs.m_rotY) && 
-           (m_rotX == rhs.m_rotX);
+    return (m_rot == rhs.m_rot);
+  }
+
+  // Invert this Rotation3DZYX
+  Rotation3DZYX& invert(bool& success)
+  {
+    m_rot.invert(success);
+    return *this;
+  }
+  // Return the inverse Rotation3DZYX
+  Rotation3DZYX inverse(bool& success) const {
+    return Rotation3DZYX(*this).invert(success);
+  }
+
+  // element access
+  const double& operator()(unsigned int i, unsigned int j) const
+  {
+    return m_rot(i,j);
+  }
+  // element access
+  double& operator()(unsigned int i, unsigned int j)
+  {
+    return m_rot(i,j);
   }
 
 
  private:
-  Rotation3DZ m_rotZ;
-  Rotation3DY m_rotY;
-  Rotation3DX m_rotX;
+  Matrix<double, 3, 3> m_rot;
 };
 
 class Rotation3D {

@@ -62,27 +62,27 @@ bool testInvert()
   return true;
 }
 
-template <typename R>
+template <typename R2>
 bool testInverseRotation3D()
 {
   for (unsigned int i = 1; i<9; ++i) 
   {
-    Math::Rotation3D rot(R(PI/i));
+    Rotation3D rot(R2(PI/i));
     bool test = true;
-    Math::Rotation3D rotInv(rot.inverse(test));
+    Rotation3D rotInv(rot.inverse(test));
     test = test &&isInverse(rot, rotInv);
     if (!test) return false;
   }
   return true;
 }
 
-template <typename R>
+template <typename R2>
 bool testInvertRotation3D()
 {
   for (unsigned int i = 1; i<9; ++i) 
   {
-    Math::Rotation3D rot(R(PI/i));
-    Math::Rotation3D rotInv = rot;
+    Rotation3D rot(R2(PI/i));
+    Rotation3D rotInv = rot;
     bool test = true;
     rotInv.invert(test);
     test = test && isInverse(rot, rotInv);
@@ -90,6 +90,36 @@ bool testInvertRotation3D()
   }
   return true;
 }
+
+template <typename R2>
+bool testInverseRotation3DZYX()
+{
+  for (unsigned int i = 1; i<9; ++i) 
+  {
+    Rotation3DZYX rot(R2(PI/i));
+    bool test = true;
+    Rotation3DZYX rotInv(rot.inverse(test));
+    test = test &&isInverse(rot, rotInv);
+    if (!test) return false;
+  }
+  return true;
+}
+
+template <typename R2>
+bool testInvertRotation3DZYX()
+{
+  for (unsigned int i = 1; i<9; ++i) 
+  {
+    Rotation3DZYX rot(R2(PI/i));
+    Rotation3DZYX rotInv = rot;
+    bool test = true;
+    rotInv.invert(test);
+    test = test && isInverse(rot, rotInv);
+    if (!test) return false;
+  }
+  return true;
+}
+
 
 template <typename R>
 bool testInverseTransform3D()
