@@ -267,36 +267,26 @@ class Rotation3D {
   Rotation3D() : m_rot(IdentityMatrix()) {}
 
   // Construct from a rotation about the X axis
-  Rotation3D(const Rotation3DX& rot) : m_rot(IdentityMatrix()) 
-  {
-    const double cosA = rot.cosAlpha();
-    const double sinA = rot.sinAlpha();
-    m_rot(1,1) =  cosA;
-    m_rot(2,2) =  cosA;
-    m_rot(1,2) = -sinA;
-    m_rot(2,1) =  sinA;
-  }
+  Rotation3D(const Rotation3DX& rot)
+  :
+  m_rot(detail::rotX(rot.cosAlpha(), rot.sinAlpha())) {}
 
   // Construct from a rotation about the Y axis
-  Rotation3D(const Rotation3DY& rot) : m_rot(IdentityMatrix())
-  {
-    const double cosA = rot.cosAlpha();
-    const double sinA = rot.sinAlpha();
-    m_rot(0,0) =  cosA;
-    m_rot(2,2) =  cosA;
-    m_rot(2,0) = -sinA;
-    m_rot(0,2) =  sinA;
-  }
+  Rotation3D(const Rotation3DY& rot)
+  :
+  m_rot(detail::rotY(rot.cosAlpha(), rot.sinAlpha())) {}
 
   // Construct from a rotation about the Z axis
-  Rotation3D(const Rotation3DZ& rot) : m_rot(IdentityMatrix())
+  Rotation3D(const Rotation3DZ& rot)
+  :
+  m_rot(detail::rotZ(rot.cosAlpha(), rot.sinAlpha())) {}
+
+  // Construct from a rotation about the Z, Y' and X" axes
+  Rotation3D(const Rotation3DZYX& rot)
   {
-    const double cosA = rot.cosAlpha();
-    const double sinA = rot.sinAlpha();
-    m_rot(0,0) =  cosA;
-    m_rot(1,1) =  cosA;
-    m_rot(0,1) = -sinA;
-    m_rot(1,0) =  sinA;
+    for (unsigned int r = 0; r < m_rot.rows(); ++r)
+      for (unsigned int c = 0; c < m_rot.cols(); ++c)
+        m_rot(r,c) = rot(r,c);
   }
 
   // construct from a 3x3 matrix
@@ -322,6 +312,25 @@ class Rotation3D {
   Rotation3D operator*(Rotation3D rhs) {
     rhs.m_rot = m_rot*rhs.m_rot;
     return rhs;
+  }
+
+  // multiplication by another Rotation3DX
+  Rotation3D operator*(const Rotation3DX& rhs) {
+    return (*this)*Rotation3D(rhs);
+  }
+  // multiplication by another Rotation3DY
+  Rotation3D operator*(const Rotation3DY& rhs) {
+    return (*this)*Rotation3D(rhs);
+  }
+
+ // multiplication by another Rotation3DZ
+  Rotation3D operator*(const Rotation3DZ& rhs) {
+    return (*this)*Rotation3D(rhs);
+  }
+
+ // multiplication by another Rotation3DZ
+  Rotation3D operator*(const Rotation3DZYX& rhs) {
+    return (*this)*Rotation3D(rhs);
   }
 
   // equality comparison
@@ -365,7 +374,23 @@ class Rotation3D {
  private:
   Matrix<double, 3, 3> m_rot;
 };
+/*
+Rotation3D operator*(const Rotation3DX& lhs, const Rotation3DX&rhs)
+{
+  return Rotation3D(lhs)*Rotation3D(rhs);
+}
+Rotation3D operator*(const Rotation3DX& lhs, const Rotation3DY&rhs)
+{
+  return Rotation3D(lhs)*Rotation3D(rhs);
+}
 
+*/
+/*
+Rotation3D operator*(const Rotation3DY& lhs, const Rotation3DZ&rhs)
+{
+  return Rotation3D(lhs)*Rotation3D(rhs);
+}
+*/
 
 }
 
