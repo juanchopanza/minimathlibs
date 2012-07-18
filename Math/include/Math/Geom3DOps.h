@@ -10,7 +10,6 @@
 #ifndef MATH_GEOM3DOPS_H__
 #define MATH_GEOM3DOPS_H__
 
-#include <tr1/array>
 #include <iterator>
 #include <iostream>
 
@@ -28,6 +27,45 @@
 //
 
 namespace Math {
+
+// implementation specific helpers
+namespace detail
+{
+template <typename P>
+Transform3D transformation1(const P& pointPair)
+{
+  return Transform3D(Translation3D(pointPair[1]-pointPair[0]));
+}
+
+template <typename IT>
+Transform3D transformation3(IT begin, IT end, bool& success)
+{
+
+  Math::Matrix<double,4,3> ref; // 4x3 to allow for rotation + translation
+  Math::Matrix<double,3> meas;
+
+  unsigned int index = 0;
+
+  // to-do write something to assign elements to matrix
+  for (IT iPair = begin; iPair !=end; ++iPair)
+  {
+    for (unsigned int i = 0; i < 3; ++i)
+    {
+      ref(i, index) = (*iPair)[0][i];
+      meas(i, index) = (*iPair)[1][i];
+    }
+    ++index;
+  }
+  Math::setRow(ref, PointXYZD(1,1,1), 3);
+  
+  // find rotation!
+  Matrix<double, 3, 4> rot = transformation(ref, meas, success);
+  
+  return success ? Transform3D(rot) : Transform3D();
+
+}
+
+} // namespace detail
 
 // multiplication between a 3x3 matrix and a 3D point
 template <typename T, template <typename> class C>
@@ -64,19 +102,6 @@ Point3D<T, C> operator*(const Matrix<T,3,4>& rot,
 
 } 
 
-
-///
-/// Find the transformation matrix T such that
-/// T * lhs = rhs
-///
-template <typename T1, typename T2>
-T1 transformation(T1 lhs, 
-                  const T2& rhs,
-                  bool& success)
-{
-  return rhs*(lhs.inverse(success)); 
-}
-
 ///
 /// Find the 3D transformation that maps a set of points P to 
 /// a set of points P'
@@ -97,36 +122,11 @@ T1 transformation(T1 lhs,
 template <typename IT>
 Transform3D transformation(IT begin, IT end, bool& success)
 {
- 
   unsigned int length = std::distance(begin, end);
-  if (length != 3) {
-    std::cerr << "Math::transformation only implemented for 3 poitn system\n";
-    return Transform3D();
-  }
-
-  Math::Matrix<double,4,3> ref; // 4x3 to allow for rotation + translation
-  Math::Matrix<double,3> meas;
-
-  unsigned int index = 0;
-
-  // to-do write something to assign elements to matrix
-  for (IT iPair = begin; iPair !=end; ++iPair)
-  {
-    for (unsigned int i = 0; i < 3; ++i)
-    {
-      ref(i, index) = (*iPair)[0][i];
-      meas(i, index) = (*iPair)[1][i];
-    }
-    ++index;
-  }
-  Math::setRow(ref, PointXYZD(1,1,1), 3);
-  
-  // find rotation!
-  Matrix<double, 3, 4> rot = transformation(ref, meas, success);
-  
-  return success ? Transform3D(rot)
-                 : Transform3D();
-
+  if (length == 3) return detail::transformation3(begin, end, success);
+  if (length == 1) return detail::transformation1(*begin);
+  std::cerr << "Math::transformation only implemented for 1 and 3 point systems. Received " << length <<" point pairs\n";
+  return Transform3D();
 }
 
 }
