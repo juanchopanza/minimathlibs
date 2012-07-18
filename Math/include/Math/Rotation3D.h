@@ -211,6 +211,12 @@ class Rotation3D {
     return *this;
   }
 
+  // multiplication by another Rotation3D
+  Rotation3D operator*(Rotation3D rhs) {
+    rhs.m_rot = m_rot*rhs.m_rot;
+    return rhs;
+  }
+
   // equality comparison
   bool operator==(const Rotation3D& rhs) const {
     return m_rot == rhs.m_rot;
