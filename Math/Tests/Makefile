@@ -7,10 +7,10 @@
 
 include ../rules.mk
 LDFLAGS += -lcppunit
+HEADERS = $(wildcard $(INCLUDEDIR)/Math/*.h)
 TESTDIR = .
 BUILDDIR = $(TESTDIR)/Build
 TESTBIN = $(TESTDIR)/Build
-HEADERS = $(wildcard $(INCLUDEDIR)/*.h)
 TESTSRC = $(wildcard $(TESTDIR)/*.cpp)
 TESTOBJSRC = $(wildcard $(TESTDIR)/objs/*.cpp)
 TESTFIXTURES = $(wildcard $(TESTDIR)/*.h)
@@ -18,6 +18,7 @@ TESTOBJS = $(patsubst $(TESTDIR)/objs/%.cpp, $(TESTBIN)/%.o, $(TESTOBJSRC))
 TESTS = $(patsubst $(TESTDIR)/%.cpp, $(TESTBIN)/%, $(TESTSRC))
 
 list :
+	@echo $(HEADERS)
 	@echo $(TESTSRC)
 	@echo $(TESTS)
 	@echo $(TESTOBJSRC)
