@@ -10,9 +10,11 @@ LDFLAGS += -lcppunit
 TESTDIR = .
 BUILDDIR = $(TESTDIR)/Build
 TESTBIN = $(TESTDIR)/Build
+HEADERS = $(wildcard $(INCLUDEDIR)/*.h)
 TESTSRC = $(wildcard $(TESTDIR)/*.cpp)
+TESTOBJSRC = $(wildcard $(TESTDIR)/objs/*.cpp)
 TESTFIXTURES = $(wildcard $(TESTDIR)/*.h)
-TESTOBJS = $(patsubst $(TESTDIR)/%.cpp, $(TESTBIN)/%.o, $(TESTSRC))
+TESTOBJS = $(patsubst $(TESTDIR)/objs/%.cpp, $(TESTBIN)/%.o, $(TESTOBJSRC))
 TESTS = $(patsubst $(TESTDIR)/%.cpp, $(TESTBIN)/%, $(TESTSRC))
 
 # general rule for tests
@@ -21,11 +23,20 @@ TESTS = $(patsubst $(TESTDIR)/%.cpp, $(TESTBIN)/%, $(TESTSRC))
 
 list :
 	@echo $(TESTSRC)
-	@echo $(TESTOBJS)
 	@echo $(TESTS)
+	@echo $(TESTOBJSRC)
+	@echo $(TESTOBJS)
 
 tests : tests.cpp $(TESTSFIXTURES) $(TESTBIN)/.f
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) tests.cpp $(LDFLAGS) -o $(TESTBIN)/$@
+
+obj_main : obj_main.cpp objs
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(TESTOBJS) $< -o $(TESTBIN)/$@
+
+objs : $(TESTOBJS) $(TESTBIN)/.f
+
+$(TESTBIN)/%.o : $(TESTDIR)/objs/%.cpp $(HEADERS)
+	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $< -o $@
 
 $(TESTBIN)/.f :
 	@mkdir -p $(dir $@)

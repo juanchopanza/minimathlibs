@@ -1,0 +1,1 @@
+This directory contains dummy compilaiton units to make sure all the minimathlibs headers build correctly when used accross translation units, and that there are no hidden dependencies.
