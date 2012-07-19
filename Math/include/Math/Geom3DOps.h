@@ -37,6 +37,29 @@ Transform3D transformation1(const P& pointPair)
   return Transform3D(Translation3D(pointPair[1]-pointPair[0]));
 }
 
+template <typename P>
+Transform3D transformation2(const P& pair0, const P& pair1, bool& success)
+{
+  // direction vectors
+  PointXYZD v0 = pair1[0] - pair0[0]; // reference points
+  PointXYZD v1 = pair1[1] - pair0[1]; // measured points
+
+  Math::PointXYZD axis = Math::cross(v0, v1);
+  const double mag2Axis = Math::mag2(axis);
+  const double normalFactor2 = Math::mag2(v0)*Math::mag2(v1);
+  if (normalFactor2 <=0.) {
+    success = false;
+    return Transform3D();
+  }
+  const double sinAngle = std::sqrt(mag2Axis/normalFactor2);
+  const double angle = std::asin(sinAngle);
+  Math::Translation3D originInv(pair0[0]);
+  Math::Translation3D origin(originInv.inverse());
+  Math::Transform3D trans(Math::AxisAngle(axis, angle), 
+                          Math::Translation3D(pair0[1]-pair0[0]));
+  return Transform3D(originInv)*(trans*Transform3D(origin));
+}
+
 template <typename IT>
 Transform3D transformation3(IT begin, IT end, bool& success)
 {
@@ -124,8 +147,9 @@ Transform3D transformation(IT begin, IT end, bool& success)
 {
   unsigned int length = std::distance(begin, end);
   if (length == 3) return detail::transformation3(begin, end, success);
+  if (length == 2) return detail::transformation2(*begin, *(begin++), success);
   if (length == 1) return detail::transformation1(*begin);
-  std::cerr << "Math::transformation only implemented for 1 and 3 point systems. Received " << length <<" point pairs\n";
+  std::cerr << "Math::transformation only implemented for 1, 2 and 3 point systems. Received " << length <<" point pairs\n";
   return Transform3D();
 }
 
