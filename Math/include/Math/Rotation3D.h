@@ -19,7 +19,7 @@ namespace Math {
 namespace detail
 {
 
-Matrix<double,3,3> rotX(double cosA, double sinA)
+inline Matrix<double,3,3> rotX(double cosA, double sinA)
 {
   Matrix<double,3,3> rot = IdentityMatrix();
   rot(1,1) =  cosA;
@@ -30,7 +30,7 @@ Matrix<double,3,3> rotX(double cosA, double sinA)
 
 }
 
-Matrix<double,3,3> rotY(double cosA, double sinA)
+inline Matrix<double,3,3> rotY(double cosA, double sinA)
 {
   Matrix<double,3,3> rot = IdentityMatrix();
   rot(0,0) =  cosA;
@@ -40,7 +40,7 @@ Matrix<double,3,3> rotY(double cosA, double sinA)
   return rot; 
 }
 
-Matrix<double,3,3> rotZ(double cosA, double sinA)
+inline Matrix<double,3,3> rotZ(double cosA, double sinA)
 {
   Matrix<double,3,3> rot = IdentityMatrix();
   rot(0,0) =  cosA;
@@ -81,7 +81,7 @@ Matrix<double,3,3> axisAngle(V axis, double cosA, double sinA)
 
 /// create a 3x3 matrix representing a rotation of alpha radians
 /// about the X axis
-Matrix<double,3,3> rotationX(double alpha)
+inline Matrix<double,3,3> rotationX(double alpha)
 {
   const double c = std::cos(alpha);
   const double s = std::sin(alpha);
@@ -90,7 +90,7 @@ Matrix<double,3,3> rotationX(double alpha)
 
 /// create a 3x3 matrix representing a rotation of alpha radians
 /// about the Y axis
-Matrix<double,3,3> rotationY(double alpha)
+inline Matrix<double,3,3> rotationY(double alpha)
 {
   Matrix<double,3,3> rot = IdentityMatrix();
   const double c = std::cos(alpha);
@@ -100,7 +100,7 @@ Matrix<double,3,3> rotationY(double alpha)
 
 /// create a 3x3 matrix representing a rotation of alpha radians
 /// about the Z axis
-Matrix<double,3,3> rotationZ(double alpha)
+inline Matrix<double,3,3> rotationZ(double alpha)
 {
   Matrix<double,3,3> rot = IdentityMatrix();
   const double c = std::cos(alpha);
@@ -460,24 +460,7 @@ class Rotation3D {
  private:
   Matrix<double, 3, 3> m_rot;
 };
-/*
-Rotation3D operator*(const Rotation3DX& lhs, const Rotation3DX&rhs)
-{
-  return Rotation3D(lhs)*Rotation3D(rhs);
-}
-Rotation3D operator*(const Rotation3DX& lhs, const Rotation3DY&rhs)
-{
-  return Rotation3D(lhs)*Rotation3D(rhs);
-}
 
-*/
-/*
-Rotation3D operator*(const Rotation3DY& lhs, const Rotation3DZ&rhs)
-{
-  return Rotation3D(lhs)*Rotation3D(rhs);
-}
-*/
-
-}
+} // namespace Math
 
 #endif // MATH_ROTATION3D_H__

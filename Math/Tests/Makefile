@@ -33,9 +33,9 @@ tests : tests.cpp $(TESTSFIXTURES) $(TESTBIN)/.f
 obj_main : obj_main.cpp objs
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(TESTOBJS) $< -o $(TESTBIN)/$@
 
-objs : $(TESTOBJS) $(TESTBIN)/.f
+objs : $(TESTOBJS)
 
-$(TESTBIN)/%.o : $(TESTDIR)/objs/%.cpp $(HEADERS)
+$(TESTBIN)/%.o : $(TESTDIR)/objs/%.cpp $(HEADERS) $(TESTBIN)/.f
 	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $< -o $@
 
 $(TESTBIN)/.f :

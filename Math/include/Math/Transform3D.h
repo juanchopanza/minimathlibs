@@ -161,7 +161,7 @@ class Transform3D {
 
 };
 
-std::ostream& operator<<(std::ostream& out, const Transform3D& t)
+inline std::ostream& operator<<(std::ostream& out, const Transform3D& t)
 {
   out << "Math::Transform3D\n";
   return t.print(out) << "\n";
