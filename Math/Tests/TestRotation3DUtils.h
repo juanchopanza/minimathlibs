@@ -33,6 +33,12 @@ bool isInverse(const R& rot, const R& rotInv)
   return test;
 }
 
+bool isInverse(const AxisAngle& rot, const AxisAngle& rotInv)
+{
+  return isInverse(Rotation3D(rot), Rotation3D(rotInv));
+}
+
+
 template <typename R>
 bool testInverse()
 {
@@ -90,6 +96,34 @@ bool testInvertRotation3D()
   }
   return true;
 }
+
+bool testInverseAxisAngle(const Math::PointXYZD& axis)
+{
+  for (unsigned int i = 1; i<9; ++i) 
+  {
+    AxisAngle rot(axis, PI/i);
+    bool test = true;
+    AxisAngle rotInv(rot.inverse(test));
+    test = test &&isInverse(rot, rotInv);
+    if (!test) return false;
+  }
+  return true;
+}
+
+bool testInvertAxisAngle(const Math::PointXYZD& axis)
+{
+  for (unsigned int i = 1; i<9; ++i) 
+  {
+    AxisAngle rot(axis, PI/i);
+    AxisAngle rotInv = rot;
+    bool test = true;
+    rotInv.invert(test);
+    test = test && isInverse(rot, rotInv);
+    if (!test) return false;
+  }
+  return true;
+}
+
 
 template <typename R2>
 bool testInverseRotation3DZYX()

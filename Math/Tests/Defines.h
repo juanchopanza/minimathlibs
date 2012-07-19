@@ -8,6 +8,7 @@
   using Math::Rotation3DX;
   using Math::Rotation3DY;
   using Math::Rotation3DZ;
+  using Math::AxisAngle;
   using Math::PointXYZD;
 
   // reference points 

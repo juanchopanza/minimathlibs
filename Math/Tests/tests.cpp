@@ -13,6 +13,7 @@
 #include "TestRotation3DZ.h"
 #include "TestRotation3DZYX.h"
 #include "TestRotation3D.h"
+#include "TestAxisAngle.h"
 #include "TestTranslation3D.h"
 #include "TestTransform3D.h"
 #include "TestMatrix.h"
@@ -38,6 +39,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION( TestRotation3DY );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestRotation3DZ );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestRotation3DZYX );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestRotation3D );
+CPPUNIT_TEST_SUITE_REGISTRATION( TestAxisAngle );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestTransform3D );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestTranslation3D );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestMatrix );
