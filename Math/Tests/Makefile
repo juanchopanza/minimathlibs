@@ -17,23 +17,27 @@ TESTFIXTURES = $(wildcard $(TESTDIR)/*.h)
 TESTOBJS = $(patsubst $(TESTDIR)/objs/%.cpp, $(TESTBIN)/%.o, $(TESTOBJSRC))
 TESTS = $(patsubst $(TESTDIR)/%.cpp, $(TESTBIN)/%, $(TESTSRC))
 
-# general rule for tests
-#$(TESTBIN)/% : $(TESTDIR)/%.cpp $(INCLUDEDIR)/Math/%.h $(TESTBIN)/.f
-#	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $< $(LDFLAGS) -o $@
-
 list :
 	@echo $(TESTSRC)
 	@echo $(TESTS)
 	@echo $(TESTOBJSRC)
 	@echo $(TESTOBJS)
 
-tests : tests.cpp $(TESTSFIXTURES) $(TESTBIN)/.f
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) tests.cpp $(LDFLAGS) -o $(TESTBIN)/$@
+.PHONY: tests
+.PHONY: objs
+.PHONY: obj_main
 
-obj_main : obj_main.cpp objs
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(TESTOBJS) $< -o $(TESTBIN)/$@
+tests : $(TESTBIN)/tests
+
+obj_main : $(TESTBIN)/obj_main
 
 objs : $(TESTOBJS)
+
+$(TESTBIN)/tests : tests.cpp $(TESTSFIXTURES) $(HEADERS) $(TESTBIN)/.f
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) tests.cpp $(LDFLAGS) -o $@
+
+$(TESTBIN)/obj_main : obj_main.cpp objs
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(TESTOBJS) $< -o $@
 
 $(TESTBIN)/%.o : $(TESTDIR)/objs/%.cpp $(HEADERS) $(TESTBIN)/.f
 	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $< -o $@

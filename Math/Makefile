@@ -8,7 +8,7 @@
 include rules.mk
 TESTDIR = Tests
 
-.PHONY : all
+.PHONY: all
 
 all :tests
 
@@ -17,9 +17,9 @@ list_tests :
 
 tests :
 	make -C $(TESTDIR) tests 
+
 test_objs :
 	make -C $(TESTDIR) obj_main
-
 
 objs :
 	make -C $(TESTDIR) objs
