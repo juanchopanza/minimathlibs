@@ -18,6 +18,32 @@
 namespace TestUtils
 {
 
+// generate a random Rotation3D
+inline Math::Rotation3D randomRotation()
+{
+  const double divX = 1 + (std::rand()%8);
+  const double divY = 1 + (std::rand()%8);
+  const double divZ = 1 + (std::rand()%8);
+  return Math::Rotation3DZYX(PI/divZ, PI/divY, PI/divX);
+}
+
+// generate a random point
+inline Math::PointXYZD randomPoint(unsigned int range, 
+                                   double centre = 0.)
+{
+  double x = centre + std::rand()%range;
+  double y = centre + std::rand()%range;
+  double z = centre + std::rand()%range;
+  return Math::PointXYZD(x,y,z);
+}
+
+// generate a random translation
+inline Math::Translation3D randomTranslation(unsigned int range, 
+                                             double centre = 0)
+{
+  return Math::Translation3D(randomPoint(range, centre));
+}
+
 template <typename R>
 bool isInverse(const R& rot, const R& rotInv)
 {

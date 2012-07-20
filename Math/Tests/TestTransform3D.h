@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <vector>
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
@@ -18,15 +19,19 @@
 #include "Math/Transform3D.h"
 #include "Math/Point3D.h"
 
-namespace {
-  using Math::Rotation3D;
-  using Math::Rotation3DX;
-  using Math::Rotation3DY;
-  using Math::Rotation3DZ;
+#include "TestRotation3DUtils.h"
 
-  using Math::Translation3D;
-  using Math::Transform3D;
-  using Math::PointXYZD;
+namespace {
+
+using Math::Rotation3D;
+using Math::Rotation3DX;
+using Math::Rotation3DY;
+using Math::Rotation3DZ;
+using Math::AxisAngle;
+using Math::Translation3D;
+using Math::Transform3D;
+using Math::PointXYZD;
+
 }
 
 class TestTransform3D : public CppUnit::TestFixture {
@@ -57,6 +62,7 @@ class TestTransform3D : public CppUnit::TestFixture {
   CPPUNIT_TEST(testTranslationAndRotationY);
   CPPUNIT_TEST(testTranslationAndRotationZ);
 
+  CPPUNIT_TEST(testMultiplication);
   CPPUNIT_TEST(testInverse);
   CPPUNIT_TEST(testInvert);
 
@@ -343,16 +349,6 @@ class TestTransform3D : public CppUnit::TestFixture {
       PointXYZD pTest = transf*p100;
       
       PointXYZD res100 = rot*translation + rot*p100;
-/*
-      bool test = Math::equal(pTest, res100, 100);
-      if (!test) {
-        std::cout << "\nFail i = " << i 
-                  << "\n pTest = " << pTest
-                  << "\n rot*p100 = " << (rot*p100) 
-                  << "\n rot*trans = " << (rot*translation); 
-        std::cout << "\n rot*trans + rot*p100 = " << (rot*translation + rot*p100 ) << "\n"; 
-      }
-*/
       CPPUNIT_ASSERT(Math::equal(pTest, res100));
 
       pTest = transf*p010;
@@ -410,6 +406,45 @@ class TestTransform3D : public CppUnit::TestFixture {
       pTest = transf*p001;
       PointXYZD res001 = rot*translation + rot*p001;
       CPPUNIT_ASSERT(Math::equal(pTest, res001));
+    }
+  }
+
+  // test that a multiplication of Transform3Ds is the same as applying
+  // the individual transformations to a point one by one.
+  // Since we are chaining many operations, we use a "loose" tolerance of
+  // ~1000 epsilons.
+  void testMultiplication()
+  {
+    for (unsigned int i = 0; i < 10; ++i)
+    {
+
+      // get some random rotations and translations
+      Rotation3D rot0 = TestUtils::randomRotation();
+      Rotation3D rot1 = TestUtils::randomRotation();
+      Rotation3D rot2 = TestUtils::randomRotation();
+      Translation3D transl0 = TestUtils::randomTranslation(100.);
+      Translation3D transl1 = TestUtils::randomTranslation(10.);
+      Translation3D transl2 = TestUtils::randomTranslation(50.);
+
+      // multiply the rotations and translations together
+      Transform3D trans = Transform3D(rot0)*Transform3D(transl0)*Transform3D(rot1)*Transform3D(transl1)*Transform3D(rot2)*Transform3D(transl2);
+
+      // get a sets of random points
+      for (unsigned int j = 0; j < 10; ++j)
+      {
+        PointXYZD r = TestUtils::randomPoint(999);
+        PointXYZD p0 = trans*r;
+        PointXYZD p1 = transl2*r;
+        p1 = rot2*p1;
+        p1 = transl1*p1;
+        p1 = rot1*p1;
+        p1 = transl0*p1;
+        p1 = rot0*p1;
+       // check the resulting transformation is equivalent to the
+       // product of transformations, by applying to the random points.
+
+        CPPUNIT_ASSERT(Math::equal(p0,p1, 1024));
+      }
     }
   }
   
