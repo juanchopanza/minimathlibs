@@ -19,14 +19,17 @@ TESTS = $(patsubst $(TESTDIR)/%.cpp, $(TESTBIN)/%, $(TESTSRC))
 
 list :
 	@echo $(HEADERS)
+	@echo $(TESTDIR)
 	@echo $(TESTSRC)
 	@echo $(TESTS)
 	@echo $(TESTOBJSRC)
 	@echo $(TESTOBJS)
+	@echo $(TESTFIXTURES)
+	@echo $(PWD)
 
 .PHONY: tests
-.PHONY: objs
 .PHONY: obj_main
+.PHONY: objs
 
 tests : $(TESTBIN)/tests
 
@@ -34,11 +37,11 @@ obj_main : $(TESTBIN)/obj_main
 
 objs : $(TESTOBJS)
 
-$(TESTBIN)/tests : tests.cpp $(TESTSFIXTURES) $(HEADERS) $(TESTBIN)/.f
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) tests.cpp $(LDFLAGS) -o $@
+$(TESTBIN)/tests : tests.cpp $(TESTFIXTURES) $(HEADERS) $(TESTBIN)/.f
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $< $(LDFLAGS) -o $@
 
-$(TESTBIN)/obj_main : obj_main.cpp objs
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(TESTOBJS) $< -o $@
+$(TESTBIN)/obj_main : obj_main.cpp $(TESTOBJS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(TESTOBJS) $< $(LDFLAGS) -o $@
 
 $(TESTBIN)/%.o : $(TESTDIR)/objs/%.cpp $(HEADERS) $(TESTBIN)/.f
 	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $< -o $@

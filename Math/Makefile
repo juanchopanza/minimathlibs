@@ -9,6 +9,11 @@ include rules.mk
 TESTDIR = Tests
 
 .PHONY: all
+.PHONY: test_objs
+.PHONY: list_tests
+.PHONY: objs
+.PHONY: clean
+
 
 all :tests
 
