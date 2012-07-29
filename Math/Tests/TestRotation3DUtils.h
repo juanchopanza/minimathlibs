@@ -18,30 +18,32 @@
 namespace TestUtils
 {
 
+using namespace Math;
+
 // generate a random Rotation3D
-inline Math::Rotation3D randomRotation()
+inline Rotation3D<double> randomRotation()
 {
   const double divX = 1 + (std::rand()%8);
   const double divY = 1 + (std::rand()%8);
   const double divZ = 1 + (std::rand()%8);
-  return Math::Rotation3DZYX(PI/divZ, PI/divY, PI/divX);
+  return Rotation3DZYX<double>(PI/divZ, PI/divY, PI/divX);
 }
 
 // generate a random point
-inline Math::PointXYZD randomPoint(unsigned int range, 
+inline PointXYZD randomPoint(unsigned int range, 
                                    double centre = 0.)
 {
   double x = centre + std::rand()%range;
   double y = centre + std::rand()%range;
   double z = centre + std::rand()%range;
-  return Math::PointXYZD(x,y,z);
+  return PointXYZD(x,y,z);
 }
 
 // generate a random translation
-inline Math::Translation3D randomTranslation(unsigned int range, 
+inline Translation3D<double> randomTranslation(unsigned int range, 
                                              double centre = 0)
 {
-  return Math::Translation3D(randomPoint(range, centre));
+  return Translation3D<double>(randomPoint(range, centre));
 }
 
 template <typename R>
@@ -50,7 +52,7 @@ bool isInverse(const R& rot, const R& rotInv)
   PointXYZD ref(111.,222.,333.);
   PointXYZD pTest = rot*ref;
   pTest = rotInv*pTest;
-  bool test = Math::equal(pTest, ref, 500);
+  bool test = equal(pTest, ref, 500);
   if (!test) 
   {
     std::cout << "\ntestInverse p: " << ref
@@ -59,9 +61,10 @@ bool isInverse(const R& rot, const R& rotInv)
   return test;
 }
 
-bool isInverse(const AxisAngle& rot, const AxisAngle& rotInv)
+template <typename T>
+bool isInverse(const AxisAngle<T>& rot, const AxisAngle<T>& rotInv)
 {
-  return isInverse(Rotation3D(rot), Rotation3D(rotInv));
+  return isInverse(Rotation3D<T>(rot), Rotation3D<T>(rotInv));
 }
 
 
@@ -99,9 +102,9 @@ bool testInverseRotation3D()
 {
   for (unsigned int i = 1; i<9; ++i) 
   {
-    Rotation3D rot(R2(PI/i));
+    Rotation3D<double> rot(R2(PI/i));
     bool test = true;
-    Rotation3D rotInv(rot.inverse(test));
+    Rotation3D<double> rotInv(rot.inverse(test));
     test = test &&isInverse(rot, rotInv);
     if (!test) return false;
   }
@@ -113,8 +116,8 @@ bool testInvertRotation3D()
 {
   for (unsigned int i = 1; i<9; ++i) 
   {
-    Rotation3D rot(R2(PI/i));
-    Rotation3D rotInv = rot;
+    Rotation3D<double> rot(R2(PI/i));
+    Rotation3D<double> rotInv = rot;
     bool test = true;
     rotInv.invert(test);
     test = test && isInverse(rot, rotInv);
@@ -123,25 +126,27 @@ bool testInvertRotation3D()
   return true;
 }
 
-bool testInverseAxisAngle(const Math::PointXYZD& axis)
+bool testInverseAxisAngle(const PointXYZD& axis)
 {
+  typedef PointXYZD::scalar_type scalar_type;
   for (unsigned int i = 1; i<9; ++i) 
   {
-    AxisAngle rot(axis, PI/i);
+    AxisAngle<scalar_type> rot(axis, PI/i);
     bool test = true;
-    AxisAngle rotInv(rot.inverse(test));
+    AxisAngle<scalar_type> rotInv(rot.inverse(test));
     test = test &&isInverse(rot, rotInv);
     if (!test) return false;
   }
   return true;
 }
 
-bool testInvertAxisAngle(const Math::PointXYZD& axis)
+bool testInvertAxisAngle(const PointXYZD& axis)
 {
+  typedef PointXYZD::scalar_type scalar_type;
   for (unsigned int i = 1; i<9; ++i) 
   {
-    AxisAngle rot(axis, PI/i);
-    AxisAngle rotInv = rot;
+    AxisAngle<scalar_type> rot(axis, PI/i);
+    AxisAngle<scalar_type> rotInv = rot;
     bool test = true;
     rotInv.invert(test);
     test = test && isInverse(rot, rotInv);
@@ -156,9 +161,9 @@ bool testInverseRotation3DZYX()
 {
   for (unsigned int i = 1; i<9; ++i) 
   {
-    Rotation3DZYX rot(R2(PI/i));
+    Rotation3DZYX<double> rot(R2(PI/i));
     bool test = true;
-    Rotation3DZYX rotInv(rot.inverse(test));
+    Rotation3DZYX<double> rotInv(rot.inverse(test));
     test = test &&isInverse(rot, rotInv);
     if (!test) return false;
   }
@@ -170,8 +175,8 @@ bool testInvertRotation3DZYX()
 {
   for (unsigned int i = 1; i<9; ++i) 
   {
-    Rotation3DZYX rot(R2(PI/i));
-    Rotation3DZYX rotInv = rot;
+    Rotation3DZYX<double> rot(R2(PI/i));
+    Rotation3DZYX<double> rotInv = rot;
     bool test = true;
     rotInv.invert(test);
     test = test && isInverse(rot, rotInv);
@@ -186,18 +191,19 @@ bool testInverseTransform3D()
 {
   for (unsigned int i = 1; i<9; ++i) 
   {
-    Math::Transform3D trans(R(PI/i), Math::Translation3D(111,222,333));
+    Transform3D<double> trans(Rotation3D<double>(R(PI/i)), Translation3D<double>(111,222,333));
     bool test = true;
-    Math::Transform3D transInv(trans.inverse(test));
+    Transform3D<double> transInv(trans.inverse(test));
     test = test && isInverse(trans, transInv);
     if (!test) return false;
   }
 
   for (unsigned int i = 1; i<9; ++i) 
   {
-    Math::Transform3D trans(Math::Translation3D(111,222,333), R(PI/i));
+    Transform3D<double> trans(Translation3D<double>(111,222,333),
+                              Rotation3D<double>(R(PI/i)));
     bool test = true;
-    Math::Transform3D transInv(trans.inverse(test));
+    Transform3D<double> transInv(trans.inverse(test));
     test = test && isInverse(trans, transInv);
     if (!test) return false;
   }
@@ -209,8 +215,9 @@ bool testInvertTransform3D()
 {
   for (unsigned int i = 1; i<9; ++i) 
   {
-    Math::Transform3D trans(R(PI/i), Math::Translation3D(111, 222, 333));
-    Math::Transform3D transInv = trans;
+    Transform3D<double> trans(Rotation3D<double>(R(PI/i)), 
+                              Translation3D<double>(111, 222, 333));
+    Transform3D<double> transInv = trans;
     bool test = true;
     transInv.invert(test);
     test = test && isInverse(trans, transInv);
@@ -219,8 +226,9 @@ bool testInvertTransform3D()
 
   for (unsigned int i = 1; i<9; ++i) 
   {
-    Math::Transform3D trans(Math::Translation3D(111,222,333), R(PI/i));
-    Math::Transform3D transInv = trans;
+    Transform3D<double> trans(Translation3D<double>(111,222,333), 
+                              Rotation3D<double>(R(PI/i)));
+    Transform3D<double> transInv = trans;
     bool test;
     transInv.invert(test);
     test = test && isInverse(trans, transInv);
@@ -235,15 +243,15 @@ void testFindTransformationAxisRot()
 {
   for (int i = 1; i<9; ++i)
   {
-    Math::Rotation3D rot = R(PI/i);
-    Math::Matrix<double,3> orig;
-    Math::setColumn(orig, p100, 0);
-    Math::setColumn(orig, p010, 1);
-    Math::setColumn(orig, p111, 2);
-    Math::Matrix<double,3> prime = rot*orig;
+    Rotation3D<double> rot = R(PI/i);
+    Matrix<double,3> orig;
+    setColumn(orig, p100, 0);
+    setColumn(orig, p010, 1);
+    setColumn(orig, p111, 2);
+    Matrix<double,3> prime = rot*orig;
     bool success = true;
 
-    Math::Matrix<double,3> rot2 = Math::transformation(orig, prime, success);
+    Matrix<double,3> rot2 = transformation(orig, prime, success);
     CPPUNIT_ASSERT_MESSAGE("Inversion failed", success);
     CPPUNIT_ASSERT(rot.equal(rot2, 1));
   }

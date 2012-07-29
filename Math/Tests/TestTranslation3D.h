@@ -20,8 +20,9 @@
 
 namespace
 {
-  using Math::Translation3D;
-  using Math::PointXYZD;
+  using namespace Math;
+  //using Math::Translation3D;
+  //using Math::PointXYZD;
 }
 
 class TestTranslation3D : public CppUnit::TestFixture {
@@ -42,40 +43,40 @@ class TestTranslation3D : public CppUnit::TestFixture {
 
   void testInstantiation()
   {
-    Translation3D displ1, displ2;
+    Translation3D<double> displ1, displ2;
   }
 
   void testDefaultEquality()
   {
-    CPPUNIT_ASSERT(Translation3D() == Translation3D());
+    CPPUNIT_ASSERT(Translation3D<double>() == Translation3D<double>());
   }
 
   void testCopyConstruction()
   {
-    Translation3D displ1;
-    Translation3D displ2(displ1);
+    Translation3D<double> displ1;
+    Translation3D<double> displ2(displ1);
     CPPUNIT_ASSERT(displ1==displ2);
   }
 
   void testAssignment()
   {
-    Translation3D displ1, displ2;
+    Translation3D<double> displ1, displ2;
     displ2 = displ1;
     CPPUNIT_ASSERT(displ1==displ2);
   }
 
   void testNullTranslation() {
     PointXYZD p(11, 22, 33);
-    CPPUNIT_ASSERT(PointXYZD(11,22,33) == Translation3D()*p);
+    CPPUNIT_ASSERT(PointXYZD(11,22,33) == Translation3D<double>()*p);
   }
 
   void testTranslatePoint() {
     for (int i = 0; i < 100; ++i)
     {
       PointXYZD p(11, 22, 33);
-      Translation3D t1(PointXYZD(i, i, i));
+      Translation3D<double> t1(PointXYZD(i, i, i));
       CPPUNIT_ASSERT(PointXYZD(11+i, 22+i, 33+i) == t1*p);
-      Translation3D t2(PointXYZD(-i, -i, -i));
+      Translation3D<double> t2(PointXYZD(-i, -i, -i));
       CPPUNIT_ASSERT(PointXYZD(11-i, 22-i, 33-i) == t2*p);
     }
   }
@@ -83,30 +84,30 @@ class TestTranslation3D : public CppUnit::TestFixture {
   void testCompoundTranslation()
   {
     // make a vector of many translations
-    std::vector<Translation3D> v;
+    std::vector<Translation3D<double> > v;
     int sum = 0;
     for (int i = 0; i<10; ++i)
     {
       sum += i;
-      v.push_back(Translation3D(PointXYZD(i,i,i)));
+      v.push_back(Translation3D<double>(PointXYZD(i,i,i)));
     }
     // multiply all the translations together
-    Translation3D t = std::accumulate(v.begin(), v.end(),
-                                      Translation3D(), 
-                                      std::multiplies<Translation3D>());
+    Translation3D<double> t = std::accumulate(v.begin(), v.end(),
+                                      Translation3D<double>(), 
+                                      std::multiplies<Translation3D<double> >());
     CPPUNIT_ASSERT(PointXYZD(sum, sum, sum) == t*PointXYZD());
   }
 
   void testInverse()
   {
-    Translation3D t0(PointXYZD(1., 2., 3.));
-    CPPUNIT_ASSERT(t0.inverse() == Translation3D(PointXYZD(-1., -2., -3.)));
+    Translation3D<double> t0(PointXYZD(1., 2., 3.));
+    CPPUNIT_ASSERT(t0.inverse() == Translation3D<double>(PointXYZD(-1., -2., -3.)));
   }
   void testInvert()
   {
-    Translation3D t0(PointXYZD(1., 2., 3.));
+    Translation3D<double> t0(PointXYZD(1., 2., 3.));
     t0.invert();
-    CPPUNIT_ASSERT(t0 == Translation3D(PointXYZD(-1., -2., -3.)));
+    CPPUNIT_ASSERT(t0 == Translation3D<double>(PointXYZD(-1., -2., -3.)));
   }
 
 };

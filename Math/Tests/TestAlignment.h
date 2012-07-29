@@ -26,6 +26,8 @@
 namespace
 {
 
+using namespace Math;
+
 // check that results of calculated transformation and
 // reference transformation are the same to within 64 epsilons.
 template <typename T>
@@ -43,7 +45,7 @@ void testTransformation(const T& transf)
   PointXYZDPair p2 = { {p001, pC} };
   std::tr1::array<PointXYZDPair, 3> pointPairs = { {p0, p1, p2} };
 
-  Transform3D transf1 = transformation(pointPairs.begin(),
+  Transform3D<double> transf1 = transformation(pointPairs.begin(),
                                        pointPairs.end(),
                                        success);
 
@@ -61,9 +63,9 @@ void testRotationAndTranslation()
     double x = std::rand()%100;
     double y = std::rand()%100;
     double z = std::rand()%100;
-    Translation3D transl(PointXYZD(x,y,z));
-    Rotation3D rot(R(PI/i));
-    Transform3D transf(rot, transl);
+    Translation3D<double> transl(PointXYZD(x,y,z));
+    Rotation3D<double> rot(R(PI/i));
+    Transform3D<double> transf(rot, transl);
     testTransformation(transf);
   }
 }
@@ -75,9 +77,9 @@ void testTranslationAndRotation()
     double x = std::rand()%100;
     double y = std::rand()%100;
     double z = std::rand()%100;
-    Translation3D transl(PointXYZD(x,y,z));
-    Rotation3D rot(R(PI/i));
-    Transform3D transf(transl, rot);
+    Translation3D<double> transl(PointXYZD(x,y,z));
+    Rotation3D<double> rot(R(PI/i));
+    Transform3D<double> transf(transl, rot);
     testTransformation(transf);
   }
 }
@@ -101,45 +103,45 @@ class TestAlignment : public CppUnit::TestFixture {
   void testTranslation()
   {
     // rotate reference points
-    Translation3D transl(PointXYZD(100, 100, 100));
+    Translation3D<double> transl(PointXYZD(100, 100, 100));
     testTransformation(transl);
   }
 
   void testRotation()
   {
     // rotate reference points
-    Rotation3DZYX rot(PI/4, 0, PI/4);
+    Rotation3DZYX<double>  rot(PI/4, 0, PI/4);
     testTransformation(rot);
   }
 
   void testRotation3DXAndTranslation()
   {
-    testRotationAndTranslation<Rotation3DX>();
+    testRotationAndTranslation<Rotation3DX<double> >();
   }
 
   void testRotation3DYAndTranslation()
   {
-    testRotationAndTranslation<Rotation3DY>();
+    testRotationAndTranslation<Rotation3DY<double> >();
   }
 
   void testRotation3DZAndTranslation()
   {
-    testRotationAndTranslation<Rotation3DZ>();
+    testRotationAndTranslation<Rotation3DZ<double> >();
   }
 
   void testTranslationAndRotation3DX()
   {
-    testTranslationAndRotation<Rotation3DX>();
+    testTranslationAndRotation<Rotation3DX<double> >();
   }
 
   void testTranslationAndRotation3DY()
   {
-    testTranslationAndRotation<Rotation3DY>();
+    testTranslationAndRotation<Rotation3DY<double> >();
   }
 
   void testTranslationAndRotation3DZ()
   {
-    testTranslationAndRotation<Rotation3DZ>();
+    testTranslationAndRotation<Rotation3DZ<double> >();
   }
 
 };

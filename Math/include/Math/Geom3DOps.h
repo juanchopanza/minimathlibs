@@ -32,13 +32,13 @@ namespace Math {
 namespace detail
 {
 template <typename P>
-Transform3D transformation1(const P& pointPair)
+Transform3D<double> transformation1(const P& pointPair)
 {
-  return Transform3D(Translation3D(pointPair[1]-pointPair[0]));
+  return Transform3D<double>(Translation3D<double>(pointPair[1]-pointPair[0]));
 }
 
 template <typename P>
-Transform3D transformation2(const P& pair0, const P& pair1, bool& success)
+Transform3D<double> transformation2(const P& pair0, const P& pair1, bool& success)
 {
   // direction vectors
   PointXYZD v0 = pair1[0] - pair0[0]; // reference points
@@ -49,19 +49,19 @@ Transform3D transformation2(const P& pair0, const P& pair1, bool& success)
   const double normalFactor2 = Math::mag2(v0)*Math::mag2(v1);
   if (normalFactor2 <=0.) {
     success = false;
-    return Transform3D();
+    return Transform3D<double>();
   }
   const double sinAngle = std::sqrt(mag2Axis/normalFactor2);
   const double angle = std::asin(sinAngle);
-  Math::Translation3D originInv(pair0[0]);
-  Math::Translation3D origin(originInv.inverse());
-  Math::Transform3D trans(Math::AxisAngle(axis, angle), 
-                          Math::Translation3D(pair0[1]-pair0[0]));
-  return Transform3D(originInv)*(trans*Transform3D(origin));
+  Math::Translation3D<double> originInv(pair0[0]);
+  Math::Translation3D<double> origin(originInv.inverse());
+  Math::Transform3D<double> trans(Rotation3D<double>(Math::AxisAngle<double>(axis, angle)), 
+                            Math::Translation3D<double>(pair0[1]-pair0[0]));
+  return Transform3D<double>(originInv)*(trans*Transform3D<double>(origin));
 }
 
 template <typename IT>
-Transform3D transformation3(IT begin, IT end, bool& success)
+Transform3D<double> transformation3(IT begin, IT end, bool& success)
 {
 
   Math::Matrix<double,4,3> ref; // 4x3 to allow for rotation + translation
@@ -84,7 +84,7 @@ Transform3D transformation3(IT begin, IT end, bool& success)
   // find rotation!
   Matrix<double, 3, 4> rot = transformation(ref, meas, success);
   
-  return success ? Transform3D(rot) : Transform3D();
+  return success ? Transform3D<double>(rot) : Transform3D<double>();
 
 }
 
@@ -143,14 +143,14 @@ Point3D<T, C> operator*(const Matrix<T,3,4>& rot,
 ///                  if procesure fails.
 ///
 template <typename IT>
-Transform3D transformation(IT begin, IT end, bool& success)
+Transform3D<double> transformation(IT begin, IT end, bool& success)
 {
   unsigned int length = std::distance(begin, end);
   if (length == 3) return detail::transformation3(begin, end, success);
   if (length == 2) return detail::transformation2(*begin, *(begin++), success);
   if (length == 1) return detail::transformation1(*begin);
   std::cerr << "Math::transformation only implemented for 1, 2 and 3 point systems. Received " << length <<" point pairs\n";
-  return Transform3D();
+  return Transform3D<double>();
 }
 
 }

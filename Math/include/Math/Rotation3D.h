@@ -19,9 +19,10 @@ namespace Math {
 namespace detail
 {
 
-inline Matrix<double,3,3> rotX(double cosA, double sinA)
+template <typename T>
+inline Matrix<T,3,3> rotX(T cosA, T sinA)
 {
-  Matrix<double,3,3> rot = IdentityMatrix();
+  Matrix<T,3,3> rot = IdentityMatrix();
   rot(1,1) =  cosA;
   rot(2,2) =  cosA;
   rot(1,2) = -sinA;
@@ -30,9 +31,10 @@ inline Matrix<double,3,3> rotX(double cosA, double sinA)
 
 }
 
-inline Matrix<double,3,3> rotY(double cosA, double sinA)
+template <typename T>
+inline Matrix<T,3,3> rotY(T cosA, T sinA)
 {
-  Matrix<double,3,3> rot = IdentityMatrix();
+  Matrix<T,3,3> rot = IdentityMatrix();
   rot(0,0) =  cosA;
   rot(2,2) =  cosA;
   rot(2,0) = -sinA;
@@ -40,9 +42,10 @@ inline Matrix<double,3,3> rotY(double cosA, double sinA)
   return rot; 
 }
 
-inline Matrix<double,3,3> rotZ(double cosA, double sinA)
+template <typename T>
+inline Matrix<T,3,3> rotZ(T cosA, T sinA)
 {
-  Matrix<double,3,3> rot = IdentityMatrix();
+  Matrix<T,3,3> rot = IdentityMatrix();
   rot(0,0) =  cosA;
   rot(1,1) =  cosA;
   rot(0,1) = -sinA;
@@ -50,18 +53,18 @@ inline Matrix<double,3,3> rotZ(double cosA, double sinA)
   return rot;
 }
 
-template <typename V>
-Matrix<double,3,3> axisAngle(V axis, double cosA, double sinA)
+template <typename T, typename V>
+Matrix<T,3,3> axisAngle(V axis, T cosA, T sinA)
 {
-  double mag = std::sqrt(Math::mag2(axis));
+  T mag = std::sqrt(Math::mag2(axis));
   axis /= mag;
 
-  Matrix<double,3,3> rot;
+  Matrix<T,3,3> rot;
 
-  const double cosComp = 1. - cosA;
-  const double x = axis[0];
-  const double y = axis[1];
-  const double z = axis[2];
+  const T cosComp = 1. - cosA;
+  const T x = axis[0];
+  const T y = axis[1];
+  const T z = axis[2];
 
   rot(0,0) = cosComp * x * x  +  cosA;
   rot(0,1) = cosComp * x * y  -  sinA * z;
@@ -81,54 +84,60 @@ Matrix<double,3,3> axisAngle(V axis, double cosA, double sinA)
 
 /// create a 3x3 matrix representing a rotation of alpha radians
 /// about the X axis
-inline Matrix<double,3,3> rotationX(double alpha)
+template <typename T>
+inline Matrix<T,3,3> rotationX(T alpha)
 {
-  const double c = std::cos(alpha);
-  const double s = std::sin(alpha);
+  const T c = std::cos(alpha);
+  const T s = std::sin(alpha);
   return detail::rotX(c, s); 
 }
 
 /// create a 3x3 matrix representing a rotation of alpha radians
 /// about the Y axis
-inline Matrix<double,3,3> rotationY(double alpha)
+template <typename T>
+inline Matrix<T,3,3> rotationY(T alpha)
 {
-  Matrix<double,3,3> rot = IdentityMatrix();
-  const double c = std::cos(alpha);
-  const double s = std::sin(alpha);
+  //Matrix<T,3,3> rot = IdentityMatrix();
+  const T c = std::cos(alpha);
+  const T s = std::sin(alpha);
   return detail::rotY(c, s); 
 }
 
 /// create a 3x3 matrix representing a rotation of alpha radians
 /// about the Z axis
-inline Matrix<double,3,3> rotationZ(double alpha)
+template <typename T>
+inline Matrix<T,3,3> rotationZ(T alpha)
 {
-  Matrix<double,3,3> rot = IdentityMatrix();
-  const double c = std::cos(alpha);
-  const double s = std::sin(alpha);
+  //Matrix<T,3,3> rot = IdentityMatrix();
+  const T c = std::cos(alpha);
+  const T s = std::sin(alpha);
   return detail::rotZ(c,s); 
 }
 
 /// create a 3x3 matrix representing a rotation of alpha radians
 /// about an axis
-template <typename Axis>
-Matrix<double,3,3> axisAngle(const Axis& axis, double alpha)
+template <typename T, typename Axis>
+Matrix<T,3,3> axisAngle(const Axis& axis, T alpha)
 {
-  Matrix<double,3,3> rot = IdentityMatrix();
-  const double c = std::cos(alpha);
-  const double s = std::sin(alpha);
+  //Matrix<T,3,3> rot = IdentityMatrix();
+  const T c = std::cos(alpha);
+  const T s = std::sin(alpha);
   return detail::axisAngle(axis, c, s); 
 }
 
 
+template <typename T>
 class AxisAngleBase {
 
  public:
 
-  AxisAngleBase() : m_sin(0.), m_cos(1.) {}
-  explicit AxisAngleBase(double angle) : m_sin(std::sin(angle)), m_cos(std::cos(angle)) {}
+  AxisAngleBase() : m_sin(0), m_cos(1) {}
+  explicit AxisAngleBase(T angle) 
+  : 
+  m_sin(std::sin(angle)), m_cos(std::cos(angle)) {}
 
-  double cosAlpha() const { return m_cos; };
-  double sinAlpha() const { return m_sin; };
+  T cosAlpha() const { return m_cos; };
+  T sinAlpha() const { return m_sin; };
 
   bool operator==(const AxisAngleBase& rhs) const {
     return (m_sin == rhs.sinAlpha() && m_cos == rhs.cosAlpha());
@@ -140,28 +149,29 @@ class AxisAngleBase {
     return *this;
   }
  private:
-  double m_sin, m_cos;
+  T m_sin, m_cos;
 };
 
 /// Simple class representing a rotation about an
-/// axis. 
-class AxisAngle : public AxisAngleBase {
+/// axis.
+template <typename T>
+class AxisAngle : public AxisAngleBase<T> {
 
  public:
 
-  typedef PointXYZD axis_type;
+  typedef Point3D<T> axis_type;
 
  public:
 
-  AxisAngle() : AxisAngleBase(), m_axis(0,0,1) {}
+  AxisAngle() : AxisAngleBase<T>(), m_axis(0,0,1) {}
 
-  AxisAngle(const axis_type& axis) : AxisAngleBase(), m_axis(axis) {}
+  AxisAngle(const axis_type& axis) : AxisAngleBase<T>(), m_axis(axis) {}
 
-  AxisAngle(double angle) : AxisAngleBase(angle), m_axis() {}
+  AxisAngle(T angle) : AxisAngleBase<T>(angle), m_axis() {}
 
-  AxisAngle(const axis_type& axis, double angle) 
+  AxisAngle(const axis_type& axis, T angle) 
   :
-  AxisAngleBase(angle), 
+  AxisAngleBase<T>(angle), 
   m_axis(axis)
   {
   }
@@ -170,7 +180,7 @@ class AxisAngle : public AxisAngleBase {
 
   AxisAngle& invert(bool& success)
   {
-    AxisAngleBase::invert(success);
+    AxisAngleBase<T>::invert(success);
     return *this;
   }
   AxisAngle inverse(bool& success) const
@@ -186,22 +196,23 @@ class AxisAngle : public AxisAngleBase {
 };
 
 // rotation about the X axis
-class Rotation3DX  : public AxisAngleBase {
+template <typename T>
+class Rotation3DX  : public AxisAngleBase<T> {
 
  public:
-  Rotation3DX() : AxisAngleBase() {}
-  explicit Rotation3DX(double angle) : AxisAngleBase(angle) {}
+  Rotation3DX() : AxisAngleBase<T>() {}
+  explicit Rotation3DX(T angle) : AxisAngleBase<T>(angle) {}
   template <typename Point>
   Point operator*(const Point& point) const {
     // apply a rotation
     return Point(point.x(), 
-                 cosAlpha()*point.y() - sinAlpha()*point.z(), 
-                 cosAlpha()*point.z() + sinAlpha()*point.y() );
+                 this->cosAlpha()*point.y() - this->sinAlpha()*point.z(), 
+                 this->cosAlpha()*point.z() + this->sinAlpha()*point.y() );
   }
 
   Rotation3DX& invert(bool& success)
   {
-    AxisAngleBase::invert(success);
+    AxisAngleBase<T>::invert(success);
     return *this;
   }
   Rotation3DX inverse(bool& success) const
@@ -212,23 +223,24 @@ class Rotation3DX  : public AxisAngleBase {
 };
 
 // rotation about the Y axis
-class Rotation3DY : public AxisAngleBase {
+template <typename T>
+class Rotation3DY : public AxisAngleBase<T> {
 
  public:
-  Rotation3DY() : AxisAngleBase() {}
-  explicit Rotation3DY(double angle) : AxisAngleBase(angle) {}
+  Rotation3DY() : AxisAngleBase<T>() {}
+  explicit Rotation3DY(T angle) : AxisAngleBase<T>(angle) {}
 
   template <typename Point>
   Point operator*(const Point& point) const {
     // apply a rotation
-    return Point(cosAlpha()*point.x() + sinAlpha()*point.z(), 
+    return Point(this->cosAlpha()*point.x() + this->sinAlpha()*point.z(), 
                  point.y(), 
-                 cosAlpha()*point.z() - sinAlpha()*point.x() );
+                 this->cosAlpha()*point.z() - this->sinAlpha()*point.x() );
   }
 
   Rotation3DY& invert(bool& success)
   {
-    AxisAngleBase::invert(success);
+    AxisAngleBase<T>::invert(success);
     return *this;
   }
   Rotation3DY inverse(bool& success) const
@@ -239,23 +251,24 @@ class Rotation3DY : public AxisAngleBase {
 };
 
 // rotation about the Z axis
-class Rotation3DZ : public AxisAngleBase {
+template <typename T>
+class Rotation3DZ : public AxisAngleBase<T> {
 
  public:
-  Rotation3DZ() : AxisAngleBase() {}
-  explicit Rotation3DZ(double angle) : AxisAngleBase(angle) {}
+  Rotation3DZ() : AxisAngleBase<T>() {}
+  explicit Rotation3DZ(T angle) : AxisAngleBase<T>(angle) {}
 
   template <typename Point>
   Point operator*(const Point& point) const {
     // apply a rotation
-    return Point(cosAlpha()*point.x() - sinAlpha()*point.y(), 
-                 cosAlpha()*point.y() + sinAlpha()*point.x(), 
+    return Point(this->cosAlpha()*point.x() - this->sinAlpha()*point.y(), 
+                 this->cosAlpha()*point.y() + this->sinAlpha()*point.x(), 
                  point.z()                          );
   }
 
   Rotation3DZ& invert(bool& success)
   {
-    AxisAngleBase::invert(success);
+    AxisAngleBase<T>::invert(success);
     return *this;
   }
   Rotation3DZ inverse(bool& success) const
@@ -266,29 +279,32 @@ class Rotation3DZ : public AxisAngleBase {
 };
 
 // euler rotation about Z, Y', X".
+template <typename T>
 class Rotation3DZYX {
 
  public:
 
-  Rotation3DZYX(const Rotation3DX& rot) 
+  template <typename T1>
+  Rotation3DZYX(const Rotation3DX<T1>& rot) 
   : 
   m_rot(detail::rotX(rot.cosAlpha(), rot.sinAlpha()))
   {
   }
-
-  Rotation3DZYX(const Rotation3DY& rot)  
+  template <typename T1>
+  Rotation3DZYX(const Rotation3DY<T1>& rot)  
   : 
   m_rot(detail::rotY(rot.cosAlpha(), rot.sinAlpha()))
   {
   }
 
-  Rotation3DZYX(const Rotation3DZ& rot)
+  template <typename T1>
+  Rotation3DZYX(const Rotation3DZ<T1>& rot)
   : 
   m_rot(detail::rotZ(rot.cosAlpha(), rot.sinAlpha()))
   {
   }
 
-  Rotation3DZYX(double phi, double theta, double psi) 
+  Rotation3DZYX(T phi, T theta, T psi) 
   : 
   m_rot(rotationX(psi)*rotationY(theta)*rotationZ(phi))
   {
@@ -297,7 +313,7 @@ class Rotation3DZYX {
   Rotation3DZYX() : m_rot(IdentityMatrix()) {}
 
   // construct from a 3x3 matrix
-  explicit Rotation3DZYX(const Matrix<double, 3>& mat) : m_rot(mat) {}
+  explicit Rotation3DZYX(const Matrix<T, 3>& mat) : m_rot(mat) {}
 
 
   template <typename Point>
@@ -323,52 +339,58 @@ class Rotation3DZYX {
   }
 
   // element access
-  const double& operator()(unsigned int i, unsigned int j) const
+  const T& operator()(unsigned int i, unsigned int j) const
   {
     return m_rot(i,j);
   }
   // element access
-  double& operator()(unsigned int i, unsigned int j)
+  T& operator()(unsigned int i, unsigned int j)
   {
     return m_rot(i,j);
   }
 
 
  private:
-  Matrix<double, 3, 3> m_rot;
+  Matrix<T, 3, 3> m_rot;
 };
 
+template <typename T>
 class Rotation3D {
 
  public:
 
-  typedef double scalar_type;
+  typedef T scalar_type;
 
   // default construction is identity transformation
   Rotation3D() : m_rot(IdentityMatrix()) {}
 
   // Construct from a rotation about the X axis
-  Rotation3D(const Rotation3DX& rot)
+  template <typename T1>
+  Rotation3D(const Rotation3DX<T1>& rot)
   :
   m_rot(detail::rotX(rot.cosAlpha(), rot.sinAlpha())) {}
 
   // Construct from a rotation about the Y axis
-  Rotation3D(const Rotation3DY& rot)
+  template <typename T1>
+  Rotation3D(const Rotation3DY<T1>& rot)
   :
   m_rot(detail::rotY(rot.cosAlpha(), rot.sinAlpha())) {}
 
   // Construct from a rotation about the Z axis
-  Rotation3D(const Rotation3DZ& rot)
+  template <typename T1>
+  Rotation3D(const Rotation3DZ<T1>& rot)
   :
   m_rot(detail::rotZ(rot.cosAlpha(), rot.sinAlpha())) {}
 
   // Construct from a rotation about any axis
-  Rotation3D(const AxisAngle& rot)
+  template <typename T1>
+  Rotation3D(const AxisAngle<T1>& rot)
   :
   m_rot(detail::axisAngle(rot.axis(), rot.cosAlpha(), rot.sinAlpha())) {}
 
   // Construct from a rotation about the Z, Y' and X" axes
-  Rotation3D(const Rotation3DZYX& rot)
+  template <typename T1>
+  Rotation3D(const Rotation3DZYX<T1>& rot)
   {
     for (unsigned int r = 0; r < m_rot.rows(); ++r)
       for (unsigned int c = 0; c < m_rot.cols(); ++c)
@@ -376,7 +398,8 @@ class Rotation3D {
   }
 
   // construct from a 3x3 matrix
-  explicit Rotation3D(const Matrix<double, 3>& mat) : m_rot(mat) {}
+  template <typename T1>
+  explicit Rotation3D(const Matrix<T1, 3>& mat) : m_rot(mat) {}
 
   // Invert this Rotation3D
   Rotation3D& invert(bool& success)
@@ -401,21 +424,25 @@ class Rotation3D {
   }
 
   // multiplication by another Rotation3DX
-  Rotation3D operator*(const Rotation3DX& rhs) {
+  template <typename T1>
+  Rotation3D operator*(const Rotation3DX<T1>& rhs) {
     return (*this)*Rotation3D(rhs);
   }
   // multiplication by another Rotation3DY
-  Rotation3D operator*(const Rotation3DY& rhs) {
+  template <typename T1>
+  Rotation3D operator*(const Rotation3DY<T1>& rhs) {
     return (*this)*Rotation3D(rhs);
   }
 
  // multiplication by another Rotation3DZ
-  Rotation3D operator*(const Rotation3DZ& rhs) {
+  template <typename T1>
+  Rotation3D operator*(const Rotation3DZ<T1>& rhs) {
     return (*this)*Rotation3D(rhs);
   }
 
  // multiplication by another Rotation3DZ
-  Rotation3D operator*(const Rotation3DZYX& rhs) {
+  template <typename T1>
+  Rotation3D operator*(const Rotation3DZYX<T1>& rhs) {
     return (*this)*Rotation3D(rhs);
   }
 
@@ -431,8 +458,8 @@ class Rotation3D {
   }
   
   /// apply a rotation to a 3 row matrix
-  template <typename T, unsigned int C>
-  Matrix<T,3,C> operator*(const Matrix<T,3,C>& mat) const {
+  template <typename T1, unsigned int C>
+  Matrix<T1,3,C> operator*(const Matrix<T1,3,C>& mat) const {
     return m_rot*mat;
   }
 
@@ -446,19 +473,19 @@ class Rotation3D {
   }
 
   // element access
-  const double& operator()(unsigned int i, unsigned int j) const
+  const T& operator()(unsigned int i, unsigned int j) const
   {
     return m_rot(i,j);
   }
   // element access
-  double& operator()(unsigned int i, unsigned int j)
+  T& operator()(unsigned int i, unsigned int j)
   {
     return m_rot(i,j);
   }
 
 
  private:
-  Matrix<double, 3, 3> m_rot;
+  Matrix<T, 3, 3> m_rot;
 };
 
 } // namespace Math

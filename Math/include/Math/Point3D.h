@@ -17,7 +17,7 @@
 
 namespace Math {
 
-template <typename T, template <typename> class CoordSystem>
+template <typename T, template <typename> class CoordSystem=CoordSystemXYZ>
 class Point3D {
 
  public :

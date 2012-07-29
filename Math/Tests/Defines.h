@@ -3,14 +3,18 @@
 
 //namespace 
 //{
-  using Math::Rotation3D;
-  using Math::Rotation3DZYX;
-  using Math::Rotation3DX;
-  using Math::Rotation3DY;
-  using Math::Rotation3DZ;
-  using Math::AxisAngle;
-  using Math::PointXYZD;
+  /*
+  typedef Math::Rotation3D<double> Rotation3D;
+  typedef Math::Rotation3DZYX<double> Rotation3DZYX;
+  typedef Math::Rotation3DX<double> Rotation3DX;
+  typedef Math::Rotation3DY<double> Rotation3DY;
+  typedef Math::Rotation3DZ<double> Potation3DZ;
+  typedef Math::AxisAngle<double> AxisAngle;
+  typedef Math::Translation3D<double> Translation3D;
+  typedef Math::Transform3D<double> Transform3D;
+  */
 
+  using Math::PointXYZD;
   // reference points 
   const PointXYZD p000(0.,0.,0);
   const PointXYZD p100(1.,0.,0);

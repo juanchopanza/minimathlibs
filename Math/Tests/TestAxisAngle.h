@@ -47,170 +47,170 @@ class TestAxisAngle : public CppUnit::TestFixture {
 
   void testInstantiation()
   {
-    AxisAngle rot1, rot2;
+    AxisAngle<double> rot1, rot2;
   }
   void testDefaultEquality()
   {
-    CPPUNIT_ASSERT(AxisAngle() == AxisAngle());
+    CPPUNIT_ASSERT(AxisAngle<double>() == AxisAngle<double>());
   }
   void testCopyConstruction()
   {
-    AxisAngle rot1;
-    AxisAngle rot2(rot1);
+    AxisAngle<double> rot1;
+    AxisAngle<double> rot2(rot1);
     CPPUNIT_ASSERT(rot1 == rot2);
   }
 
   void testAssignment()
   {
-    AxisAngle rot1, rot2;
+    AxisAngle<double> rot1, rot2;
     rot2 = rot1;
     CPPUNIT_ASSERT(rot1 == rot2);
   }
 
   void testNullRotation()
   {
-    AxisAngle rot;
-    PointXYZD pTest = Rotation3D(rot)*p100;
+    AxisAngle<double> rot;
+    PointXYZD pTest = Rotation3D<double>(rot)*p100;
     CPPUNIT_ASSERT(pTest == PointXYZD(1., 0., 0.));
 
-    pTest = Rotation3D(rot)*p010;
+    pTest = Rotation3D<double>(rot)*p010;
     CPPUNIT_ASSERT(pTest == PointXYZD(0., 1., 0.));
 
-    pTest = Rotation3D(rot)*p001;
+    pTest = Rotation3D<double>(rot)*p001;
     CPPUNIT_ASSERT(pTest == PointXYZD(0., 0., 1.));
   }
 
   void testRotatePoint45X()
   {
-    AxisAngle rot(p100, PI/4.); // 45 degree rotation about X
-    PointXYZD pTest = Rotation3D(rot)*p100;
+    AxisAngle<double> rot(p100, PI/4.); // 45 degree rotation about X
+    PointXYZD pTest = Rotation3D<double>(rot)*p100;
     CPPUNIT_ASSERT(pTest == PointXYZD(1., 0., 0.));
 
-    pTest = Rotation3D(rot)*p010;
+    pTest = Rotation3D<double>(rot)*p010;
     CPPUNIT_ASSERT(pTest == PointXYZD(0., cos45, cos45));
 
-    pTest = Rotation3D(rot)*p001;
+    pTest = Rotation3D<double>(rot)*p001;
     CPPUNIT_ASSERT(pTest == PointXYZD(0., -cos45, cos45));
   }
 
   void testRotatePoint90X()
   {
-    AxisAngle rot(p100, PI/2.); // 90 degree rotation about X
-    PointXYZD pTest = Rotation3D(rot)*p100;
+    AxisAngle<double> rot(p100, PI/2.); // 90 degree rotation about X
+    PointXYZD pTest = Rotation3D<double>(rot)*p100;
     CPPUNIT_ASSERT(pTest == PointXYZD(1., 0., 0.));
 
-    pTest = Rotation3D(rot)*p010;
+    pTest = Rotation3D<double>(rot)*p010;
     CPPUNIT_ASSERT(pTest == PointXYZD(0., 0., 1.));
 
-    pTest = Rotation3D(rot)*p001;
+    pTest = Rotation3D<double>(rot)*p001;
     CPPUNIT_ASSERT(pTest == PointXYZD(0., -1., 0.));
   }
 
   void testRotatePoint180X()
   {
-    AxisAngle rot(p100, PI); // 180 degree rotation about X
+    AxisAngle<double> rot(p100, PI); // 180 degree rotation about X
 
-    PointXYZD pTest = Rotation3D(rot)*p100;
+    PointXYZD pTest = Rotation3D<double>(rot)*p100;
     CPPUNIT_ASSERT(pTest == PointXYZD(1., 0., 0.));
 
-    pTest = Rotation3D(rot)*p010;
+    pTest = Rotation3D<double>(rot)*p010;
     CPPUNIT_ASSERT(pTest == PointXYZD(0., -1., 0.));
 
-    pTest = Rotation3D(rot)*p001;
+    pTest = Rotation3D<double>(rot)*p001;
     CPPUNIT_ASSERT(pTest == PointXYZD(0., 0., -1.));
   }
 
   void testRotatePoint45Y()
   {
-    AxisAngle rot(p010, PI/4.); // 45 degree rotation about Y
-    PointXYZD pTest = Rotation3D(rot)*p100;
+    AxisAngle<double> rot(p010, PI/4.); // 45 degree rotation about Y
+    PointXYZD pTest = Rotation3D<double>(rot)*p100;
     CPPUNIT_ASSERT(pTest == PointXYZD(cos45, 0., -cos45));
 
-    pTest = Rotation3D(rot)*p010;
+    pTest = Rotation3D<double>(rot)*p010;
     CPPUNIT_ASSERT(pTest == PointXYZD(0., 1., 0));
 
-    pTest = Rotation3D(rot)*p001;
+    pTest = Rotation3D<double>(rot)*p001;
     CPPUNIT_ASSERT(pTest == PointXYZD(cos45, 0, cos45));
   }
 
   void testRotatePoint90Y()
   {
-    AxisAngle rot(p010, PI/2.); // 90 degree rotation about Y
-    PointXYZD pTest = Rotation3D(rot)*p100;
+    AxisAngle<double> rot(p010, PI/2.); // 90 degree rotation about Y
+    PointXYZD pTest = Rotation3D<double>(rot)*p100;
     CPPUNIT_ASSERT(pTest == PointXYZD(0., 0., -1.));
 
-    pTest = Rotation3D(rot)*p010;
+    pTest = Rotation3D<double>(rot)*p010;
     CPPUNIT_ASSERT(pTest == PointXYZD(0., 1., 0.));
 
-    pTest = Rotation3D(rot)*p001;
+    pTest = Rotation3D<double>(rot)*p001;
     CPPUNIT_ASSERT(pTest == PointXYZD(1., 0., 0.));
   }
 
   void testRotatePoint180Y()
   {
-    AxisAngle rot(p010, PI); // 180 degree rotation about Y
+    AxisAngle<double> rot(p010, PI); // 180 degree rotation about Y
 
-    PointXYZD pTest = Rotation3D(rot)*p100;
+    PointXYZD pTest = Rotation3D<double>(rot)*p100;
     CPPUNIT_ASSERT(pTest == PointXYZD(-1., 0., 0.));
 
-    pTest = Rotation3D(rot)*p010;
+    pTest = Rotation3D<double>(rot)*p010;
     CPPUNIT_ASSERT(pTest == PointXYZD(0., 1., 0.));
 
-    pTest = Rotation3D(rot)*p001;
+    pTest = Rotation3D<double>(rot)*p001;
     CPPUNIT_ASSERT(pTest == PointXYZD(0., 0., -1.));
   }
 
   void testRotatePoint45Z()
   {
-    AxisAngle rot(p001, PI/4.); // 45 degree rotation about Z
-    PointXYZD pTest = Rotation3D(rot)*p100;
+    AxisAngle<double> rot(p001, PI/4.); // 45 degree rotation about Z
+    PointXYZD pTest = Rotation3D<double>(rot)*p100;
     CPPUNIT_ASSERT(pTest == PointXYZD(cos45, cos45, 0.));
 
-    pTest = Rotation3D(rot)*p010;
+    pTest = Rotation3D<double>(rot)*p010;
     CPPUNIT_ASSERT(pTest == PointXYZD(-cos45, cos45, 0));
 
-    pTest = Rotation3D(rot)*p001;
+    pTest = Rotation3D<double>(rot)*p001;
     CPPUNIT_ASSERT(pTest == PointXYZD(0, 0, 1));
   }
 
   void testRotatePoint90Z()
   {
-    AxisAngle rot(p001, PI/2.); // 90 degree rotation about Z
-    PointXYZD pTest = Rotation3D(rot)*p100;
+    AxisAngle<double> rot(p001, PI/2.); // 90 degree rotation about Z
+    PointXYZD pTest = Rotation3D<double>(rot)*p100;
     CPPUNIT_ASSERT(pTest == PointXYZD(0., 1., 0.));
 
-    pTest = Rotation3D(rot)*p010;
+    pTest = Rotation3D<double>(rot)*p010;
     CPPUNIT_ASSERT(pTest == PointXYZD(-1., 0., 0.));
 
-    pTest = Rotation3D(rot)*p001;
+    pTest = Rotation3D<double>(rot)*p001;
     CPPUNIT_ASSERT(pTest == PointXYZD(0., 0., 1.));
   }
 
   void testRotatePoint180Z()
   {
-    AxisAngle rot(p001, PI); // 180 degree rotation about Z
+    AxisAngle<double> rot(p001, PI); // 180 degree rotation about Z
 
-    PointXYZD pTest = Rotation3D(rot)*p100;
+    PointXYZD pTest = Rotation3D<double>(rot)*p100;
     CPPUNIT_ASSERT(pTest == PointXYZD(-1., 0., 0.));
 
-    pTest = Rotation3D(rot)*p010;
+    pTest = Rotation3D<double>(rot)*p010;
     CPPUNIT_ASSERT(pTest == PointXYZD(0., -1., 0.));
 
-    pTest = Rotation3D(rot)*p001;
+    pTest = Rotation3D<double>(rot)*p001;
     CPPUNIT_ASSERT(pTest == PointXYZD(0., 0., 1.));
   }
 
   void testAssignRotation3DX()
   {
     for (int i = 1; i < 9; ++i) {
-      CPPUNIT_ASSERT(AxisAngle(p100, PI/i) == Rotation3DX(PI/i));
+      CPPUNIT_ASSERT(AxisAngle<double>(p100, PI/i) == Rotation3DX<double>(PI/i));
     }
   }
 
   void testAssignRotation3DY()
   {
     for (int i = 1; i < 9; ++i) {
-      CPPUNIT_ASSERT(AxisAngle(p010, PI/i) == Rotation3DY(PI/i));
+      CPPUNIT_ASSERT(AxisAngle<double>(p010, PI/i) == Rotation3DY<double>(PI/i));
     }
   }
 
@@ -218,7 +218,7 @@ class TestAxisAngle : public CppUnit::TestFixture {
   void testAssignRotation3DZ()
   {
      for (int i = 1; i < 9; ++i) {
-      CPPUNIT_ASSERT(AxisAngle(p001, PI/i) == Rotation3DZ(PI/i));
+      CPPUNIT_ASSERT(AxisAngle<double>(p001, PI/i) == Rotation3DZ<double>(PI/i));
     }
   }
 

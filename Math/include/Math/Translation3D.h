@@ -14,12 +14,13 @@
 
 namespace Math {
 
+template <typename T>
 class Translation3D {
 
  public:
 
-  typedef PointXYZD vector_type;
-  typedef vector_type::scalar_type scalar_type;
+  typedef Point3D<T> vector_type;
+  typedef typename vector_type::scalar_type scalar_type;
 
  public:
 
@@ -27,14 +28,15 @@ class Translation3D {
 
   template <typename Vector>
   explicit Translation3D(const Vector& v) : m_trans(v) {}
-  Translation3D(double x, double y, double z) : m_trans(x,y,z) {}
+  Translation3D(T x, T y, T z) : m_trans(x,y,z) {}
 
   template <typename Point>
   Point operator*(const Point& point) const {
     return Point( point + m_trans );
   }
 
-  Translation3D operator*(const Translation3D& rhs) const {
+  template <typename T1>
+  Translation3D operator*(const Translation3D<T1>& rhs) const {
     return Translation3D( m_trans + rhs.m_trans );
   }
 
@@ -49,12 +51,14 @@ class Translation3D {
 
 
 
-  bool operator==(const Translation3D& rhs) 
+  template <typename T1>
+  bool operator==(const Translation3D<T1>& rhs) 
   {
     return m_trans == rhs.m_trans;
   }
 
-  bool operator!=(const Translation3D& rhs)
+  template <typename T1>
+  bool operator!=(const Translation3D<T1>& rhs)
   {
     return !operator==(rhs);
   }
@@ -72,20 +76,20 @@ class Translation3D {
 // some useful operations
 
 /// multiplication between a 3x3 matrix and a 3D translation 
-template <typename T>
-Translation3D operator*(const Matrix<T,3>& rot, 
-                        const Translation3D&  point) 
+template <typename T1, typename T2>
+Translation3D<T2> operator*(const Matrix<T1,3>& rot, 
+                            const Translation3D<T2>&  point) 
 {
-  typedef Translation3D::vector_type vector_type_;
-  double elements[3];
+  typedef typename Translation3D<T2>::vector_type vector_type_;
+  T2 elements[3];
   for (unsigned int row = 0; row < 3; ++row) {
-    double element = 0;
+    T2 element = 0;
     for (unsigned int i = 0; i < 3; ++i) {
       element+= rot(row,i) * point[i];
     }
     elements[row] = element; // dot prod of LHS row, RHS col
   }
-  return Translation3D(vector_type_(elements[0], elements[1], elements[2]));
+  return Translation3D<T2>(vector_type_(elements[0], elements[1], elements[2]));
 
 } 
 

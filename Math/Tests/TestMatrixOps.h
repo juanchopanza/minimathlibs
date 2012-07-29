@@ -24,7 +24,7 @@
 namespace
 {
 
-  typedef Math::Matrix<double,3,1> Point3D;
+  typedef Math::Matrix<double,3,1> Point;
 
   Math::Matrix<double, 3> rotation3DX(double angle)
   {
@@ -160,20 +160,20 @@ class TestMatrixOps : public CppUnit::TestFixture
 
  private:
 
-  Point3D p100;
-  Point3D p010;
-  Point3D p001;
-  Point3D p110;
-  Point3D p011;
-  Point3D p101;
-  Point3D p111;
-  Point3D pm100;
-  Point3D p0m10;
-  Point3D p00m1;
-  Point3D pmm1m10;
-  Point3D p0m1m1;
-  Point3D pm10m1;
-  Point3D pm1m1m1;
+  Point p100;
+  Point p010;
+  Point p001;
+  Point p110;
+  Point p011;
+  Point p101;
+  Point p111;
+  Point pm100;
+  Point p0m10;
+  Point p00m1;
+  Point pmm1m10;
+  Point p0m1m1;
+  Point pm10m1;
+  Point pm1m1m1;
 
 };
 

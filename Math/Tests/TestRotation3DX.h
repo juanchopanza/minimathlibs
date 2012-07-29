@@ -20,6 +20,8 @@
 #include "Defines.h"
 #include "TestRotation3DUtils.h"
 
+using namespace Math;
+
 class TestRotation3DX : public CppUnit::TestFixture {
 
   CPPUNIT_TEST_SUITE(TestRotation3DX);
@@ -39,29 +41,29 @@ class TestRotation3DX : public CppUnit::TestFixture {
 
   void testInstantiation()
   {
-    Rotation3DX rot1, rot2;
+    Rotation3DX<double> rot1, rot2;
   }
   void testDefaultEquality()
   {
-    CPPUNIT_ASSERT(Rotation3DX() == Rotation3DX());
+    CPPUNIT_ASSERT(Rotation3DX<double>() == Rotation3DX<double>());
   }
   void testCopyConstruction()
   {
-    Rotation3DX rot1;
-    Rotation3DX rot2(rot1);
+    Rotation3DX<double> rot1;
+    Rotation3DX<double> rot2(rot1);
     CPPUNIT_ASSERT(rot1 == rot2);
   }
 
   void testAssignment()
   {
-    Rotation3DX rot1, rot2;
+    Rotation3DX<double> rot1, rot2;
     rot2 = rot1;
     CPPUNIT_ASSERT(rot1 == rot2);
   }
 
   void testRotatePoint0()
   {
-    Rotation3DX rotx4(0);
+    Rotation3DX<double> rotx4(0);
     PointXYZD pTest = rotx4*p100;
     CPPUNIT_ASSERT(pTest == PointXYZD(1., 0., 0.));
 
@@ -74,7 +76,7 @@ class TestRotation3DX : public CppUnit::TestFixture {
 
   void testRotatePoint45()
   {
-    Rotation3DX rotx6(PI/4.); // 45 degree rotation about X
+    Rotation3DX<double> rotx6(PI/4.); // 45 degree rotation about X
     PointXYZD pTest = rotx6*p100;
     CPPUNIT_ASSERT(pTest == PointXYZD(1., 0., 0.));
 
@@ -87,7 +89,7 @@ class TestRotation3DX : public CppUnit::TestFixture {
 
   void testRotatePoint90()
   {
-    Rotation3DX rotx4(PI/2.); // 90 degree rotation about X
+    Rotation3DX<double> rotx4(PI/2.); // 90 degree rotation about X
     PointXYZD pTest = rotx4*p100;
     CPPUNIT_ASSERT(pTest == PointXYZD(1., 0., 0.));
 
@@ -100,7 +102,7 @@ class TestRotation3DX : public CppUnit::TestFixture {
 
   void testRotatePoint180()
   {
-    Rotation3DX rotx5(PI); // 180 degree rotation about X
+    Rotation3DX<double> rotx5(PI); // 180 degree rotation about X
 
     PointXYZD pTest = rotx5*p100;
     CPPUNIT_ASSERT(pTest == PointXYZD(1., 0., 0.));
@@ -114,12 +116,12 @@ class TestRotation3DX : public CppUnit::TestFixture {
 
   void testInverse()
   {
-    CPPUNIT_ASSERT(TestUtils::testInverse<Rotation3DX>());
+    CPPUNIT_ASSERT(TestUtils::testInverse<Rotation3DX<double> >());
   }
 
   void testInvert()
   {
-    CPPUNIT_ASSERT(TestUtils::testInvert<Rotation3DX>());
+    CPPUNIT_ASSERT(TestUtils::testInvert<Rotation3DX<double> >());
   }
 
 };
