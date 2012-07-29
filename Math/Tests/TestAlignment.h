@@ -45,9 +45,9 @@ void testTransformation(const T& transf)
   PointXYZDPair p2 = { {p001, pC} };
   std::tr1::array<PointXYZDPair, 3> pointPairs = { {p0, p1, p2} };
 
-  Transform3D<double> transf1 = transformation(pointPairs.begin(),
-                                       pointPairs.end(),
-                                       success);
+  Transform3D<double> transf1 = transformation<double>(pointPairs.begin(),
+                                                       pointPairs.end(),
+                                                       success);
 
   CPPUNIT_ASSERT(success);
   CPPUNIT_ASSERT(Math::equal(transf1*p100, pA, 64));

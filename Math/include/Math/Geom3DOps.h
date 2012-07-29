@@ -31,41 +31,41 @@ namespace Math {
 // implementation specific helpers
 namespace detail
 {
-template <typename P>
-Transform3D<double> transformation1(const P& pointPair)
+template <typename T, typename P>
+Transform3D<T> transformation1(const P& pointPair)
 {
-  return Transform3D<double>(Translation3D<double>(pointPair[1]-pointPair[0]));
+  return Transform3D<T>(Translation3D<T>(pointPair[1]-pointPair[0]));
 }
 
-template <typename P>
-Transform3D<double> transformation2(const P& pair0, const P& pair1, bool& success)
+template <typename T, typename P>
+Transform3D<T> transformation2(const P& pair0, const P& pair1, bool& success)
 {
   // direction vectors
-  PointXYZD v0 = pair1[0] - pair0[0]; // reference points
-  PointXYZD v1 = pair1[1] - pair0[1]; // measured points
+  Point3D<T> v0 = pair1[0] - pair0[0]; // reference points
+  Point3D<T> v1 = pair1[1] - pair0[1]; // measured points
 
-  Math::PointXYZD axis = Math::cross(v0, v1);
-  const double mag2Axis = Math::mag2(axis);
-  const double normalFactor2 = Math::mag2(v0)*Math::mag2(v1);
+  Math::Point3D<T> axis = Math::cross(v0, v1);
+  const T mag2Axis = Math::mag2(axis);
+  const T normalFactor2 = Math::mag2(v0)*Math::mag2(v1);
   if (normalFactor2 <=0.) {
     success = false;
-    return Transform3D<double>();
+    return Transform3D<T>();
   }
   const double sinAngle = std::sqrt(mag2Axis/normalFactor2);
   const double angle = std::asin(sinAngle);
-  Math::Translation3D<double> originInv(pair0[0]);
-  Math::Translation3D<double> origin(originInv.inverse());
-  Math::Transform3D<double> trans(Rotation3D<double>(Math::AxisAngle<double>(axis, angle)), 
-                            Math::Translation3D<double>(pair0[1]-pair0[0]));
-  return Transform3D<double>(originInv)*(trans*Transform3D<double>(origin));
+  Math::Translation3D<T> originInv(pair0[0]);
+  Math::Translation3D<T> origin(originInv.inverse());
+  Math::Transform3D<T> trans(Rotation3D<T>(Math::AxisAngle<T>(axis, angle)), 
+                            Math::Translation3D<T>(pair0[1]-pair0[0]));
+  return Transform3D<T>(originInv)*(trans*Transform3D<T>(origin));
 }
 
-template <typename IT>
-Transform3D<double> transformation3(IT begin, IT end, bool& success)
+template <typename T, typename IT>
+Transform3D<T> transformation3(IT begin, IT end, bool& success)
 {
 
-  Math::Matrix<double,4,3> ref; // 4x3 to allow for rotation + translation
-  Math::Matrix<double,3> meas;
+  Math::Matrix<T,4,3> ref; // 4x3 to allow for rotation + translation
+  Math::Matrix<T,3> meas;
 
   unsigned int index = 0;
 
@@ -79,12 +79,12 @@ Transform3D<double> transformation3(IT begin, IT end, bool& success)
     }
     ++index;
   }
-  Math::setRow(ref, PointXYZD(1,1,1), 3);
+  Math::setRow(ref, Point3D<T>(1,1,1), 3);
   
   // find rotation!
-  Matrix<double, 3, 4> rot = transformation(ref, meas, success);
+  Matrix<T, 3, 4> rot = transformation(ref, meas, success);
   
-  return success ? Transform3D<double>(rot) : Transform3D<double>();
+  return success ? Transform3D<T>(rot) : Transform3D<T>();
 
 }
 
@@ -142,15 +142,15 @@ Point3D<T, C> operator*(const Matrix<T,3,4>& rot,
 /// @return        : Transform3D with transformation. Identits transformation
 ///                  if procesure fails.
 ///
-template <typename IT>
-Transform3D<double> transformation(IT begin, IT end, bool& success)
+template <typename T, typename IT>
+Transform3D<T> transformation(IT begin, IT end, bool& success)
 {
   unsigned int length = std::distance(begin, end);
-  if (length == 3) return detail::transformation3(begin, end, success);
-  if (length == 2) return detail::transformation2(*begin, *(begin++), success);
-  if (length == 1) return detail::transformation1(*begin);
+  if (length == 3) return detail::transformation3<T>(begin, end, success);
+  if (length == 2) return detail::transformation2<T>(*begin, *(begin++), success);
+  if (length == 1) return detail::transformation1<T>(*begin);
   std::cerr << "Math::transformation only implemented for 1, 2 and 3 point systems. Received " << length <<" point pairs\n";
-  return Transform3D<double>();
+  return Transform3D<T>();
 }
 
 }
