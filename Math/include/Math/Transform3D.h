@@ -19,7 +19,10 @@ template <typename T>
 class Transform3D {
 
  public:
-  Transform3D() {}
+  Transform3D()
+  : 
+  m_mat(IdentityMatrix())
+  {}
 
   template <typename T1>
   Transform3D(const Rotation3D<T1>& rot) 

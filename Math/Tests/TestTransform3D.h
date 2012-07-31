@@ -33,6 +33,7 @@ class TestTransform3D : public CppUnit::TestFixture {
   CPPUNIT_TEST_SUITE(TestTransform3D);
   CPPUNIT_TEST(testInstantiation);
   CPPUNIT_TEST(testDefaultEquality);
+  CPPUNIT_TEST(testDefaultIsIdentity);
   CPPUNIT_TEST(testCopyConstruction);
   CPPUNIT_TEST(testAssignment);
   CPPUNIT_TEST(testTranslation);
@@ -70,13 +71,14 @@ class TestTransform3D : public CppUnit::TestFixture {
     p100 = PointXYZD(1,0,0);
     p010 = PointXYZD(0,1,0);
     p001 = PointXYZD(0,0,1);
+    p111 = PointXYZD(1,1,1);
     cos45 = std::sqrt(2)/2;
     PI = std::atan(1.0)*4;
   }
 
  private:
 
-  PointXYZD p100, p010, p001; // reference points 
+  PointXYZD p100, p010, p001, p111; // reference points 
   double cos45;
   double PI;
 
@@ -90,6 +92,15 @@ class TestTransform3D : public CppUnit::TestFixture {
   void testDefaultEquality()
   {
     CPPUNIT_ASSERT(Rotation3D<double>()==Rotation3D<double>());
+  }
+
+  void testDefaultIsIdentity()
+  {
+    Transform3D<double> t;
+    CPPUNIT_ASSERT(p100 == t*p100);
+    CPPUNIT_ASSERT(p010 == t*p010);
+    CPPUNIT_ASSERT(p001 == t*p001);
+    CPPUNIT_ASSERT(p111 == t*p111);
   }
 
   void testCopyConstruction()
