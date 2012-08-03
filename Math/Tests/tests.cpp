@@ -63,7 +63,7 @@ int main()
   CPPUNIT_NS::CompilerOutputter compilerOutput(&resultCollector, std::cerr);
   compilerOutput.write();
 
-  return resultCollector.wasSuccessful();
+  return resultCollector.wasSuccessful() ? 0 : 1;
 
 }
 
