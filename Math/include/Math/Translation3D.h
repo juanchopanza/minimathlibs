@@ -6,8 +6,8 @@
 //
 
 
-#ifndef MATH_TRANSLATION3D_H__
-#define MATH_TRANSLATION3D_H__
+#ifndef MATH_TRANSLATION3D_H_
+#define MATH_TRANSLATION3D_H_
 
 #include "Math/Point3D.h"
 #include "Math/Matrix.h"
@@ -96,4 +96,4 @@ Translation3D<T2> operator*(const Matrix<T1,3>& rot,
 
 }
 
-#endif // MATH_TRANSLATION3D_H__
+#endif // MATH_TRANSLATION3D_H_

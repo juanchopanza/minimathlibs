@@ -5,8 +5,8 @@
 // - see < http://opensource.org/licenses/BSD-2-Clause>
 //
 
-#ifndef TESTS_ROTATION3DY_H__
-#define TESTS_ROTATION3DY_H__
+#ifndef TESTS_ROTATION3DY_H_
+#define TESTS_ROTATION3DY_H_
 
 #include <iostream>
 #include <cmath>

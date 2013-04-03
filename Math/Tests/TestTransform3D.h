@@ -5,8 +5,8 @@
 // - see < http://opensource.org/licenses/BSD-2-Clause>
 //
 
-#ifndef TESTS_TRANSFORM3D_H__
-#define TESTS_TRANSFORM3D_H__
+#ifndef TESTS_TRANSFORM3D_H_
+#define TESTS_TRANSFORM3D_H_
 
 #include <iostream>
 #include <iomanip>

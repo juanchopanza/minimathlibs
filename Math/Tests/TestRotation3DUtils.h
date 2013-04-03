@@ -5,8 +5,8 @@
 // - see < http://opensource.org/licenses/BSD-2-Clause>
 //
 
-#ifndef TESTS_TESTROTATION3DUTILS_H__
-#define TESTS_TESTROTATION3DUTILS_H__
+#ifndef TESTS_TESTROTATION3DUTILS_H_
+#define TESTS_TESTROTATION3DUTILS_H_
 
 #include "Math/Point3D.h"
 #include "Math/Matrix.h"

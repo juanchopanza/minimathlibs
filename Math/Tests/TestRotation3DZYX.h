@@ -5,8 +5,8 @@
 // - see < http://opensource.org/licenses/BSD-2-Clause>
 //
 
-#ifndef TESTS_TESTROTATION3DZYX_H__
-#define TESTS_TESTROTATION3DZYX_H__
+#ifndef TESTS_TESTROTATION3DZYX_H_
+#define TESTS_TESTROTATION3DZYX_H_
 
 #include <iostream>
 #include <cmath>

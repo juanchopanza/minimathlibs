@@ -5,8 +5,8 @@
 // - see < http://opensource.org/licenses/BSD-2-Clause>
 //
 
-#ifndef TESTS_MATRIXOPS_H__
-#define TESTS_MATRIXOPS_H__
+#ifndef TESTS_MATRIXOPS_H_
+#define TESTS_MATRIXOPS_H_
 
 
 #include <cmath>

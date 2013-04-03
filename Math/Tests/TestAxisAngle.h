@@ -5,8 +5,8 @@
 // - see < http://opensource.org/licenses/BSD-2-Clause>
 //
 
-#ifndef TESTS_TESTAXISANGLE_H__
-#define TESTS_TESTAXISANGLE_H__
+#ifndef TESTS_TESTAXISANGLE_H_
+#define TESTS_TESTAXISANGLE_H_
 
 #include <iostream>
 #include <cmath>

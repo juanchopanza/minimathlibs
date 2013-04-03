@@ -7,8 +7,8 @@
 
 
 
-#ifndef MATH_COORDSYSTEM3D_H__
-#define MATH_COORDSYSTEM3D_H__
+#ifndef MATH_COORDSYSTEM3D_H_
+#define MATH_COORDSYSTEM3D_H_
 
 #include <ostream>
 #include "Math/Point3DOps.h"
@@ -116,4 +116,4 @@ std::ostream& operator << (std::ostream& out, const CoordSystemXYZ<T>& coords)
 
 } // namespace Math
 
-#endif // MATH_COORDSYSTEM3D_H__
+#endif // MATH_COORDSYSTEM3D_H_

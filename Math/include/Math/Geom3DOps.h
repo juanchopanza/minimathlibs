@@ -7,8 +7,8 @@
 
 
 
-#ifndef MATH_GEOM3DOPS_H__
-#define MATH_GEOM3DOPS_H__
+#ifndef MATH_GEOM3DOPS_H_
+#define MATH_GEOM3DOPS_H_
 
 #include <iterator>
 #include <iostream>

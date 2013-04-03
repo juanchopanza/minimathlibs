@@ -6,8 +6,8 @@
 //
 
 
-#ifndef MATH_MATRIX_H__
-#define MATH_MATRIX_H__
+#ifndef MATH_MATRIX_H_
+#define MATH_MATRIX_H_
 
 //
 // Simple class for 2D matrices
@@ -343,4 +343,4 @@ std::ostream& operator << (std::ostream& out, const Matrix<T,N1,N2>& m) {
 
 } // namespace Math
 
-#endif // MATH_MATRIX_H__
+#endif // MATH_MATRIX_H_

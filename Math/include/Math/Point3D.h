@@ -6,8 +6,8 @@
 //
 
 
-#ifndef MATH_POINT3D_H__
-#define MATH_POINT3D_H__
+#ifndef MATH_POINT3D_H_
+#define MATH_POINT3D_H_
 
 #include <cmath>
 #include <ostream>
@@ -157,4 +157,4 @@ typedef Point3D<float, CoordSystemXYZ> PointXYZF;
 
 } // namespace Math
 
-#endif // MATH_POINT3D_H__
+#endif // MATH_POINT3D_H_

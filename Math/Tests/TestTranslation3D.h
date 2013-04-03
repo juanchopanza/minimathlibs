@@ -5,8 +5,8 @@
 // - see < http://opensource.org/licenses/BSD-2-Clause>
 //
 
-#ifndef TESTS_TRANSLATION3D_H__
-#define TESTS_TRANSLATION3D_H__
+#ifndef TESTS_TRANSLATION3D_H_
+#define TESTS_TRANSLATION3D_H_
 
 #include <vector>
 #include <numeric>

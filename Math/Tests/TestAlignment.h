@@ -5,8 +5,8 @@
 // - see < http://opensource.org/licenses/BSD-2-Clause>
 //
 
-#ifndef TESTS_TESTALIGNMENT_H__
-#define TESTS_TESTALIGNMENT_H__
+#ifndef TESTS_TESTALIGNMENT_H_
+#define TESTS_TESTALIGNMENT_H_
 
 #include <iostream>
 #include <iomanip>
@@ -146,4 +146,4 @@ class TestAlignment : public CppUnit::TestFixture {
 
 };
 
-#endif // TESTS_TESTALIGNMENT_H__
+#endif // TESTS_TESTALIGNMENT_H_

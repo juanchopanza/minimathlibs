@@ -492,4 +492,4 @@ class Rotation3D {
 
 } // namespace Math
 
-#endif // MATH_ROTATION3D_H__
+#endif // MATH_ROTATION3D_H_

@@ -6,8 +6,8 @@
 //
 
 
-#ifndef MATH_TRANSFORM3D_H__
-#define MATH_TRANSFORM3D_H__
+#ifndef MATH_TRANSFORM3D_H_
+#define MATH_TRANSFORM3D_H_
 
 #include "Math/Rotation3D.h"
 #include "Math/Translation3D.h"
@@ -181,4 +181,4 @@ inline std::ostream& operator<<(std::ostream& out, const Transform3D<T>& t)
 
 }
 
-#endif // MATH_TRANSFORM3D_H__
+#endif // MATH_TRANSFORM3D_H_

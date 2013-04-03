@@ -6,8 +6,8 @@
 //
 
 
-#ifndef MATH_POINT3DOPS_H__
-#define MATH_POINT3DOPS_H__
+#ifndef MATH_POINT3DOPS_H_
+#define MATH_POINT3DOPS_H_
 
 #include <cmath>
 #include <limits>
@@ -75,4 +75,4 @@ typename P1::value_type dist2(const P1& p1, const P2& p2)
 
 }
 
-#endif // MATH_POINT3DOPS_H__
+#endif // MATH_POINT3DOPS_H_

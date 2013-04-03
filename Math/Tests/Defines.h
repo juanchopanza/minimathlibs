@@ -1,5 +1,5 @@
-#ifndef TESTS_DEFINES_H__
-#define TESTS_DEFINES_H__
+#ifndef TESTS_DEFINES_H_
+#define TESTS_DEFINES_H_
 
 //namespace 
 //{

@@ -6,8 +6,8 @@
 //
 
 
-#ifndef MATH_MATRIXOPS_H__
-#define MATH_MATRIXOPS_H__
+#ifndef MATH_MATRIXOPS_H_
+#define MATH_MATRIXOPS_H_
 
 #include <limits>
 
