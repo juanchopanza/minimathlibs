@@ -16,6 +16,11 @@
 
 #include "Math/CoordSystem3D.h"
 #include "Math/Point3DOps.h"
+#include "Math/Utils.h"
+
+#include <limits>
+#include <cmath>
+
 
 class TestCoordSystem3D : public CppUnit::TestFixture {
 
@@ -26,11 +31,30 @@ class TestCoordSystem3D : public CppUnit::TestFixture {
   CPPUNIT_TEST(testEquality);
   CPPUNIT_TEST(testInequality);
   CPPUNIT_TEST(testComponents);
+  CPPUNIT_TEST(testAccessX);
+  CPPUNIT_TEST(testAccessY);
+  CPPUNIT_TEST(testAccessZ);
+  CPPUNIT_TEST(testSetX);
+  CPPUNIT_TEST(testSetY);
+  CPPUNIT_TEST(testSetZ);
+  CPPUNIT_TEST(testPlusEquals);
+  CPPUNIT_TEST(testMinusEquals);
+  CPPUNIT_TEST(testTimesEqualsScalar);
+  CPPUNIT_TEST(testDivideEqualsScalar);
+
   CPPUNIT_TEST_SUITE_END();
 
- protected:
-
   typedef Math::CoordSystemXYZ<double> CoordsXYZ;
+  CoordsXYZ::value_type EPS; 
+
+ public:
+
+  void Setup()
+  {
+    EPS = std::numeric_limits<CoordsXYZ::value_type>::epsilon();
+  }
+
+ protected:
 
   void testInstantiation()
   {
@@ -72,6 +96,75 @@ class TestCoordSystem3D : public CppUnit::TestFixture {
     CPPUNIT_ASSERT( 1 == c1.x() );
     CPPUNIT_ASSERT( 2 == c1.y() );
     CPPUNIT_ASSERT( 3 == c1.z() );
+  }
+
+  void testAccessX()
+  {
+    CoordsXYZ c(10, 20, 30);
+    CPPUNIT_ASSERT( Math::compareWithTolerance(c.x(), 10., EPS));
+  }
+
+  void testAccessY()
+  {
+    CoordsXYZ c(10, 20, 30);
+    CPPUNIT_ASSERT( Math::compareWithTolerance(c.y(), 20., EPS));
+  }
+
+  void testAccessZ()
+  {
+    CoordsXYZ c(10, 20, 30);
+    CPPUNIT_ASSERT( Math::compareWithTolerance(c.z(), 30., EPS));
+  }
+ 
+  void testSetX()
+  {
+    CoordsXYZ c;
+    c.x(3.14);
+    CPPUNIT_ASSERT(  Math::compareWithTolerance(c.x(), 3.14, EPS) );
+  }
+
+ void testSetY()
+  {
+    CoordsXYZ c;
+    c.y(3.14);
+    CPPUNIT_ASSERT(  Math::compareWithTolerance(c.y(), 3.14, EPS) );
+  }
+
+
+  void testSetZ()
+  {
+    CoordsXYZ c;
+    c.z(3.14);
+    CPPUNIT_ASSERT(  Math::compareWithTolerance(c.z(), 3.14, EPS) );
+  }
+
+  void testPlusEquals()
+  {
+    CoordsXYZ pd(1, 2, 3);
+    pd += CoordsXYZ(10,20,30);
+    CPPUNIT_ASSERT( equal(pd,CoordsXYZ(11,22,33), 1));
+  }
+
+  void testMinusEquals()
+  {
+    CoordsXYZ pd(11, 22, 33);
+    pd -= CoordsXYZ(10,20,30);
+    CPPUNIT_ASSERT( equal(pd, CoordsXYZ(1,2,3), 1));
+  }
+
+  void testTimesEqualsScalar()
+  {
+    CoordsXYZ pd(1, 2, 3);
+    pd *= 11;
+    CPPUNIT_ASSERT( equal(pd, CoordsXYZ(11,22,33),1));
+
+  }
+
+  void testDivideEqualsScalar()
+  {
+    CoordsXYZ pd(100, 200, 300);
+    pd /= 10;
+    CPPUNIT_ASSERT( equal(pd, CoordsXYZ(10,20,30), 1) );
   }
 
 

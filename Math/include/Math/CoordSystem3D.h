@@ -34,10 +34,10 @@ class CoordSystemXYZ {
   const T& x() const { return m_data[0];}
   const T& y() const { return m_data[1];}
   const T& z() const { return m_data[2];}
-  T& x() { return m_data[0];}
-  T& y() { return m_data[1];}
-  T& z() { return m_data[2];}
 
+  CoordSystemXYZ& x(const value_type& x) { return setCoord_(0, x); }
+  CoordSystemXYZ& y(const value_type& y) { return setCoord_(1, y); }
+  CoordSystemXYZ& z(const value_type& z) { return setCoord_(2, z); }
 
   // cylindrical coordinate system
   // to-do: implement
@@ -59,6 +59,50 @@ class CoordSystemXYZ {
   // access to underlying data
   T& operator[](unsigned int i) {return m_data[i];}
   const T& operator[](unsigned int i) const {return m_data[i];}
+
+  // increment
+  template <typename Coords>
+  CoordSystemXYZ& operator += (const Coords& rhs) {
+    m_data[0] += rhs.x();
+    m_data[1] += rhs.y();
+    m_data[2] += rhs.z();
+    return *this;
+  }
+
+  // decrement
+  template <typename Coords>
+  CoordSystemXYZ& operator -= (const Coords& rhs) {
+    m_data[0] -= rhs.x();
+    m_data[1] -= rhs.y();
+    m_data[2] -= rhs.z();
+    return *this;
+  }
+
+  // scalar multiplication
+  template <typename Scalar>
+  CoordSystemXYZ& operator *= (Scalar rhs) {
+    m_data[0] *= rhs;
+    m_data[1] *= rhs;
+    m_data[2] *= rhs;
+    return *this;
+  }
+
+  // scalar division
+  template <typename Scalar>
+  CoordSystemXYZ& operator /= (Scalar rhs) {
+    m_data[0] /= rhs;
+    m_data[1] /= rhs;
+    m_data[2] /= rhs;
+    return *this;
+  }
+
+
+ private:
+  CoordSystemXYZ& setCoord_(unsigned int i, const value_type& val)
+  {
+    m_data[i] = val;
+    return *this;
+  }
 
  private:
   T m_data[3];

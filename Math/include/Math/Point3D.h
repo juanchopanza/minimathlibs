@@ -35,6 +35,23 @@ class Point3D {
   T y() const { return m_coords.y();}
   T z() const { return m_coords.z();}
 
+  Point3D& x(const value_type& x) 
+  { 
+    m_coords.x(x);
+    return *this;
+  }
+
+  Point3D& y(const value_type& y) 
+  { 
+    m_coords.y(y);
+    return *this;
+  }
+  Point3D& z(const value_type& z) 
+  { 
+    m_coords.z(z);
+    return *this;
+  }
+
   // cylindrical coordinate system
   // to-do: implement
   T r() const { return m_coords.r();}
@@ -62,18 +79,14 @@ class Point3D {
   // increment
   template <typename Coords>
   Point3D& operator += (const Coords& rhs) {
-    m_coords.x() += rhs.x();
-    m_coords.y() += rhs.y();
-    m_coords.z() += rhs.z();
+    m_coords += rhs;
     return *this;
   }
 
   // decrement
   template <typename Coords>
   Point3D& operator -= (const Coords& rhs) {
-    m_coords.x() -= rhs.x();
-    m_coords.y() -= rhs.y();
-    m_coords.z() -= rhs.z();
+    m_coords -= rhs;
     return *this;
   }
 
@@ -90,24 +103,19 @@ class Point3D {
 
   template <typename Scalar>
   Point3D& operator *= (Scalar rhs) {
-    m_coords.x() *= rhs;
-    m_coords.y() *= rhs;
-    m_coords.z() *= rhs;
+    m_coords *= rhs;
     return *this;
   }
 
   template <typename Scalar>
   Point3D& operator /= (Scalar rhs) {
-    m_coords.x() /= rhs;
-    m_coords.y() /= rhs;
-    m_coords.z() /= rhs;
+    m_coords /= rhs;
     return *this;
   }
 
   // access to underlying data
   T& operator[](unsigned int i) {return m_coords[i];}
   const T& operator[](unsigned int i) const {return m_coords[i];}
-
 
  private:
   CoordSystem<T> m_coords;

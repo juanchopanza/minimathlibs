@@ -8,16 +8,15 @@
 #ifndef TESTS_POINT3D_H__
 #define TESTS_POINT3D_H__
 
-
-
-#include <iostream>
-
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
 
 #include "Math/Point3D.h"
 #include "Math/Point3DOps.h"
-
+#include "Math/Utils.h" // for FP comparisons
+#include <iostream>
+#include <limits>
+#include <cmath>
 
 class TestPoint3D : public CppUnit::TestFixture {
 
@@ -27,6 +26,13 @@ class TestPoint3D : public CppUnit::TestFixture {
   CPPUNIT_TEST(testAssignment);
   CPPUNIT_TEST(testEquality);
   CPPUNIT_TEST(testInequality);
+  CPPUNIT_TEST(testCloseInequality);
+  CPPUNIT_TEST(testAccessX);
+  CPPUNIT_TEST(testAccessY);
+  CPPUNIT_TEST(testAccessZ);
+  CPPUNIT_TEST(testSetX);
+  CPPUNIT_TEST(testSetY);
+  CPPUNIT_TEST(testSetZ);
   CPPUNIT_TEST(testPlusEquals);
   CPPUNIT_TEST(testMinusEquals);
   CPPUNIT_TEST(testTimesEqualsScalar);
@@ -37,6 +43,15 @@ class TestPoint3D : public CppUnit::TestFixture {
   CPPUNIT_TEST(testDistanceSquared);
   CPPUNIT_TEST(testDotProduct);
   CPPUNIT_TEST_SUITE_END();
+
+  Math::PointXYZD::value_type EPS; 
+
+ public:
+
+  void Setup()
+  {
+    EPS = std::numeric_limits<Math::PointXYZD::value_type>::epsilon();
+  }
 
  protected:
 
@@ -61,6 +76,52 @@ class TestPoint3D : public CppUnit::TestFixture {
     CPPUNIT_ASSERT( pd1 != pd2);
   }
 
+  void testCloseInequality()
+  {
+    Math::PointXYZD pd1(10, 20, 30);
+    Math::PointXYZD pd2(10.00001,20,30);
+    CPPUNIT_ASSERT( pd1 != pd2);
+  }
+
+  void testAccessX()
+  {
+    Math::PointXYZD pd1(10, 20, 30);
+    CPPUNIT_ASSERT( Math::compareWithTolerance(pd1.x(), 10., EPS));
+  }
+ 
+  void testAccessY()
+  {
+    Math::PointXYZD pd1(10, 20, 30);
+    CPPUNIT_ASSERT( Math::compareWithTolerance(pd1.y(), 20., EPS) );
+  }
+
+ void testAccessZ()
+  {
+    Math::PointXYZD pd1(10, 20, 30);
+    CPPUNIT_ASSERT( Math::compareWithTolerance(pd1.z(), 30., EPS) );
+  }
+
+  void testSetX()
+  {
+    Math::PointXYZD pd1;
+    pd1.x(3.14);
+    CPPUNIT_ASSERT( Math::compareWithTolerance(pd1.x(), 3.14, EPS) );
+  }
+  
+  void testSetY()
+  {
+    Math::PointXYZD pd1;
+    pd1.y(3.14);
+    CPPUNIT_ASSERT(  Math::compareWithTolerance(pd1.y(), 3.14, EPS) );
+  }
+
+  void testSetZ()
+  {
+    Math::PointXYZD pd1;
+    pd1.z(3.14);
+    CPPUNIT_ASSERT(  Math::compareWithTolerance(pd1.z(), 3.14, EPS) );
+  }
+ 
   void testCopyConstruction() 
   {
     Math::PointXYZD pd1(1,2,3);
