@@ -7,5 +7,5 @@
 
 INCLUDEDIR = $(PWD)/include
 CPPFLAGS = -I$(INCLUDEDIR)
-CXXFLAGS = -Wall -Wextra -pedantic-errors -O2 -g
+CXXFLAGS = -Wall -Wextra -Wconversion -pedantic-errors -O2 -g
 CXX = /usr/bin/g++
