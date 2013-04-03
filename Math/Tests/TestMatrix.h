@@ -5,8 +5,8 @@
 // - see < http://opensource.org/licenses/BSD-2-Clause>
 //
 
-#ifndef TESTS_MATRIX_H__
-#define TESTS_MATRIX_H__
+#ifndef TESTS_MATRIX_H_
+#define TESTS_MATRIX_H_
 
 
 #include <cmath>
@@ -18,6 +18,7 @@
 #include <cppunit/extensions/HelperMacros.h>
 
 #include "Math/Matrix.h"
+#include "Math/Utils.h"
 
 namespace 
 {
@@ -39,6 +40,13 @@ bool valueEquality(const M& m,
     }
   }
   return true;
+}
+
+// test if two elements are within epsilon of each other
+template <typename T>
+bool valueEquality(const T& lhs, const T& rhs)
+{
+  return std::abs(rhs-lhs) < std::numeric_limits<T>::epsilon();
 }
 
 // test if a matrix is an identity matrix
@@ -234,7 +242,7 @@ class TestMatrix : public CppUnit::TestFixture
     }
     m += 100;
     for (unsigned int i = 0; i< m.size(); ++i) {
-      CPPUNIT_ASSERT(m[i] == i + 100);
+      CPPUNIT_ASSERT(valueEquality(m[i], M4x3::value_type(i) + 100));
     }
   }
 
@@ -246,7 +254,7 @@ class TestMatrix : public CppUnit::TestFixture
     }
     m -= 100;
     for (unsigned int i = 0; i< m.size(); ++i) {
-      CPPUNIT_ASSERT(m[i] == M4x3::value_type(i) - 100);
+      CPPUNIT_ASSERT(valueEquality(m[i], M4x3::value_type(i) - 100.));
     }
   }
    
@@ -259,7 +267,7 @@ class TestMatrix : public CppUnit::TestFixture
     M3x3 m2(10);
     m1 += m2;
     for (unsigned int i = 0; i< m1.size(); ++i) {
-      CPPUNIT_ASSERT(m1[i] == i + 10);
+      CPPUNIT_ASSERT(valueEquality(m1[i], M3x3::value_type(i) + 10));
     }
 
   }
@@ -273,7 +281,7 @@ class TestMatrix : public CppUnit::TestFixture
     M3x3 m2(10);
     m1 -= m2;
     for (unsigned int i = 0; i< m1.size(); ++i) {
-      CPPUNIT_ASSERT(m1[i] == 10*(int(i) -1));
+      CPPUNIT_ASSERT(valueEquality(m1[i], M3x3::value_type(10)*(int(i) -1) ));
     }
   }
 
@@ -285,7 +293,7 @@ class TestMatrix : public CppUnit::TestFixture
     }
     m *= 100;
     for (unsigned int i = 0; i< m.size(); ++i) {
-      CPPUNIT_ASSERT(m[i] == i * 100);
+      CPPUNIT_ASSERT(valueEquality(m[i], M4x3::value_type(i) * 100));
     }
   }
 
@@ -297,7 +305,7 @@ class TestMatrix : public CppUnit::TestFixture
     }
     m /= 100;
     for (unsigned int i = 0; i< m.size(); ++i) {
-      CPPUNIT_ASSERT(m[i] == i * 10);
+      CPPUNIT_ASSERT(valueEquality(m[i], M4x4::value_type(i) * 10));
     }
   }
 
@@ -358,7 +366,7 @@ class TestMatrix : public CppUnit::TestFixture
     {
       for (unsigned int c = 0; c < m.cols(); ++c)
       {
-        CPPUNIT_ASSERT(m(r,c)==mT(c,r));
+        CPPUNIT_ASSERT(valueEquality(m(r,c), mT(c,r)));
       }
     }
   }

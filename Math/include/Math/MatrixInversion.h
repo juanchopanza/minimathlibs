@@ -6,9 +6,10 @@
 //
 
 
-#ifndef MATH_MATRIXINVERSION_H__
-#define MATH_MATRIXINVERSION_H__
+#ifndef MATH_MATRIXINVERSION_H_
+#define MATH_MATRIXINVERSION_H_
 
+#include "Math/Utils.h"
 
 //
 // functor to invert a matrix. The idea is that we specialize this for
@@ -50,7 +51,7 @@ class MatrixInvertor<T, 2, 2> {
   {
     typedef typename M::value_type value_type;
     value_type det = mat(0,0)*mat(1,1) - mat(0,1)*mat(1,0);
-    if (det == value_type()) 
+    if (compareWithTolerance(det, value_type(), std::numeric_limits<value_type>::epsilon())) 
     {
       success = false;
       return mat;
@@ -79,7 +80,7 @@ class MatrixInvertor<T, 3, 3> {
 
     value_type det = a*mat(0,0) + b*mat(0,1) + c*mat(0,2);
 
-    if (det == value_type()) 
+    if (compareWithTolerance(det, value_type(), std::numeric_limits<value_type>::epsilon())) 
     {
       success = false;
       return mat;

@@ -6,12 +6,13 @@
 //
 
 
-#ifndef MATH_ROTATION3D_H__
-#define MATH_ROTATION3D_H__
+#ifndef MATH_ROTATION3D_H_
+#define MATH_ROTATION3D_H_
 
 #include "Math/Point3D.h"
 #include "Math/Matrix.h"
 #include "Math/MatrixOps.h"
+#include "Math/Utils.h"
 #include <cmath>
 
 namespace Math {
@@ -140,7 +141,8 @@ class AxisAngleBase {
   T sinAlpha() const { return m_sin; };
 
   bool operator==(const AxisAngleBase& rhs) const {
-    return (m_sin == rhs.sinAlpha() && m_cos == rhs.cosAlpha());
+    return (compareWithTolerance(m_sin, rhs.sinAlpha(), T()) && 
+            compareWithTolerance(m_cos, rhs.cosAlpha(), T()));
   }
   AxisAngleBase& invert(bool& success)
   {

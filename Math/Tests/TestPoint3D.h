@@ -5,8 +5,8 @@
 // - see < http://opensource.org/licenses/BSD-2-Clause>
 //
 
-#ifndef TESTS_POINT3D_H__
-#define TESTS_POINT3D_H__
+#ifndef TESTS_POINT3D_H_
+#define TESTS_POINT3D_H_
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
@@ -181,56 +181,56 @@ class TestPoint3D : public CppUnit::TestFixture {
 
   void testMagnitudeSquared()
   {
-    CPPUNIT_ASSERT(Math::mag2(Math::PointXYZD(1,1,1)) == 3.);
-    CPPUNIT_ASSERT(Math::mag2(Math::PointXYZD(5,5,5)) == 75.);
-    CPPUNIT_ASSERT(Math::mag2(Math::PointXYZD(5,0,0)) == 25.);
-    CPPUNIT_ASSERT(Math::mag2(Math::PointXYZD(0,5,0)) == 25.);
-    CPPUNIT_ASSERT(Math::mag2(Math::PointXYZD(0,0,5)) == 25.);
-    CPPUNIT_ASSERT(Math::mag2(Math::PointXYZD(-5,0,5)) == 50.);
+    CPPUNIT_ASSERT(Math::compareWithTolerance(Math::mag2(Math::PointXYZD(1,1,1)), 3., EPS));
+    CPPUNIT_ASSERT(Math::compareWithTolerance(Math::mag2(Math::PointXYZD(5,5,5)), 75., EPS));
+    CPPUNIT_ASSERT(Math::compareWithTolerance(Math::mag2(Math::PointXYZD(5,0,0)), 25., EPS));
+    CPPUNIT_ASSERT(Math::compareWithTolerance(Math::mag2(Math::PointXYZD(0,5,0)), 25., EPS));
+    CPPUNIT_ASSERT(Math::compareWithTolerance(Math::mag2(Math::PointXYZD(0,0,5)), 25., EPS));
+    CPPUNIT_ASSERT(Math::compareWithTolerance(Math::mag2(Math::PointXYZD(-5,0,5)), 50., EPS));
   }
 
   void testDistanceSquared()
   {
-    CPPUNIT_ASSERT(Math::dist2(Math::PointXYZD(1,1,1),
-                               Math::PointXYZD(1,1,1)) == 0.);
-    CPPUNIT_ASSERT(Math::dist2(Math::PointXYZD(1,1,1),
-                               Math::PointXYZD(0,0,0)) == 3.);
-    CPPUNIT_ASSERT(Math::dist2(Math::PointXYZD(1,1,0),
-                               Math::PointXYZD(0,0,0)) == 2.);
-    CPPUNIT_ASSERT(Math::dist2(Math::PointXYZD(1,0,1),
-                               Math::PointXYZD(0,0,0)) == 2.);
-    CPPUNIT_ASSERT(Math::dist2(Math::PointXYZD(1,0,0),
-                               Math::PointXYZD(0,0,0)) == 1.);
-    CPPUNIT_ASSERT(Math::dist2(Math::PointXYZD(0,1,0),
-                               Math::PointXYZD(0,0,0)) == 1.);
-    CPPUNIT_ASSERT(Math::dist2(Math::PointXYZD(0,0,1),
-                               Math::PointXYZD(0,0,0)) == 1.);
-    CPPUNIT_ASSERT(Math::dist2(Math::PointXYZD(1,0,0),
-                               Math::PointXYZD(-1,0,0)) == 4.);
-    CPPUNIT_ASSERT(Math::dist2(Math::PointXYZD(1,1,1),
-                               Math::PointXYZD(-1,-1,-1)) == 12.);
+    CPPUNIT_ASSERT(Math::compareWithTolerance(Math::dist2(Math::PointXYZD(1,1,1),
+                                                          Math::PointXYZD(1,1,1)), 0., EPS));
+    CPPUNIT_ASSERT(Math::compareWithTolerance(Math::dist2(Math::PointXYZD(1,1,1),
+                                                          Math::PointXYZD(0,0,0)), 3., EPS));
+    CPPUNIT_ASSERT(Math::compareWithTolerance(Math::dist2(Math::PointXYZD(1,1,0),
+                                                          Math::PointXYZD(0,0,0)), 2., EPS));
+    CPPUNIT_ASSERT(Math::compareWithTolerance(Math::dist2(Math::PointXYZD(1,0,1),
+                                                          Math::PointXYZD(0,0,0)), 2., EPS));
+    CPPUNIT_ASSERT(Math::compareWithTolerance(Math::dist2(Math::PointXYZD(1,0,0),
+                                                          Math::PointXYZD(0,0,0)), 1., EPS));
+    CPPUNIT_ASSERT(Math::compareWithTolerance(Math::dist2(Math::PointXYZD(0,1,0),
+                                                          Math::PointXYZD(0,0,0)), 1., EPS));
+    CPPUNIT_ASSERT(Math::compareWithTolerance(Math::dist2(Math::PointXYZD(0,0,1),
+                                                          Math::PointXYZD(0,0,0)), 1., EPS));
+    CPPUNIT_ASSERT(Math::compareWithTolerance(Math::dist2(Math::PointXYZD(1,0,0),
+                                                          Math::PointXYZD(-1,0,0)), 4., EPS));
+    CPPUNIT_ASSERT(Math::compareWithTolerance(Math::dist2(Math::PointXYZD(1,1,1),
+                                                          Math::PointXYZD(-1,-1,-1)), 12., EPS));
   }
 
   void testDotProduct()
   {
-    CPPUNIT_ASSERT(3 == Math::dot(Math::PointXYZD(1,1,1),
-                                  Math::PointXYZD(1,1,1)));
+    CPPUNIT_ASSERT(Math::compareWithTolerance(3., Math::dot(Math::PointXYZD(1,1,1),
+                                                           Math::PointXYZD(1,1,1)), EPS));
     // parallel opposite direction
-    CPPUNIT_ASSERT(-3 == Math::dot(Math::PointXYZD(1,1,1),
-                                   Math::PointXYZD(-1,-1,-1)));
+    CPPUNIT_ASSERT(Math::compareWithTolerance(-3., Math::dot(Math::PointXYZD(1,1,1),
+                                                            Math::PointXYZD(-1,-1,-1)), EPS));
     // orthoginal
-    CPPUNIT_ASSERT( 0 == Math::dot(Math::PointXYZD(1,0,0),
-                                   Math::PointXYZD(0,1,0)));
-    CPPUNIT_ASSERT( 0 == Math::dot(Math::PointXYZD(1,0,0),
-                                   Math::PointXYZD(0,0,1))); 
-    CPPUNIT_ASSERT( 0 == Math::dot(Math::PointXYZD(0,1,0),
-                                   Math::PointXYZD(1,0,0))); 
-    CPPUNIT_ASSERT( 0 == Math::dot(Math::PointXYZD(0,1,0),
-                                   Math::PointXYZD(0,0,1))); 
-    CPPUNIT_ASSERT( 0 == Math::dot(Math::PointXYZD(0,0,1),
-                                   Math::PointXYZD(1,0,0))); 
-    CPPUNIT_ASSERT( 0 == Math::dot(Math::PointXYZD(0,0,1),
-                                   Math::PointXYZD(0,1,0))); 
+    CPPUNIT_ASSERT(Math::compareWithTolerance(0., Math::dot(Math::PointXYZD(1,0,0),
+                                                           Math::PointXYZD(0,1,0)), EPS));
+    CPPUNIT_ASSERT(Math::compareWithTolerance(0., Math::dot(Math::PointXYZD(1,0,0),
+                                                           Math::PointXYZD(0,0,1)), EPS)); 
+    CPPUNIT_ASSERT(Math::compareWithTolerance(0., Math::dot(Math::PointXYZD(0,1,0),
+                                                           Math::PointXYZD(1,0,0)), EPS)); 
+    CPPUNIT_ASSERT(Math::compareWithTolerance(0., Math::dot(Math::PointXYZD(0,1,0),
+                                                           Math::PointXYZD(0,0,1)), EPS)); 
+    CPPUNIT_ASSERT(Math::compareWithTolerance(0., Math::dot(Math::PointXYZD(0,0,1),
+                                                           Math::PointXYZD(1,0,0)), EPS)); 
+    CPPUNIT_ASSERT(Math::compareWithTolerance(0., Math::dot(Math::PointXYZD(0,0,1),
+                                                           Math::PointXYZD(0,1,0)), EPS)); 
   }
 
 };

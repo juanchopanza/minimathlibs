@@ -5,8 +5,8 @@
 // - see < http://opensource.org/licenses/BSD-2-Clause>
 //
 
-#ifndef TESTS_COORDSYSTEM3D_H__
-#define TESTS_COORDSYSTEM3D_H__
+#ifndef TESTS_COORDSYSTEM3D_H_
+#define TESTS_COORDSYSTEM3D_H_
 
 
 #include <iostream>
@@ -93,9 +93,9 @@ class TestCoordSystem3D : public CppUnit::TestFixture {
 
   void testComponents()  {
     CoordsXYZ c1(1,2,3);
-    CPPUNIT_ASSERT( 1 == c1.x() );
-    CPPUNIT_ASSERT( 2 == c1.y() );
-    CPPUNIT_ASSERT( 3 == c1.z() );
+    CPPUNIT_ASSERT( Math::compareWithTolerance(1., c1.x(), EPS) );
+    CPPUNIT_ASSERT( Math::compareWithTolerance(2., c1.y(), EPS) );
+    CPPUNIT_ASSERT( Math::compareWithTolerance(3., c1.z(), EPS) );
   }
 
   void testAccessX()
