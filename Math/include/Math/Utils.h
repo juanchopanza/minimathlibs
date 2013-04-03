@@ -6,12 +6,22 @@
 //
 
 
-#ifndef MATH_UTILS_H__
-#define MATH_UTILS_H__
+#ifndef MATH_UTILS_H_
+#define MATH_UTILS_H_
 
+#include <cstdlib>
+#include <cmath>
 
 namespace Math {
  
+template <typename T>
+bool compareWithTolerance(const T& rhs, const T& lhs, const T& tol)
+{
+  using std::abs;
+  return abs(rhs-lhs) <= tol; // <= to allow for 0 tolerance.
+}
+
+
 template <typename T>
 struct CompareWithTolerance
 {
@@ -19,12 +29,13 @@ struct CompareWithTolerance
   CompareWithTolerance(T tolerance) : tol_(tolerance) {}
   bool operator()(const T& lhs, const T& rhs) const
   {
-    return std::abs(rhs-lhs) <= tol_; // <= to allow for 0 tolerance.
+    return compareWithTolerance(rhs, lhs, tol_);  
   }
  private:
   T tol_;
 };
 
+
 } // namespace Math
 
-#endif // MATH_UTILS_H__
+#endif // MATH_UTILS_H_
