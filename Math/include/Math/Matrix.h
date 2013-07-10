@@ -254,18 +254,22 @@ Matrix<T,N1,N2> operator*(const ZeroMatrix&, const Matrix<T,N1,N2>&)
 
 // addition
 template <typename T, unsigned int N1, unsigned int N2>
-Matrix<T,N1,N2> operator+(Matrix<T,N1,N2> lhs, 
+Matrix<T,N1,N2> operator+(const Matrix<T,N1,N2>& lhs, 
                           const Matrix<T,N1,N2>& rhs)
 {
-  return lhs += rhs;
+  Matrix<T,N1,N2> mat = lhs;
+  mat += rhs;
+  return mat;
 }
 
 // subtraction
 template <typename T, unsigned int N1, unsigned int N2>
-Matrix<T,N1,N2> operator-(Matrix<T,N1,N2> lhs, 
+Matrix<T,N1,N2> operator-(const Matrix<T,N1,N2>& lhs, 
                           const Matrix<T,N1,N2>& rhs)
 {
-  return lhs-=rhs;
+  Matrix<T,N1,N2> mat = lhs;
+  mat -= rhs;
+  return mat;
 }
 
 // ============================================================================
@@ -273,46 +277,57 @@ Matrix<T,N1,N2> operator-(Matrix<T,N1,N2> lhs,
 
 // addition
 template <typename T1, unsigned int N1, unsigned int N2, typename T2>
-Matrix<T1,N1,N2> operator+(Matrix<T1,N1,N2> lhs, const T2& scalar) 
+Matrix<T1,N1,N2> operator+(const Matrix<T1,N1,N2>& lhs, const T2& scalar) 
 {
-  return lhs+=scalar;
+  Matrix<T1,N1,N2> mat = lhs;
+  mat += scalar;
+  return mat;
 }
 
 template <typename T1, unsigned int N1, unsigned int N2, typename T2>
-Matrix<T1,N1,N2> operator+(const T2& scalar, Matrix<T1,N1,N2> rhs)
+Matrix<T1,N1,N2> operator+(const T2& scalar, const Matrix<T1,N1,N2>& rhs)
 {
-  return rhs += scalar;
+  Matrix<T1,N1,N2> mat = rhs;
+  mat += scalar;
+  return mat;
 }
 // subtraction
 template <typename T1, unsigned int N1, unsigned int N2, typename T2>
-Matrix<T1,N1,N2> operator-(Matrix<T1,N1,N2> lhs, const T2& scalar) 
+Matrix<T1,N1,N2> operator-(const Matrix<T1,N1,N2>& lhs, const T2& scalar) 
 {
-  return lhs-=scalar;
+  Matrix<T1,N1,N2> mat = lhs;
+  mat -= scalar;
+  return mat;
 }
 
 template <typename T1, unsigned int N1, unsigned int N2, typename T2>
-Matrix<T1,N1,N2> operator-(const T2& scalar, Matrix<T1,N1,N2> rhs)
+Matrix<T1,N1,N2> operator-(const T2& scalar, const Matrix<T1,N1,N2>& rhs)
 {
-  return Matrix<T1,N1,N2>(scalar) - rhs;
+  Matrix<T1,N1,N2> mat = Matrix<T1,N1,N2>(scalar) - rhs;
+  return mat;
 }
 // multiplication
 template <typename T1, unsigned int N1, unsigned int N2, typename T2>
-Matrix<T1,N1,N2> operator*(Matrix<T1,N1,N2> lhs, const T2& scalar) 
+Matrix<T1,N1,N2> operator*(const Matrix<T1,N1,N2>& lhs, const T2& scalar) 
 {
-  return lhs*=scalar;
+  Matrix<T1,N1,N2> mat = lhs;
+  mat *= scalar;
+  return mat;
 }
 
 template <typename T1, unsigned int N1, unsigned int N2, typename T2>
-Matrix<T1,N1,N2> operator*(const T2& scalar, Matrix<T1,N1,N2> rhs)
+Matrix<T1,N1,N2> operator*(const T2& scalar, const Matrix<T1,N1,N2>& rhs)
 {
-  return rhs *= scalar;
+  return rhs * scalar;
 }
 
 // division: only LHS matrix makes sense
 template <typename T1, unsigned int N1, unsigned int N2, typename T2>
-Matrix<T1,N1,N2> operator/(Matrix<T1,N1,N2> lhs, const T2& scalar) 
+Matrix<T1,N1,N2> operator/(const Matrix<T1,N1,N2>& lhs, const T2& scalar) 
 {
-  return lhs/=scalar;
+  Matrix<T1,N1,N2> mat = lhs;
+  mat /= scalar;
+  return mat;
 }
 
 

@@ -420,9 +420,10 @@ class Rotation3D {
   }
 
   // multiplication by another Rotation3D
-  Rotation3D operator*(Rotation3D rhs) {
-    rhs.m_rot = m_rot*rhs.m_rot;
-    return rhs;
+  Rotation3D operator*(const Rotation3D& rhs) {
+    Rotation3D rot = rhs;
+    rot.m_rot = m_rot*rhs.m_rot;
+    return rot;
   }
 
   // multiplication by another Rotation3DX

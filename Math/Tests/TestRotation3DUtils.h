@@ -52,7 +52,7 @@ bool isInverse(const R& rot, const R& rotInv)
   PointXYZD ref(111.,222.,333.);
   PointXYZD pTest = rot*ref;
   pTest = rotInv*pTest;
-  bool test = equal(pTest, ref, 500);
+  bool test = equal(pTest, ref, 750);
   if (!test) 
   {
     std::cout << "\ntestInverse p: " << ref

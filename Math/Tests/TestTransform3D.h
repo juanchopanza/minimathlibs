@@ -448,7 +448,7 @@ class TestTransform3D : public CppUnit::TestFixture {
        // check the resulting transformation is equivalent to the
        // product of transformations, by applying to the random points.
 
-        CPPUNIT_ASSERT(Math::equal(p0,p1, 1024));
+        CPPUNIT_ASSERT(Math::equal(p0,p1, 2048));
       }
     }
   }

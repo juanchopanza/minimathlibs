@@ -382,7 +382,7 @@ class TestMatrix : public CppUnit::TestFixture
       bool success = true;
       M3x4 mInv = Math::leftInverse(m, success);
       CPPUNIT_ASSERT(success);
-      CPPUNIT_ASSERT(Math::equal(mInv*m, M3x3(Math::IdentityMatrix()), 16));
+      CPPUNIT_ASSERT(Math::equal(mInv*m, M3x3(Math::IdentityMatrix()), 128));
     }
   }
 
@@ -397,7 +397,7 @@ class TestMatrix : public CppUnit::TestFixture
       bool success = true;
       M3x3 mInv = m.inverse(success);
       CPPUNIT_ASSERT(success);
-      CPPUNIT_ASSERT(Math::equal(mInv*m, M3x3(Math::IdentityMatrix()), 16));
+      CPPUNIT_ASSERT(Math::equal(mInv*m, M3x3(Math::IdentityMatrix()), 128));
     }
   }
 

@@ -50,8 +50,8 @@ void testTransformation(const T& transf)
                                                        success);
 
   CPPUNIT_ASSERT(success);
-  CPPUNIT_ASSERT(Math::equal(transf1*p100, pA, 64));
-  CPPUNIT_ASSERT(Math::equal(transf1*p010, pB, 64));
+  CPPUNIT_ASSERT(Math::equal(transf1*p100, pA, 128));
+  CPPUNIT_ASSERT(Math::equal(transf1*p010, pB, 128));
   CPPUNIT_ASSERT(Math::equal(transf1*p001, pC, 64));
 
 }
