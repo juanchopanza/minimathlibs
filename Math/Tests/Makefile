@@ -9,12 +9,13 @@ include ../rules.mk
 LDFLAGS += -lcppunit
 HEADERS = $(wildcard $(INCLUDEDIR)/Math/*.h)
 TESTDIR = .
-BUILDDIR = $(TESTDIR)/Build
-TESTBIN = $(TESTDIR)/Build
+BUILDDIR = $(TESTDIR)/.build
+TESTBIN = $(TESTDIR)/.build
 TESTSRC = $(wildcard $(TESTDIR)/*.cpp)
-TESTOBJSRC = $(wildcard $(TESTDIR)/objs/*.cpp)
+TESTDUMMYOBJSRC = $(wildcard $(TESTDIR)/objs/*.cpp)
 TESTFIXTURES = $(wildcard $(TESTDIR)/*.h)
-TESTOBJS = $(patsubst $(TESTDIR)/objs/%.cpp, $(TESTBIN)/%.o, $(TESTOBJSRC))
+TESTDUMMYOBJS = $(patsubst $(TESTDIR)/objs/%.cpp, $(TESTBIN)/%.o, $(TESTDUMMYOBJSRC))
+TESTOBJS = $(patsubst $(TESTDIR)/%.cpp, $(TESTBIN)/%.o, $(TESTSRC))
 TESTS = $(patsubst $(TESTDIR)/%.cpp, $(TESTBIN)/%, $(TESTSRC))
 
 list :
@@ -35,16 +36,22 @@ tests : $(TESTBIN)/tests
 
 obj_main : $(TESTBIN)/obj_main
 
+dummy_objs : $(TESTDUMMYOBJS)
+
 objs : $(TESTOBJS)
 
-$(TESTBIN)/tests : tests.cpp $(TESTFIXTURES) $(HEADERS) $(TESTBIN)/.f
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $< $(LDFLAGS) -o $@
+$(TESTBIN)/tests : objs
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(TESTOBJS) $(LDFLAGS) -o $@
 
 $(TESTBIN)/obj_main : obj_main.cpp $(TESTOBJS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(TESTOBJS) $< $(LDFLAGS) -o $@
 
-$(TESTBIN)/%.o : $(TESTDIR)/objs/%.cpp $(HEADERS) $(TESTBIN)/.f
+#$(TESTBIN)/%.o : $(TESTDIR)/objs/%.cpp $(HEADERS) $(TESTBIN)/.f
+#	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $< -o $@
+
+$(TESTBIN)/%.o : $(TESTDIR)/%.cpp $(HEADERS) $(TESTFIXTURES) $(TESTBIN)/.f
 	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $< -o $@
+
 
 $(TESTBIN)/.f :
 	@mkdir -p $(dir $@)
