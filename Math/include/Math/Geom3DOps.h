@@ -145,7 +145,7 @@ Point3D<T, C> operator*(const Matrix<T,3,4>& rot,
 template <typename T, typename IT>
 Transform3D<T> transformation(IT begin, IT end, bool& success)
 {
-  unsigned int length = std::distance(begin, end);
+  typename std::iterator_traits<IT>::difference_type length = std::distance(begin, end);
   if (length == 3) return detail::transformation3<T>(begin, end, success);
   if (length == 2) return detail::transformation2<T>(*begin, *(begin++), success);
   if (length == 1) return detail::transformation1<T>(*begin);
