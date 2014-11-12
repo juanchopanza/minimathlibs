@@ -49,6 +49,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION( TestAlignment );
 int main() 
 {
 
+  std::srand(42);
   CPPUNIT_NS::TestResult testResult;
   CPPUNIT_NS::TestResultCollector resultCollector;
   testResult.addListener(&resultCollector);
