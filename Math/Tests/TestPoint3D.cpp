@@ -16,7 +16,7 @@
 #include <limits>
 #include <cmath>
 
-void Setup()
+void TestPoint3D::Setup()
 {
   EPS = std::numeric_limits<Math::PointXYZD::value_type>::epsilon();
 }

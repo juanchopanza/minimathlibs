@@ -58,19 +58,19 @@ Math::Matrix<double, 3> rotation3DZ(double angle)
 
 }
 
-void setUp()
+void TestMatrixOps::setUp()
 {
   std::cout << std::boolalpha;
-  p100(0,0) = 1;
-  p010(1,0) = 1;
-  p001(2,0) = 1;
-  p110(0,0) = 1;
-  p110(1,0) = 1;
-  p011(1,0) = 1;
-  p011(2,0) = 1;
-  p101(0,0) = 1;
-  p101(2,0) = 1;
-  p111 += 1;
+  p100_(0,0) = 1;
+  p010_(1,0) = 1;
+  p001_(2,0) = 1;
+  p110_(0,0) = 1;
+  p110_(1,0) = 1;
+  p011_(1,0) = 1;
+  p011_(2,0) = 1;
+  p101_(0,0) = 1;
+  p101_(2,0) = 1;
+  p111_ += 1;
 
 }
 
@@ -80,9 +80,9 @@ void TestMatrixOps::testXRotations()
   {
     Math::Matrix<double,3> rot = rotation3DX(PI/i);
     Math::Matrix<double,3> orig;
-    Math::setColumn(orig, p100, 0);
-    Math::setColumn(orig, p010, 1);
-    Math::setColumn(orig, p111, 2);
+    Math::setColumn(orig, p100_, 0);
+    Math::setColumn(orig, p010_, 1);
+    Math::setColumn(orig, p111_, 2);
 
     Math::Matrix<double,3> prime = rot*orig;
     bool success = true;
@@ -103,9 +103,9 @@ void TestMatrixOps::testYRotations()
   {
     Math::Matrix<double,3> rot = rotation3DY(PI/i);
     Math::Matrix<double,3> orig;
-    Math::setColumn(orig, p100, 0);
-    Math::setColumn(orig, p010, 1);
-    Math::setColumn(orig, p111, 2);
+    Math::setColumn(orig, p100_, 0);
+    Math::setColumn(orig, p010_, 1);
+    Math::setColumn(orig, p111_, 2);
 
     Math::Matrix<double,3> prime = rot*orig;
     bool success = true;
@@ -126,9 +126,9 @@ void TestMatrixOps::testZRotations()
   {
     Math::Matrix<double,3> rot = rotation3DZ(PI/i);
     Math::Matrix<double,3> orig;
-    Math::setColumn(orig, p100, 0);
-    Math::setColumn(orig, p010, 1);
-    Math::setColumn(orig, p111, 2);
+    Math::setColumn(orig, p100_, 0);
+    Math::setColumn(orig, p010_, 1);
+    Math::setColumn(orig, p111_, 2);
 
     Math::Matrix<double,3> prime = rot*orig;
     bool success = true;

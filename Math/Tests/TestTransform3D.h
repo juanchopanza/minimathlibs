@@ -14,11 +14,6 @@
 
 #include "Math/Point3D.h"
 
-namespace {
-
-using namespace Math;
-
-}
 
 class TestTransform3D : public CppUnit::TestFixture {
 
@@ -58,11 +53,6 @@ class TestTransform3D : public CppUnit::TestFixture {
  public:
   
   void setUp();
- private:
-
-  PointXYZD p100, p010, p001, p111; // reference points 
-  double cos45;
-  double PI;
 
  protected:
 

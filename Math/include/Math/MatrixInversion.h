@@ -10,7 +10,7 @@
 #define MATH_MATRIXINVERSION_H_
 
 #include "Math/Utils.h"
-
+#include <limits>
 //
 // functor to invert a matrix. The idea is that we specialize this for
 // the types of matrices that we can invert, and leave the rest unimplemented.

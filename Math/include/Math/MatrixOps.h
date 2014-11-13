@@ -11,7 +11,7 @@
 
 #include <limits>
 
-#include "Math/Matrix.h"
+//#include "Math/Matrix.h"
 #include "Utils.h"
 
 //
@@ -19,6 +19,9 @@
 // 
 
 namespace Math {
+
+
+template <typename T, unsigned int N1, unsigned int N2> class Matrix;
 
 ///
 /// Equality comparison between two matrices.

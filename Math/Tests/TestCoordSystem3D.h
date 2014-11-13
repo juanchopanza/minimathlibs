@@ -38,10 +38,9 @@ class TestCoordSystem3D : public CppUnit::TestFixture {
 
   CPPUNIT_TEST_SUITE_END();
 
+ public:
   typedef Math::CoordSystemXYZ<double> CoordsXYZ;
   CoordsXYZ::value_type EPS; 
-
- public:
 
   void Setup();
 
@@ -50,7 +49,7 @@ class TestCoordSystem3D : public CppUnit::TestFixture {
   void testInstantiation();
   void testEquality();
   void testInequality();
-  void testCopyConstruction() 
+  void testCopyConstruction();
   void testAssignment();
   void testComponents();
   void testAccessX();

@@ -15,8 +15,10 @@
 #include "Math/Point3D.h"
 
 #include "Defines.h"
-#include "TestRotationZYX.h"
+#include "TestRotation3DZYX.h"
+#include "TestRotation3DUtils.h"
 
+using namespace Math;
 
 namespace
 {

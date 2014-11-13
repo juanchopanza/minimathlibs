@@ -54,8 +54,10 @@ class TestMatrix : public CppUnit::TestFixture
   void testAssignment();
   void testEquality();
   void testInequality();
-  void testPlusEqualsScalar();
+  void testPlusEquals();
   void testMinusEquals();
+  void testPlusEqualsScalar();
+  void testMinusEqualsScalar();
   void testTimesEqualsScalar();
   void testDivideEqualsScalar();
   void testMatrixPlusScalar();

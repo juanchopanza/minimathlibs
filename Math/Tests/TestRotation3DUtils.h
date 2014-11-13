@@ -126,7 +126,7 @@ bool testInvertRotation3D()
   return true;
 }
 
-bool testInverseAxisAngle(const PointXYZD& axis)
+inline bool testInverseAxisAngle(const PointXYZD& axis)
 {
   typedef PointXYZD::scalar_type scalar_type;
   for (unsigned int i = 1; i<9; ++i) 
@@ -140,7 +140,7 @@ bool testInverseAxisAngle(const PointXYZD& axis)
   return true;
 }
 
-bool testInvertAxisAngle(const PointXYZD& axis)
+inline bool testInvertAxisAngle(const PointXYZD& axis)
 {
   typedef PointXYZD::scalar_type scalar_type;
   for (unsigned int i = 1; i<9; ++i) 

@@ -12,11 +12,20 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "Math/Rotation3D.h"
+#include "Math/Geom3DOps.h"
 #include "Math/Point3D.h"
+#include "Math/Rotation3D.h"
 
-#include "Defines.h"
 #include "TestAxisAngle.h"
+
+#include "TestRotation3DUtils.h"
+//using namespace Math;
+
+using Math::AxisAngle;
+using Math::Rotation3D;
+using Math::Rotation3DX;
+using Math::Rotation3DY;
+using Math::Rotation3DZ;
 
 void TestAxisAngle::testInstantiation()
 {
@@ -210,6 +219,3 @@ void TestAxisAngle::testInvert()
   CPPUNIT_ASSERT(TestUtils::testInvertAxisAngle(p010));
   CPPUNIT_ASSERT(TestUtils::testInvertAxisAngle(p001));
 }
-
-};
-

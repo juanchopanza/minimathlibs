@@ -17,8 +17,12 @@
 #include "Math/Point3D.h"
 #include "Math/Geom3DOps.h"
 
-#include "Defines.h"
+#include "TestRotation3DUtils.h"
 #include "TestRotation3D.h"
+#include "Defines.h"
+
+
+using namespace Math;
 
 void TestRotation3D::testInstantiation()
 {

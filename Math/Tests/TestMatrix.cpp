@@ -14,6 +14,8 @@
 #include <cppunit/extensions/HelperMacros.h>
 
 #include "Math/Matrix.h"
+#include "Math/MatrixOps.h"
+
 #include "Math/Utils.h"
 
 #include "TestMatrix.h"

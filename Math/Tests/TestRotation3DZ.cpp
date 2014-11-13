@@ -16,7 +16,9 @@
 
 #include "Defines.h"
 #include "TestRotation3DZ.h"
+#include "TestRotation3DUtils.h"
 
+using namespace Math;
 
 void TestRotation3DZ::testInstantiation()
 {

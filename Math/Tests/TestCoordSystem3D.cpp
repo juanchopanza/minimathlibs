@@ -20,7 +20,7 @@
 
 #include "TestCoordSystem3D.h"
 
-void Setup()
+void TestCoordSystem3D::Setup()
 {
   EPS = std::numeric_limits<CoordsXYZ::value_type>::epsilon();
 }

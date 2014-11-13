@@ -12,6 +12,7 @@
 #include "Math/Point3D.h"
 #include "Math/Matrix.h"
 #include "Math/MatrixOps.h"
+#include "Math/Geom3DOps.h"
 #include "Math/Utils.h"
 #include <cmath>
 

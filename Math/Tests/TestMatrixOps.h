@@ -11,6 +11,7 @@
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
+#include "Math/Matrix.h"
 
 class TestMatrixOps : public CppUnit::TestFixture
 {
@@ -34,20 +35,20 @@ class TestMatrixOps : public CppUnit::TestFixture
 
   typedef Math::Matrix<double,3,1> Point;
 
-  Point p100;
-  Point p010;
-  Point p001;
-  Point p110;
-  Point p011;
-  Point p101;
-  Point p111;
-  Point pm100;
-  Point p0m10;
-  Point p00m1;
-  Point pmm1m10;
-  Point p0m1m1;
-  Point pm10m1;
-  Point pm1m1m1;
+  Point p100_;
+  Point p010_;
+  Point p001_;
+  Point p110_;
+  Point p011_;
+  Point p101_;
+  Point p111_;
+  Point pm100_;
+  Point p0m10_;
+  Point p00m1_;
+  Point pmm1m10_;
+  Point p0m1m1_;
+  Point pm10m1_;
+  Point pm1m1m1_;
 
 };
 

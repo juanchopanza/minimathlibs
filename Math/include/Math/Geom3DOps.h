@@ -13,10 +13,9 @@
 #include <iterator>
 #include <iostream>
 
-#include "Math/Rotation3D.h"
 #include "Math/Point3D.h"
-#include "Math/Translation3D.h"
-#include "Math/Transform3D.h"
+#include "Math/Matrix.h"
+#include "Math/MatrixOps.h"
 
 
 //
@@ -27,6 +26,13 @@
 //
 
 namespace Math {
+
+// Forward declarations of class templates that depend on Point3D and Matrix.
+template <typename T> class AxisAngle;
+template <typename T> class Rotation3D;
+template <typename T> class Translation3D;
+template <typename T> class Transform3D;
+
 
 // implementation specific helpers
 namespace detail

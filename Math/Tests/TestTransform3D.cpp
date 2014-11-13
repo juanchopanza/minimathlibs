@@ -22,21 +22,11 @@
 
 #include "TestTransform3D.h"
 
-namespace {
-
 using namespace Math;
 
-}
-
-void setUp()
+void TestTransform3D::setUp()
 {
   std::cout << std::setprecision(18);
-  p100 = PointXYZD(1,0,0);
-  p010 = PointXYZD(0,1,0);
-  p001 = PointXYZD(0,0,1);
-  p111 = PointXYZD(1,1,1);
-  cos45 = std::sqrt(2)/2;
-  PI = std::atan(1.0)*4;
 }
 
 void TestTransform3D::testInstantiation()
