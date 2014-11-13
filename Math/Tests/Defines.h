@@ -50,7 +50,7 @@ inline std::ostream& operator << (std::ostream& out, const PointXYZD_& point)
   return out << "Point3D XYZ( " << point.x() << ", " << point.y() << ", " << point.z() << ")";
 }
 
-
+#ifndef CUSTOM_POINT
 // reference points
 const Math::PointXYZD p000(0.,0.,0);
 const Math::PointXYZD p100(1.,0.,0);
@@ -61,8 +61,7 @@ const Math::PointXYZD p101(1.,0.,1);
 const Math::PointXYZD p011(0.,1.,1);
 const Math::PointXYZD p111(1.,1.,1);
 
-
-/*
+#else
 // custom reference points
 const PointXYZD_ p000(0.,0.,0);
 const PointXYZD_ p100(1.,0.,0);
@@ -72,6 +71,7 @@ const PointXYZD_ p110(1.,1.,0);
 const PointXYZD_ p101(1.,0.,1);
 const PointXYZD_ p011(0.,1.,1);
 const PointXYZD_ p111(1.,1.,1);
-*/
+
+#endif
 
 #endif
