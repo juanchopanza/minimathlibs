@@ -28,11 +28,16 @@ list :
 	@echo $(TESTFIXTURES)
 	@echo $(PWD)
 
-.PHONY: tests
+.PHONY: test
+.PHONY: build_tests
 .PHONY: obj_main
 .PHONY: objs
 
-tests : $(TESTBIN)/tests
+
+test: build_tests
+	$(TESTBIN)/tests
+
+build_tests : $(TESTBIN)/tests
 
 obj_main : $(TESTBIN)/obj_main
 

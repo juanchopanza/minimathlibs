@@ -154,7 +154,11 @@ Transform3D<T> transformation(IT begin, IT end, bool& success)
 {
   typename std::iterator_traits<IT>::difference_type length = std::distance(begin, end);
   if (length == 3) return detail::transformation3<T>(begin, end, success);
-  if (length == 2) return detail::transformation2<T>(*begin, *(++begin), success);
+  if (length == 2) 
+  {
+    IT second = begin + 1;
+    return detail::transformation2<T>(*begin, *second, success);
+  }
   if (length == 1) return detail::transformation1<T>(*begin);
   std::cerr << "Math::transformation only implemented for 1, 2 and 3 point systems. Received " << length <<" point pairs\n";
   return Transform3D<T>();

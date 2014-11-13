@@ -15,13 +15,16 @@ TESTDIR = Tests
 .PHONY: clean
 
 
-all :tests
+all : build_tests
 
 list_tests :
 	make -C $(TESTDIR) list
 
-tests :
-	make -C $(TESTDIR) tests 
+test :
+	make -C $(TESTDIR) test
+
+build_tests :
+	make -C $(TESTDIR) build_tests
 
 test_objs :
 	make -C $(TESTDIR) obj_main
