@@ -3,7 +3,10 @@ minimathlibs
 
 A collection of small mathematical tools for everyday problem solving.
 
-Two main aspects: 3D geometry and small, statically sized matrices.
+Two main aspects: 
+
+* 3D geometry: points and transformations.
+* small, statically sized matrices.
 
 Based on concepts used in code developed during my time at CERN.
 
@@ -23,12 +26,15 @@ The tests require cppunit.
 
 From the Math directory, run
 
+```shell
 make tests
+```
 
 to build and run the default tests.
 
 The 3D transformation part of minimathlibs is designed to work with external 3D point classes satisfying certain minimal criteria. To run the tests with a custom point class, 
 
+```shell
 make clean # clean up previoue build
 CXXFLAGS=-DCUSTOM_POINT make test
-
+```
