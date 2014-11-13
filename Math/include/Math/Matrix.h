@@ -17,6 +17,7 @@
 
 #include <ostream>
 #include <algorithm>
+#include "Math/type_traits.hpp"
 #include "Math/MatrixInversion.h"
 // Matrix data representation class for standard N1*N2 matrix
 
@@ -277,7 +278,8 @@ Matrix<T,N1,N2> operator-(const Matrix<T,N1,N2>& lhs,
 
 // addition
 template <typename T1, unsigned int N1, unsigned int N2, typename T2>
-Matrix<T1,N1,N2> operator+(const Matrix<T1,N1,N2>& lhs, const T2& scalar) 
+typename enable_if<is_arithmetic<T2>::value, Matrix<T1, N1, N2> >::type
+operator+(const Matrix<T1,N1,N2>& lhs, const T2& scalar)
 {
   Matrix<T1,N1,N2> mat = lhs;
   mat += scalar;
@@ -285,7 +287,8 @@ Matrix<T1,N1,N2> operator+(const Matrix<T1,N1,N2>& lhs, const T2& scalar)
 }
 
 template <typename T1, unsigned int N1, unsigned int N2, typename T2>
-Matrix<T1,N1,N2> operator+(const T2& scalar, const Matrix<T1,N1,N2>& rhs)
+typename enable_if<is_arithmetic<T2>::value, Matrix<T1, N1, N2> >::type
+operator+(const T2& scalar, const Matrix<T1,N1,N2>& rhs)
 {
   Matrix<T1,N1,N2> mat = rhs;
   mat += scalar;
@@ -293,7 +296,9 @@ Matrix<T1,N1,N2> operator+(const T2& scalar, const Matrix<T1,N1,N2>& rhs)
 }
 // subtraction
 template <typename T1, unsigned int N1, unsigned int N2, typename T2>
-Matrix<T1,N1,N2> operator-(const Matrix<T1,N1,N2>& lhs, const T2& scalar) 
+typename enable_if<is_arithmetic<T2>::value, Matrix<T1, N1, N2> >::type
+operator-(const Matrix<T1,N1,N2>& lhs, const T2& scalar)
+
 {
   Matrix<T1,N1,N2> mat = lhs;
   mat -= scalar;
@@ -301,14 +306,16 @@ Matrix<T1,N1,N2> operator-(const Matrix<T1,N1,N2>& lhs, const T2& scalar)
 }
 
 template <typename T1, unsigned int N1, unsigned int N2, typename T2>
-Matrix<T1,N1,N2> operator-(const T2& scalar, const Matrix<T1,N1,N2>& rhs)
+typename enable_if<is_arithmetic<T2>::value, Matrix<T1, N1, N2> >::type
+operator-(const T2& scalar, const Matrix<T1,N1,N2>& rhs)
 {
   Matrix<T1,N1,N2> mat = Matrix<T1,N1,N2>(scalar) - rhs;
   return mat;
 }
 // multiplication
 template <typename T1, unsigned int N1, unsigned int N2, typename T2>
-Matrix<T1,N1,N2> operator*(const Matrix<T1,N1,N2>& lhs, const T2& scalar) 
+typename enable_if<is_arithmetic<T2>::value, Matrix<T1, N1, N2> >::type
+operator*(const Matrix<T1,N1,N2>& lhs, const T2& scalar)
 {
   Matrix<T1,N1,N2> mat = lhs;
   mat *= scalar;
@@ -316,22 +323,21 @@ Matrix<T1,N1,N2> operator*(const Matrix<T1,N1,N2>& lhs, const T2& scalar)
 }
 
 template <typename T1, unsigned int N1, unsigned int N2, typename T2>
-Matrix<T1,N1,N2> operator*(const T2& scalar, const Matrix<T1,N1,N2>& rhs)
+typename enable_if<is_arithmetic<T2>::value, Matrix<T1, N1, N2> >::type
+operator*(const T2& scalar, const Matrix<T1,N1,N2>& rhs)
 {
   return rhs * scalar;
 }
 
 // division: only LHS matrix makes sense
 template <typename T1, unsigned int N1, unsigned int N2, typename T2>
-Matrix<T1,N1,N2> operator/(const Matrix<T1,N1,N2>& lhs, const T2& scalar) 
+typename enable_if<is_arithmetic<T2>::value, Matrix<T1, N1, N2> >::type
+operator/(const Matrix<T1,N1,N2>& lhs, const T2& scalar)
 {
   Matrix<T1,N1,N2> mat = lhs;
   mat /= scalar;
   return mat;
 }
-
-
-
 
 // print contents of a matrix.
 // works for any matrix with methods

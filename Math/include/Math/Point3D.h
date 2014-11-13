@@ -12,6 +12,7 @@
 #include <cmath>
 #include <ostream>
 #include <limits>
+#include "Math/type_traits.hpp"
 #include "Math/CoordSystem3D.h"
 #include "Math/Point3DOps.h"
 
@@ -27,6 +28,7 @@ class Point3D {
 
   Point3D() : m_coords() {} 
   Point3D(T x, T y, T z) : m_coords(x,y,z) {} 
+
   template <typename P>
   Point3D(const P& rhs) : m_coords(rhs.x(), rhs.y(), rhs.z())  {} 
 
@@ -127,6 +129,15 @@ std::ostream& operator << (std::ostream& out, const Point3D<T, CoordSystem>& poi
 {
   return out << "Point3D XYZ( " << point.x() << ", " << point.y() << ", " << point.z() << ")";
 }
+
+// addition with foreign vector
+template <typename P, typename T, template <typename> class C>
+typename enable_if<is_point3d<P>::value, Point3D<T,C> >::type
+operator+(const P& lhs, const Point3D<T, C>&  rhs)
+{
+  return Point3D<T,C>(lhs.x()+rhs.x(), lhs.y()+rhs.y(), lhs.z()+rhs.z());
+}
+
 
 // scalar multiplication
 template <typename T, template <typename> class C>

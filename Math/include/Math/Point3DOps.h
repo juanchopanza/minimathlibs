@@ -11,7 +11,7 @@
 
 #include <cmath>
 #include <limits>
-
+#include "Math/type_traits.hpp"
 
 namespace Math {
 
@@ -32,7 +32,7 @@ bool equal(const P1& lhs,
            const P2& rhs,
            unsigned int nEpsilons = 0) 
 {
-  typedef  typename P1::scalar_type scalar_type;
+  typedef typename P1::value_type scalar_type;
   scalar_type eps = std::numeric_limits<scalar_type>::epsilon() * nEpsilons;  
   return (std::abs(lhs.x()-rhs.x()) <= eps &&
           std::abs(lhs.y()-rhs.y()) <= eps &&

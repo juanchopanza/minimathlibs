@@ -13,13 +13,14 @@
 #include <iterator>
 #include <iostream>
 
+#include "Math/type_traits.hpp"
 #include "Math/Point3D.h"
 #include "Math/Matrix.h"
 #include "Math/MatrixOps.h"
 
 
 //
-// Helper functions for operations between the Geom3D workd and
+// Helper functions for operations between the Geom3D world and
 // the Matrix world.
 //
 // @author Juan Palacios juan.palacios.puyana@gmail.com
@@ -114,6 +115,20 @@ Point3D<T, C> operator*(const Matrix<T,3>& rot,
 
 } 
 
+// multiplication between a 3x3 matrix and a generic 3D point
+// Use SFINAE accept only types with members x, y, z
+template <typename Point, typename T>
+typename enable_if<is_point3d<Point>::value, Point>::type
+operator*(const Matrix<T,3>& rot, const Point&  point)
+{
+  double elements[3];
+  for (unsigned int i = 0; i < 3; ++i)
+      elements[i] = rot(i, 0)*point.x() + rot(i,1)*point.y() + rot(i,2)*point.z();
+
+  return Point(elements[0], elements[1], elements[2]);
+}
+
+
 // Multiplication between a 3x4 matrix and a 3D point
 // The 4th column represents the translation
 template <typename T, template <typename> class C>
@@ -131,6 +146,22 @@ Point3D<T, C> operator*(const Matrix<T,3,4>& rot,
   return Point3D<T, C> (elements[0], elements[1], elements[2]);
 
 } 
+
+// Multiplication between a 3x4 matrix and a 3D point
+// The 4th column represents the translation
+// Use SFINAE accept only types with members x, y, z
+template <typename Point, typename T>
+typename enable_if<is_point3d<Point>::value, Point>::type
+operator*(const Matrix<T,3,4>& rot,
+          const Point&  point)
+{
+  double elements[3];
+  for (unsigned int i = 0; i < 3; ++i)
+      elements[i] = rot(i, 0)*point.x() + rot(i,1)*point.y() + rot(i,2)*point.z() + rot(i,3);
+
+  return Point(elements[0], elements[1], elements[2]);
+}
+
 
 ///
 /// Find the 3D transformation that maps a set of points P to 
