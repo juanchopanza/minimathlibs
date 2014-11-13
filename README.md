@@ -10,7 +10,7 @@ Two main aspects:
 
 Based on concepts used in code developed during my time at CERN.
 
-Author: Juan Palacios juan.palacios.puyana@gmail.com
+Author: Juan Palacios https://github.com/juanchopanza
 
 License: 2-clause BSD license.
 
