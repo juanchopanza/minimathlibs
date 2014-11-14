@@ -35,6 +35,6 @@ to build and run the default tests.
 The 3D transformation part of minimathlibs is designed to work with external 3D point classes satisfying certain minimal criteria. To run the tests with a custom point class, 
 
 ```shell
-make clean # clean up previoue build
+make clean # clean up previous build
 CXXFLAGS=-DCUSTOM_POINT make test
 ```
