@@ -74,7 +74,7 @@ class Point3D {
   // inequality operator
   template <typename Point>
   bool operator!=(const Point& rhs) const {
-    return !equal(*this, rhs, 1);
+    return !(*this == rhs);
   }
 
 
@@ -135,7 +135,7 @@ template <typename P, typename T, template <typename> class C>
 typename enable_if<is_point3d<P>::value, Point3D<T,C> >::type
 operator+(const P& lhs, const Point3D<T, C>&  rhs)
 {
-  return Point3D<T,C>(lhs.x()+rhs.x(), lhs.y()+rhs.y(), lhs.z()+rhs.z());
+  return rhs + lhs;
 }
 
 
@@ -144,7 +144,9 @@ template <typename T, template <typename> class C>
 Point3D<T, C> operator*(const Point3D<T, C>&  point,
                         const typename Point3D<T,C>::scalar_type& scalar)
 {
-  return Point3D<T,C>(point) *= typename Point3D<T,C>::scalar_type(scalar);
+  Point3D<T,C> ret(point);
+  ret *= scalar;
+  return ret;
 }
 
 // scalar multiplication
@@ -152,15 +154,17 @@ template <typename T, template <typename> class C>
 Point3D<T, C> operator*(const typename Point3D<T,C>::scalar_type& scalar,
                         const Point3D<T, C>&  point)
 {
-  return Point3D<T,C>(point) *= typename Point3D<T,C>::scalar_type(scalar);
+  return point*scalar;
 }
 
-// scalar division: only allow Point on RHS
+// scalar division: only allow Point on LHS
 template <typename T, template <typename> class C>
 Point3D<T, C> operator/(const Point3D<T, C>&  point,
                         const typename Point3D<T,C>::scalar_type& scalar)
 {
-  return Point3D<T,C>(point) /= typename Point3D<T,C>::scalar_type(scalar);
+  Point3D<T,C> ret(point);
+  ret /= scalar;
+  return ret;
 }
 
 typedef Point3D<double, CoordSystemXYZ> PointXYZD;

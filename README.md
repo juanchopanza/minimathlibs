@@ -27,7 +27,7 @@ The tests require cppunit.
 From the Math directory, run
 
 ```shell
-make tests
+make test
 ```
 
 to build and run the default tests.
