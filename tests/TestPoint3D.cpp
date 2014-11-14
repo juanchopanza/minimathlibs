@@ -1,7 +1,7 @@
 //
 // Copyright (c) 2012 Juan Palacios juan.palacios.puyana@gmail.com
 // This file is part of minimathlibs.
-// Subject to the BSD 2-Clause License 
+// Subject to the BSD 2-Clause License
 // - see < http://opensource.org/licenses/BSD-2-Clause>
 //
 
@@ -13,6 +13,7 @@
 #include "Math/Point3DOps.h"
 #include "Math/Utils.h" // for FP comparisons
 #include <iostream>
+#include <sstream>
 #include <limits>
 #include <cmath>
 
@@ -89,7 +90,7 @@ void TestPoint3D::testSetZ()
   CPPUNIT_ASSERT(  Math::compareWithTolerance(pd1.z(), 3.14, EPS) );
 }
 
-void TestPoint3D::testCopyConstruction() 
+void TestPoint3D::testCopyConstruction()
 {
   Math::PointXYZD pd1(1,2,3);
   Math::PointXYZD pd2 = pd1;
@@ -189,14 +190,42 @@ void TestPoint3D::testDotProduct()
   CPPUNIT_ASSERT(Math::compareWithTolerance(0., Math::dot(Math::PointXYZD(1,0,0),
                                                           Math::PointXYZD(0,1,0)), EPS));
   CPPUNIT_ASSERT(Math::compareWithTolerance(0., Math::dot(Math::PointXYZD(1,0,0),
-                                                          Math::PointXYZD(0,0,1)), EPS)); 
+                                                          Math::PointXYZD(0,0,1)), EPS));
   CPPUNIT_ASSERT(Math::compareWithTolerance(0., Math::dot(Math::PointXYZD(0,1,0),
-                                                          Math::PointXYZD(1,0,0)), EPS)); 
+                                                          Math::PointXYZD(1,0,0)), EPS));
   CPPUNIT_ASSERT(Math::compareWithTolerance(0., Math::dot(Math::PointXYZD(0,1,0),
-                                                          Math::PointXYZD(0,0,1)), EPS)); 
+                                                          Math::PointXYZD(0,0,1)), EPS));
   CPPUNIT_ASSERT(Math::compareWithTolerance(0., Math::dot(Math::PointXYZD(0,0,1),
-                                                          Math::PointXYZD(1,0,0)), EPS)); 
+                                                          Math::PointXYZD(1,0,0)), EPS));
   CPPUNIT_ASSERT(Math::compareWithTolerance(0., Math::dot(Math::PointXYZD(0,0,1),
-                                                          Math::PointXYZD(0,1,0)), EPS)); 
+                                                          Math::PointXYZD(0,1,0)), EPS));
 }
 
+void test_normalize(int i, int j, int k)
+{
+  using namespace Math;
+  for (int n = 0; n < 100; ++n)
+  {
+    PointXYZD p(i*std::rand(), j*std::rand(), k*std::rand());
+    PointXYZD::value_type d = std::sqrt(mag2(p));
+    PointXYZD::value_type EPS = std::numeric_limits<Math::PointXYZD::value_type>::epsilon();
+    CPPUNIT_ASSERT(compareWithTolerance(normalize(p), d, EPS));
+    std::stringstream ss;
+    ss << "mag2(p) -1 = " << mag2(p) - PointXYZD::value_type(1.);
+    ss << " EPS " << EPS;
+    d = mag2(p);
+    CPPUNIT_ASSERT_MESSAGE(ss.str().c_str(), compareWithTolerance(d, PointXYZD::value_type(1.), 5.0e-16));
+  }
+}
+
+void TestPoint3D::testNormalize()
+{
+    test_normalize(1, 1, 1);
+    test_normalize(1, 1, -1);
+    test_normalize(1, -1, 1);
+    test_normalize(-1, 1, 1);
+    test_normalize(1, -1, -1);
+    test_normalize(-1, -1, 1);
+    test_normalize(-1, 1, -1);
+    test_normalize(-1, -1, -1);
+}

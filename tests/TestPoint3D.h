@@ -39,6 +39,7 @@ class TestPoint3D : public CppUnit::TestFixture {
   CPPUNIT_TEST(testMagnitudeSquared);
   CPPUNIT_TEST(testDistanceSquared);
   CPPUNIT_TEST(testDotProduct);
+  CPPUNIT_TEST(testNormalize);
   CPPUNIT_TEST_SUITE_END();
 
   Math::PointXYZD::value_type EPS; 
@@ -69,6 +70,7 @@ class TestPoint3D : public CppUnit::TestFixture {
   void testMagnitudeSquared();
   void testDistanceSquared();
   void testDotProduct();
+  void testNormalize();
 
 };
 

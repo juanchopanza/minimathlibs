@@ -10,9 +10,7 @@
 #define MATH_MATRIXOPS_H_
 
 #include <limits>
-
-//#include "Math/Matrix.h"
-#include "Utils.h"
+#include "Math/Utils.h"
 
 //
 // Some matrix-matrix operations

@@ -11,7 +11,6 @@
 #define MATH_COORDSYSTEM3D_H_
 
 #include <ostream>
-#include "Math/Point3DOps.h"
 
 namespace Math {
 
