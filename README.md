@@ -17,7 +17,7 @@ License: 2-clause BSD license.
 building
 --------
 
-Minimathlibs is a header only library, and has no external dependencies other than a C++03 compliant compiler and standard library plus an implementation of TR1. All necessary header files are in Math/include/Math.
+Minimathlibs is a header only library, and has no external dependencies other than a C++03 compliant compiler and standard library plus an implementation of TR1. All necessary header files are in include/Math, and should be installed under ``Math``.
 
 testing
 -------
