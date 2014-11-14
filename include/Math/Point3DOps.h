@@ -63,26 +63,29 @@ P1 cross(const P1& p1, const P2& p2) {
   return P1(det0, -det1, det2);
 }
 
-// Normalize a point and return its original length
+// Return the normalized point
 // Uses optimized member function
 template <typename P>
-typename enable_if<has_normalize<P>::value, typename P::value_type>::type
-normalize(P& p) {
-  return p.normalize();
+typename enable_if<has_normalize<P>::value, P>::type
+normalize(const P& p)
+{
+  P n = p;
+  n.normalize();
+  return n;
 }
 
-
-// Normalize a point and return its original length
+// Return the normalized point
 // For points without optimized menber function
 template <typename P>
-typename enable_if<!has_normalize<P>::value, typename P::value_type>::type
-normalize(P& p) {
+typename enable_if<!has_normalize<P>::value, P>::type
+normalize(const P& p) {
   using std::sqrt;
   typedef typename P::value_type value_type;
   value_type d = sqrt(mag2(p));
   if (equal(d, value_type(0), 1)) return 0;
-  p /= d;
-  return d;
+  P n = p;
+  n /= d;
+  return n;
 }
 
 

@@ -203,6 +203,19 @@ void TestPoint3D::testDotProduct()
 
 namespace
 {
+void test_normalize_non_member(int i, int j, int k)
+{
+  using namespace Math;
+  for (int n = 0; n < 100; ++n)
+  {
+    PointXYZD p(i*std::rand(), j*std::rand(), k*std::rand());
+    PointXYZD::value_type d = std::sqrt(mag2(p));
+    PointXYZD::value_type EPS = std::numeric_limits<Math::PointXYZD::value_type>::epsilon();
+    p = normalize(p);
+    d = mag2(p);
+    CPPUNIT_ASSERT(compareWithTolerance(d, PointXYZD::value_type(1.), 5.0e-16));
+  }
+}
 void test_normalize(int i, int j, int k)
 {
   using namespace Math;
@@ -211,7 +224,7 @@ void test_normalize(int i, int j, int k)
     PointXYZD p(i*std::rand(), j*std::rand(), k*std::rand());
     PointXYZD::value_type d = std::sqrt(mag2(p));
     PointXYZD::value_type EPS = std::numeric_limits<Math::PointXYZD::value_type>::epsilon();
-    CPPUNIT_ASSERT(compareWithTolerance(normalize(p), d, EPS));
+    CPPUNIT_ASSERT(compareWithTolerance(p.normalize(), d, EPS));
     std::stringstream ss;
     ss << "mag2(p) -1 = " << mag2(p) - PointXYZD::value_type(1.);
     ss << " EPS " << EPS;
@@ -231,4 +244,16 @@ void TestPoint3D::testNormalize()
     test_normalize(-1, -1, 1);
     test_normalize(-1, 1, -1);
     test_normalize(-1, -1, -1);
+}
+
+void TestPoint3D::testNormalizeNonMember()
+{
+    test_normalize_non_member(1, 1, 1);
+    test_normalize_non_member(1, 1, -1);
+    test_normalize_non_member(1, -1, 1);
+    test_normalize_non_member(-1, 1, 1);
+    test_normalize_non_member(1, -1, -1);
+    test_normalize_non_member(-1, -1, 1);
+    test_normalize_non_member(-1, 1, -1);
+    test_normalize_non_member(-1, -1, -1);
 }
