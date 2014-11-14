@@ -6,7 +6,7 @@
 #
 
 include rules.mk
-TESTDIR = Tests
+TESTDIR = tests
 
 .PHONY: all
 .PHONY: test_objs

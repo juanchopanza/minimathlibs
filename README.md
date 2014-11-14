@@ -24,7 +24,7 @@ testing
 
 The tests require cppunit.
 
-From the Math directory, run
+From the minimathlibs directory, run
 
 ```shell
 make test
