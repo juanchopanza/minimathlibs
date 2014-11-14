@@ -1,7 +1,7 @@
 //
 // Copyright (c) 2012 Juan Palacios juan.palacios.puyana@gmail.com
 // This file is part of minimathlibs.
-// Subject to the BSD 2-Clause License 
+// Subject to the BSD 2-Clause License
 // - see < http://opensource.org/licenses/BSD-2-Clause>
 //
 
@@ -11,6 +11,8 @@
 #define MATH_COORDSYSTEM3D_H_
 
 #include <ostream>
+#include <cmath>
+#include "Math/Utils.h"
 
 namespace Math {
 
@@ -94,6 +96,22 @@ class CoordSystemXYZ {
     m_data[2] /= rhs;
     return *this;
   }
+
+  // Square of the magnitude of a coordinate
+  value_type mag2() const
+  {
+    return x()*x() + y()*y() + z()*z();
+  }
+
+  // normalize coordinates and return original length
+  value_type normalize() {
+    using std::sqrt;
+    value_type d = sqrt(mag2());
+    if (equal(d, value_type(0), 1)) return 0;
+    operator/=(d);
+    return d;
+}
+
 
 
  private:

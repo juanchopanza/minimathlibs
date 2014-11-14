@@ -15,28 +15,18 @@ using Math::PointXYZD;
 struct PointXYZD_
 {
     typedef double value_type;
-    PointXYZD_(double x, double y, double z)
-    {
-        data_[0] = x;
-        data_[1] = y;
-        data_[2] = z;
-    }
+
+    PointXYZD_(double x, double y, double z) : x_(x), y_(y), z_(z) {}
 
     template <typename P>
-    PointXYZD_(const P& p)
-    {
-        data_[0] = p.x();
-        data_[1] = p.y();
-        data_[2] = p.z();
-    }
+    PointXYZD_(const P& p) : x_(p.x()), y_(p.y()), z_(p.z()) {}
 
-    double x() const {return data_[0];}
-    double y() const {return data_[1];}
-    double z() const {return data_[2];}
-    double& operator[](std::size_t i) { return data_[i]; }
-    const double& operator[](std::size_t i) const { return data_[i]; }
+    double x() const {return x_;}
+    double y() const {return y_;}
+    double z() const {return z_;}
+
  private:
-    double data_[3];
+    double x_, y_, z_;
 };
 
 inline bool operator==(const PointXYZD_& lhs, const PointXYZD_& rhs)

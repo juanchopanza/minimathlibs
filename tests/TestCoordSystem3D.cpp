@@ -136,3 +136,34 @@ void TestCoordSystem3D::testDivideEqualsScalar()
   CPPUNIT_ASSERT( equal(pd, CoordsXYZ(10,20,30), 1) );
 }
 
+namespace {
+void test_normalize(int i, int j, int k)
+{
+  using namespace Math;
+  for (int n = 0; n < 100; ++n)
+  {
+    typedef Math::CoordSystemXYZ<double> CoordsXYZ;
+    CoordsXYZ p(i*std::rand(), j*std::rand(), k*std::rand());
+    CoordsXYZ::value_type d = std::sqrt(mag2(p));
+    CoordsXYZ::value_type EPS = std::numeric_limits<CoordsXYZ::value_type>::epsilon();
+    CPPUNIT_ASSERT(compareWithTolerance(p.normalize(), d, EPS));
+    std::stringstream ss;
+    ss << "mag2(p) -1 = " << mag2(p) - CoordsXYZ::value_type(1.);
+    ss << " EPS " << EPS;
+    d = mag2(p);
+    CPPUNIT_ASSERT_MESSAGE(ss.str().c_str(), compareWithTolerance(d, CoordsXYZ::value_type(1.), 5.0e-16));
+  }
+}
+}
+
+void TestCoordSystem3D::testNormalize()
+{
+    test_normalize(1, 1, 1);
+    test_normalize(1, 1, -1);
+    test_normalize(1, -1, 1);
+    test_normalize(-1, 1, 1);
+    test_normalize(1, -1, -1);
+    test_normalize(-1, -1, 1);
+    test_normalize(-1, 1, -1);
+    test_normalize(-1, -1, -1);
+}

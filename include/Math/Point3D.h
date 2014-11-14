@@ -119,6 +119,12 @@ class Point3D {
   T& operator[](unsigned int i) {return m_coords[i];}
   const T& operator[](unsigned int i) const {return m_coords[i];}
 
+  // normalize coordinates and return original length
+  value_type normalize() {
+    return m_coords.normalize();
+  }
+
+
  private:
   CoordSystem<T> m_coords;
 

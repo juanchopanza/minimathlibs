@@ -14,6 +14,7 @@
 #include "Math/type_traits.hpp"
 #include "Math/Utils.h"
 
+
 namespace Math {
 
 ///
@@ -56,15 +57,26 @@ typename P1::value_type dot(const P1& p1, const P2& p2) {
 template <typename P1, typename P2>
 P1 cross(const P1& p1, const P2& p2) {
   typedef typename P1::value_type value_type;
-  value_type det0 = p1[1]*p2[2] - p1[2]*p2[1];
-  value_type det1 = p1[0]*p2[2] - p1[2]*p2[0];
-  value_type det2 = p1[0]*p2[1] - p1[1]*p2[0];
+  value_type det0 = p1.y()*p2.z() - p1.z()*p2.y();
+  value_type det1 = p1.x()*p2.z() - p1.z()*p2.x();
+  value_type det2 = p1.x()*p2.y() - p1.y()*p2.x();
   return P1(det0, -det1, det2);
 }
 
 // Normalize a point and return its original length
+// Uses optimized member function
 template <typename P>
-typename P::value_type normalize(P& p) {
+typename enable_if<has_normalize<P>::value, typename P::value_type>::type
+normalize(P& p) {
+  return p.normalize();
+}
+
+
+// Normalize a point and return its original length
+// For points without optimized menber function
+template <typename P>
+typename enable_if<!has_normalize<P>::value, typename P::value_type>::type
+normalize(P& p) {
   using std::sqrt;
   typedef typename P::value_type value_type;
   value_type d = sqrt(mag2(p));

@@ -241,13 +241,17 @@ bool testInvertTransform3D()
 template <typename R>
 void testFindTransformationAxisRot()
 {
+  double a100[] = {1., 0., 0.};
+  double a010[] = {0., 1., 0.};
+  double a111[] = {1., 1., 1.};
+
   for (int i = 1; i<9; ++i)
   {
     Rotation3D<double> rot = R(PI/i);
     Matrix<double,3> orig;
-    setColumn(orig, p100, 0);
-    setColumn(orig, p010, 1);
-    setColumn(orig, p111, 2);
+    setColumn(orig, a100, 0);
+    setColumn(orig, a010, 1);
+    setColumn(orig, a111, 2);
     Matrix<double,3> prime = rot*orig;
     bool success = true;
 

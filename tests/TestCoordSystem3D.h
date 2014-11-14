@@ -35,6 +35,7 @@ class TestCoordSystem3D : public CppUnit::TestFixture {
   CPPUNIT_TEST(testMinusEquals);
   CPPUNIT_TEST(testTimesEqualsScalar);
   CPPUNIT_TEST(testDivideEqualsScalar);
+  CPPUNIT_TEST(testNormalize);
 
   CPPUNIT_TEST_SUITE_END();
 
@@ -62,6 +63,7 @@ class TestCoordSystem3D : public CppUnit::TestFixture {
   void testMinusEquals();
   void testTimesEqualsScalar();
   void testDivideEqualsScalar();
+  void testNormalize();
 
 };
 

@@ -201,6 +201,8 @@ void TestPoint3D::testDotProduct()
                                                           Math::PointXYZD(0,1,0)), EPS));
 }
 
+namespace
+{
 void test_normalize(int i, int j, int k)
 {
   using namespace Math;
@@ -216,6 +218,7 @@ void test_normalize(int i, int j, int k)
     d = mag2(p);
     CPPUNIT_ASSERT_MESSAGE(ss.str().c_str(), compareWithTolerance(d, PointXYZD::value_type(1.), 5.0e-16));
   }
+}
 }
 
 void TestPoint3D::testNormalize()

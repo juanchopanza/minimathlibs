@@ -42,6 +42,9 @@ HAS_MEMBER_(z);
 template <typename T>
 struct is_point3d : integral_constant<bool, 
                                       has_x<T>::value && has_y<T>::value && has_z<T>::value > {};
+
+HAS_MEMBER_(normalize);
+
 }
 
 #endif
