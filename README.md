@@ -19,18 +19,39 @@ building
 
 Minimathlibs is a header only library, and has no external dependencies other than a C++03 compliant compiler and standard library plus an implementation of TR1. All necessary header files are in include/Math, and should be installed under ``Math``.
 
+To ease installment from source, CMake files are provided with the usual targets. This is an example of an installation into a custom location:
+
+```shell
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=/opt/local
+make install
+```
+
+This will install the ``minimathlibs`` header files into ``/opt/local/include/Math``.
+
 testing
 -------
 
-The tests require cppunit.
+The tests require cppunit. They may be built and run either directly from a provided makefile, or usiong ``cmake``:
 
-From the minimathlibs directory, run
+To build and run the default tests from the makefile: from the minimathlibs directory, run
 
 ```shell
 make test
 ```
 
-to build and run the default tests.
+from the minimathlibs directory.
+
+To build and run the default tests using cmake:
+
+```shell
+mkdir build
+cd build
+cmake ..
+make test
+```
+
 
 The 3D transformation part of minimathlibs is designed to work with external 3D point classes satisfying certain minimal criteria. To run the tests with a custom point class, 
 
