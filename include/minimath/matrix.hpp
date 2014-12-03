@@ -6,8 +6,8 @@
 //
 
 
-#ifndef MATH_MATRIX_H_
-#define MATH_MATRIX_H_
+#ifndef MINIMATH_MATRIX_H_
+#define MINIMATH_MATRIX_H_
 
 //
 // Simple class for 2D matrices
@@ -17,18 +17,18 @@
 
 #include <ostream>
 #include <algorithm>
-#include "Math/type_traits.hpp"
-#include "Math/MatrixInversion.h"
+#include "minimath/type_traits.hpp"
+#include "minimath/matrix_inversion.hpp"
 // Matrix data representation class for standard N1*N2 matrix
 
-namespace Math {
+namespace minimath {
 
-struct ZeroMatrix {};
+struct zero_matrix {};
 
-struct IdentityMatrix {};
+struct identity_matrix {};
 
 template <typename T, unsigned int N1, unsigned int N2 = N1>
-class Matrix {
+class matrix {
 
  public :
 
@@ -39,11 +39,11 @@ class Matrix {
   enum { ROWS = N1, COLS = N2, SIZE = N1*N2 };
 
   // implicit construction of zero matrix
-  Matrix(const ZeroMatrix&)  : m_data() {}
+  matrix(const zero_matrix&)  : m_data() {}
 
   // implicit construction of identity matrix
   // to-do disable for non-square matrices
-  Matrix(const IdentityMatrix&) : m_data() 
+  matrix(const identity_matrix&) : m_data() 
   {
     const unsigned int low = std::min(rows(), cols());
     for (unsigned int i=0; i<low; ++i) {
@@ -51,10 +51,10 @@ class Matrix {
     }
   }
 
-  Matrix() : m_data() {}
+  matrix() : m_data() {}
   
   // initialize all elements to a given value
-  explicit Matrix(const T& val) 
+  explicit matrix(const T& val) 
   {
     std::fill(m_data, m_data+SIZE, val);
   } 
@@ -81,19 +81,19 @@ class Matrix {
 
   // equality operator
   // to-do add a tolerance for comparison.
-  bool operator==(const Matrix& rhs) const 
+  bool operator==(const matrix& rhs) const 
   {
     return std::equal(begin(), end(), rhs.begin());
   }
 
   // inequality operator
-  bool operator !=(const Matrix& rhs) const 
+  bool operator !=(const matrix& rhs) const 
   {
     return ! operator==(rhs);
   }
 
   // addition assignemt
-  Matrix& operator +=(const Matrix& rhs) 
+  matrix& operator +=(const matrix& rhs) 
   {
     std::transform(begin(), end(), 
                    rhs.begin(), begin(), std::plus<value_type>());
@@ -101,7 +101,7 @@ class Matrix {
   }
 
   // subtraction assignment
-  Matrix& operator -=(const Matrix& rhs) 
+  matrix& operator -=(const matrix& rhs) 
   {
     std::transform(begin(), end(), 
                    rhs.begin(), begin(), std::minus<value_type>());
@@ -110,9 +110,9 @@ class Matrix {
 
   // multiplication assignment
   // only for square matrices of the same size 
-  Matrix& operator*=(const Matrix& rhs) 
+  matrix& operator*=(const matrix& rhs) 
   {
-    Matrix tmp = (*this) * rhs;
+    matrix tmp = (*this) * rhs;
     return operator=(tmp);
   }
 
@@ -121,7 +121,7 @@ class Matrix {
 
   // element-wise addition assignemt of scalar
   template <typename Scalar> 
-  Matrix& operator +=(const Scalar& scalar) 
+  matrix& operator +=(const Scalar& scalar) 
   {
     std::transform(begin(), end(), begin(), 
                    std::bind2nd(std::plus<value_type>(), scalar));
@@ -130,7 +130,7 @@ class Matrix {
 
   // element-wise subtraction assignemt of scalar
   template <typename Scalar> 
-  Matrix& operator -=(const Scalar& scalar) 
+  matrix& operator -=(const Scalar& scalar) 
   {
     std::transform(begin(), end(), begin(), 
                    std::bind2nd(std::minus<value_type>(), scalar));
@@ -140,7 +140,7 @@ class Matrix {
 
   // element-wise multiplication assignemt of scalar
   template <typename Scalar> 
-  Matrix& operator *=(const Scalar& scalar) 
+  matrix& operator *=(const Scalar& scalar) 
   {
     std::transform(begin(), end(), begin(),
                    std::bind2nd(std::multiplies<value_type>(), scalar));
@@ -149,7 +149,7 @@ class Matrix {
 
   // element-wise division assignemt of scalar
   template <typename Scalar> 
-  Matrix& operator /=(const Scalar& scalar) 
+  matrix& operator /=(const Scalar& scalar) 
   {    
     std::transform(begin(), end(), begin(),
                    std::bind2nd(std::divides<value_type>(), scalar));
@@ -157,9 +157,9 @@ class Matrix {
   }
 
   // return the transpose of this matrix
-  Matrix<T,N2,N1> transpose() const
+  matrix<T,N2,N1> transpose() const
   {
-    Matrix<T,N2,N1> transp;
+    matrix<T,N2,N1> transp;
     for (unsigned int r = 0; r < rows(); ++r)
     {
       for (unsigned int c = 0; c < cols(); ++c)
@@ -170,15 +170,15 @@ class Matrix {
     return transp;
   }
   // invert the matrix. Return false if inversion fails.
-  Matrix& invert(bool& success)
+  matrix& invert(bool& success)
   {
-    return detail::MatrixInvertor<T,N1,N2>()(*this, success);
+    return detail::matrix_invertor<T,N1,N2>()(*this, success);
   }
 
   // return an invrse matrix
-  Matrix inverse(bool& success) const 
+  matrix inverse(bool& success) const 
   {
-    return Matrix(*this).invert(success);
+    return matrix(*this).invert(success);
   }
 
   const T* data() const { return m_data; }
@@ -206,16 +206,16 @@ class Matrix {
 
   T m_data[SIZE];
 
-}; // Matrix
+}; // matrix
 
-// non-member Matrix operations
+// non-member matrix operations
 // multiplication
 template <typename T1, typename T2, 
           unsigned int N1, unsigned int N2, unsigned int N3>
-Matrix<T1, N1, N3> operator*(const Matrix<T1, N1, N2>& lhs,
-                             const Matrix<T2, N2, N3>& rhs) 
+matrix<T1, N1, N3> operator*(const matrix<T1, N1, N2>& lhs,
+                             const matrix<T2, N2, N3>& rhs) 
 {
-  Matrix<T1, N1, N3> tmp;
+  matrix<T1, N1, N3> tmp;
   T1 element;
   for (unsigned int row = 0; row < N1; ++row) {
     for (unsigned int col = 0; col < N3; ++col) {
@@ -230,45 +230,45 @@ Matrix<T1, N1, N3> operator*(const Matrix<T1, N1, N2>& lhs,
 }
 
 template <typename T, unsigned int N1, unsigned int N2>
-Matrix<T,N1,N2> operator*(const Matrix<T,N1,N2>& lhs, const IdentityMatrix&) 
+matrix<T,N1,N2> operator*(const matrix<T,N1,N2>& lhs, const identity_matrix&) 
 {
   return lhs;
 }
 
 template <typename T, unsigned int N1, unsigned int N2>
-Matrix<T,N1,N2> operator*(const IdentityMatrix&, const Matrix<T,N1,N2>& rhs)
+matrix<T,N1,N2> operator*(const identity_matrix&, const matrix<T,N1,N2>& rhs)
 {
   return rhs;
 }
 
 template <typename T, unsigned int N1, unsigned int N2>
-Matrix<T,N1,N2> operator*(const Matrix<T,N1,N2>&, const ZeroMatrix&) 
+matrix<T,N1,N2> operator*(const matrix<T,N1,N2>&, const zero_matrix&) 
 {
-  return ZeroMatrix();
+  return zero_matrix();
 }
 template <typename T, unsigned int N1, unsigned int N2>
-Matrix<T,N1,N2> operator*(const ZeroMatrix&, const Matrix<T,N1,N2>&) 
+matrix<T,N1,N2> operator*(const zero_matrix&, const matrix<T,N1,N2>&) 
 {
-  return ZeroMatrix();
+  return zero_matrix();
 }
 
 
 // addition
 template <typename T, unsigned int N1, unsigned int N2>
-Matrix<T,N1,N2> operator+(const Matrix<T,N1,N2>& lhs, 
-                          const Matrix<T,N1,N2>& rhs)
+matrix<T,N1,N2> operator+(const matrix<T,N1,N2>& lhs, 
+                          const matrix<T,N1,N2>& rhs)
 {
-  Matrix<T,N1,N2> mat = lhs;
+  matrix<T,N1,N2> mat = lhs;
   mat += rhs;
   return mat;
 }
 
 // subtraction
 template <typename T, unsigned int N1, unsigned int N2>
-Matrix<T,N1,N2> operator-(const Matrix<T,N1,N2>& lhs, 
-                          const Matrix<T,N1,N2>& rhs)
+matrix<T,N1,N2> operator-(const matrix<T,N1,N2>& lhs, 
+                          const matrix<T,N1,N2>& rhs)
 {
-  Matrix<T,N1,N2> mat = lhs;
+  matrix<T,N1,N2> mat = lhs;
   mat -= rhs;
   return mat;
 }
@@ -278,63 +278,63 @@ Matrix<T,N1,N2> operator-(const Matrix<T,N1,N2>& lhs,
 
 // addition
 template <typename T1, unsigned int N1, unsigned int N2, typename T2>
-typename enable_if<is_arithmetic<T2>::value, Matrix<T1, N1, N2> >::type
-operator+(const Matrix<T1,N1,N2>& lhs, const T2& scalar)
+typename enable_if<is_arithmetic<T2>::value, matrix<T1, N1, N2> >::type
+operator+(const matrix<T1,N1,N2>& lhs, const T2& scalar)
 {
-  Matrix<T1,N1,N2> mat = lhs;
+  matrix<T1,N1,N2> mat = lhs;
   mat += scalar;
   return mat;
 }
 
 template <typename T1, unsigned int N1, unsigned int N2, typename T2>
-typename enable_if<is_arithmetic<T2>::value, Matrix<T1, N1, N2> >::type
-operator+(const T2& scalar, const Matrix<T1,N1,N2>& rhs)
+typename enable_if<is_arithmetic<T2>::value, matrix<T1, N1, N2> >::type
+operator+(const T2& scalar, const matrix<T1,N1,N2>& rhs)
 {
-  Matrix<T1,N1,N2> mat = rhs;
+  matrix<T1,N1,N2> mat = rhs;
   mat += scalar;
   return mat;
 }
 // subtraction
 template <typename T1, unsigned int N1, unsigned int N2, typename T2>
-typename enable_if<is_arithmetic<T2>::value, Matrix<T1, N1, N2> >::type
-operator-(const Matrix<T1,N1,N2>& lhs, const T2& scalar)
+typename enable_if<is_arithmetic<T2>::value, matrix<T1, N1, N2> >::type
+operator-(const matrix<T1,N1,N2>& lhs, const T2& scalar)
 
 {
-  Matrix<T1,N1,N2> mat = lhs;
+  matrix<T1,N1,N2> mat = lhs;
   mat -= scalar;
   return mat;
 }
 
 template <typename T1, unsigned int N1, unsigned int N2, typename T2>
-typename enable_if<is_arithmetic<T2>::value, Matrix<T1, N1, N2> >::type
-operator-(const T2& scalar, const Matrix<T1,N1,N2>& rhs)
+typename enable_if<is_arithmetic<T2>::value, matrix<T1, N1, N2> >::type
+operator-(const T2& scalar, const matrix<T1,N1,N2>& rhs)
 {
-  Matrix<T1,N1,N2> mat = Matrix<T1,N1,N2>(scalar) - rhs;
+  matrix<T1,N1,N2> mat = matrix<T1,N1,N2>(scalar) - rhs;
   return mat;
 }
 // multiplication
 template <typename T1, unsigned int N1, unsigned int N2, typename T2>
-typename enable_if<is_arithmetic<T2>::value, Matrix<T1, N1, N2> >::type
-operator*(const Matrix<T1,N1,N2>& lhs, const T2& scalar)
+typename enable_if<is_arithmetic<T2>::value, matrix<T1, N1, N2> >::type
+operator*(const matrix<T1,N1,N2>& lhs, const T2& scalar)
 {
-  Matrix<T1,N1,N2> mat = lhs;
+  matrix<T1,N1,N2> mat = lhs;
   mat *= scalar;
   return mat;
 }
 
 template <typename T1, unsigned int N1, unsigned int N2, typename T2>
-typename enable_if<is_arithmetic<T2>::value, Matrix<T1, N1, N2> >::type
-operator*(const T2& scalar, const Matrix<T1,N1,N2>& rhs)
+typename enable_if<is_arithmetic<T2>::value, matrix<T1, N1, N2> >::type
+operator*(const T2& scalar, const matrix<T1,N1,N2>& rhs)
 {
   return rhs * scalar;
 }
 
 // division: only LHS matrix makes sense
 template <typename T1, unsigned int N1, unsigned int N2, typename T2>
-typename enable_if<is_arithmetic<T2>::value, Matrix<T1, N1, N2> >::type
-operator/(const Matrix<T1,N1,N2>& lhs, const T2& scalar)
+typename enable_if<is_arithmetic<T2>::value, matrix<T1, N1, N2> >::type
+operator/(const matrix<T1,N1,N2>& lhs, const T2& scalar)
 {
-  Matrix<T1,N1,N2> mat = lhs;
+  matrix<T1,N1,N2> mat = lhs;
   mat /= scalar;
   return mat;
 }
@@ -358,10 +358,10 @@ std::ostream& print(std::ostream& out, const M& m)
 template <typename T, 
           unsigned int N1, 
           unsigned int N2>
-std::ostream& operator << (std::ostream& out, const Matrix<T,N1,N2>& m) {
+std::ostream& operator << (std::ostream& out, const matrix<T,N1,N2>& m) {
   return print(out, m);
 }
 
-} // namespace Math
+} // namespace minimath
 
-#endif // MATH_MATRIX_H_
+#endif // MINIMATH_MATRIX_H_

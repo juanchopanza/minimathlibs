@@ -6,12 +6,12 @@
 //
 
 
-#ifndef MATH_TYPE_TRAITS_HPP_
-#define MATH_TYPE_TRAITS_HPP_
+#ifndef MINIMATH_TYPE_TRAITS_HPP_
+#define MINIMATH_TYPE_TRAITS_HPP_
 
 #include <tr1/type_traits>
 
-namespace Math
+namespace minimath
 {
 template <bool B, typename T = void>
 struct enable_if {};
@@ -23,7 +23,7 @@ using std::tr1::is_arithmetic;
 using std::tr1::integral_constant;
 using std::tr1::is_class;
 
-} // Math
+} // minimath
 
 /// adapted from wikibooks.org example
 /// http://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Member_Detector
@@ -67,7 +67,7 @@ struct has_typedef_##member                                       \
 }
 
 
-namespace Math
+namespace minimath
 {
 
 MINIMATHLIBS_HAS_MEMBER_(x);
@@ -82,6 +82,6 @@ struct is_point3d : integral_constant<bool,
 
 MINIMATHLIBS_HAS_MEMBER_(normalize);
 
-}
+} // minimath
 
 #endif

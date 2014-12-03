@@ -11,7 +11,7 @@
 
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
-#include "Math/Matrix.h"
+#include "minimath/matrix.hpp"
 
 class TestMatrixOps : public CppUnit::TestFixture
 {
@@ -33,7 +33,7 @@ class TestMatrixOps : public CppUnit::TestFixture
 
  private:
 
-  typedef Math::Matrix<double,3,1> Point;
+  typedef minimath::matrix<double,3,1> Point;
 
   Point p100_;
   Point p010_;

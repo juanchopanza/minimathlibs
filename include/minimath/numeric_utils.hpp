@@ -6,19 +6,19 @@
 //
 
 
-#ifndef MATH_UTILS_H_
-#define MATH_UTILS_H_
+#ifndef MINIMATH_UTILS_H_
+#define MINIMATH_UTILS_H_
 
 #include <cstdlib>
 #include <cmath>
 #include <limits>
-#include "Math/type_traits.hpp"
+#include "minimath/type_traits.hpp"
 
-namespace Math {
+namespace minimath {
 
 
 template <typename T>
-bool compareWithTolerance(const T& rhs, const T& lhs, const T& tol)
+bool compare_with_tolerance(const T& rhs, const T& lhs, const T& tol)
 {
   using std::abs;
   return abs(rhs-lhs) <= tol; // <= to allow for 0 tolerance.
@@ -32,7 +32,7 @@ struct CompareWithTolerance
   CompareWithTolerance(T tolerance) : tol_(tolerance) {}
   bool operator()(const T& lhs, const T& rhs) const
   {
-    return compareWithTolerance(rhs, lhs, tol_);
+    return compare_with_tolerance(rhs, lhs, tol_);
   }
  private:
   T tol_;
@@ -46,10 +46,10 @@ equal(const T& lhs,
       unsigned int nEpsilons = 0)
 {
   T eps = std::numeric_limits<T>::epsilon() * nEpsilons;
-  return compareWithTolerance(lhs, rhs, eps);
+  return compare_with_tolerance(lhs, rhs, eps);
 }
 
 
-} // namespace Math
+} // namespace minimath
 
-#endif // MATH_UTILS_H_
+#endif // MINIMATH_UTILS_H_

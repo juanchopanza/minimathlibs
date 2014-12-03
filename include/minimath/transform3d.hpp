@@ -9,23 +9,23 @@
 #ifndef MATH_TRANSFORM3D_H_
 #define MATH_TRANSFORM3D_H_
 
-#include "Math/Rotation3D.h"
-#include "Math/Translation3D.h"
-#include "Math/Point3D.h"
+#include "minimath/rotation3d.hpp"
+#include "minimath/translation3d.hpp"
+#include "minimath/point3d.hpp"
 
-namespace Math {
+namespace minimath {
 
 template <typename T>
-class Transform3D {
+class transform3d {
 
  public:
-  Transform3D()
+  transform3d()
   : 
-  m_mat(IdentityMatrix())
+  m_mat(identity_matrix())
   {}
 
   template <typename T1>
-  Transform3D(const Rotation3D<T1>& rot) 
+  transform3d(const rotation3d<T1>& rot) 
   : 
   m_mat()
   {
@@ -39,9 +39,9 @@ class Transform3D {
   }
 
   template <typename T1>
-  Transform3D(const Translation3D<T1>& trans) 
+  transform3d(const translation3d<T1>& trans) 
   :
-  m_mat(IdentityMatrix()) 
+  m_mat(identity_matrix()) 
   {
     for (unsigned int r = 0; r < 3; ++r)
     {
@@ -51,7 +51,7 @@ class Transform3D {
 
   /// Construct from a rotation and a translation.
   template <typename T1, typename T2>
-  Transform3D(const Rotation3D<T1>& rot, const Translation3D<T2> trans) 
+  transform3d(const rotation3d<T1>& rot, const translation3d<T2> trans) 
   :
   m_mat() 
   {
@@ -71,11 +71,11 @@ class Transform3D {
   /// Internally converted to a rotation followed by a translation.
   ///
   template <typename T1, typename T2>
-  Transform3D(const Translation3D<T1>& trans, const Rotation3D<T2>& rot) 
+  transform3d(const translation3d<T1>& trans, const rotation3d<T2>& rot) 
   :
   m_mat() 
   {
-    Translation3D<T> trans_ = rot*trans; 
+    translation3d<T> trans_ = rot*trans; 
     for (unsigned int r = 0; r < 3; ++r)
     {
       for (unsigned int c = 0; c < 3; ++c)
@@ -88,7 +88,7 @@ class Transform3D {
 
   /// Construct from a 3x4 matrix
   template <typename T1>
-  explicit Transform3D(const Matrix<T1, 3, 4>& mat) : m_mat(mat) {}
+  explicit transform3d(const matrix<T1, 3, 4>& mat) : m_mat(mat) {}
 
   /// Apply the transformation to a 3D point
   template <typename Point>
@@ -98,9 +98,9 @@ class Transform3D {
 
   /// Product of two transformations 
   template <typename T1>
-  Transform3D operator*(const Transform3D<T1>& rhs) const 
+  transform3d operator*(const transform3d<T1>& rhs) const 
   {
-    Matrix<T,3,4> mat;
+    matrix<T,3,4> mat;
     mat(0,0) =  m_mat(0,0)*rhs.m_mat(0,0) + m_mat(0,1)*rhs.m_mat(1,0) + m_mat(0,2)*rhs.m_mat(2,0);
     mat(0,1) =  m_mat(0,0)*rhs.m_mat(0,1) + m_mat(0,1)*rhs.m_mat(1,1) + m_mat(0,2)*rhs.m_mat(2,1);
     mat(0,2) =  m_mat(0,0)*rhs.m_mat(0,2) + m_mat(0,1)*rhs.m_mat(1,2) + m_mat(0,2)*rhs.m_mat(2,2);
@@ -116,20 +116,20 @@ class Transform3D {
     mat(2,2) =  m_mat(2,0)*rhs.m_mat(0,2) + m_mat(2,1)*rhs.m_mat(1,2) + m_mat(2,2)*rhs.m_mat(2,2);
     mat(2,3) =  m_mat(2,0)*rhs.m_mat(0,3) + m_mat(2,1)*rhs.m_mat(1,3) + m_mat(2,2)*rhs.m_mat(2,3) + m_mat(2,3);
 
-    return Transform3D(mat);
+    return transform3d(mat);
   }
 
   /// Apply trnasformation to a 4xN matrix
   template <typename T1, unsigned int N>
-  Matrix<T,3,N> operator*(const Matrix<T1,4,N>& rhs)
+  matrix<T,3,N> operator*(const matrix<T1,4,N>& rhs)
   {
     return m_mat*rhs;
   }
 
-  Transform3D& invert(bool& success)
+  transform3d& invert(bool& success)
   {
     // we need Tr^-1 * R`-1
-    Transform3D tmp(translation().inverse(), rotation().inverse(success));
+    transform3d tmp(translation().inverse(), rotation().inverse(success));
     if (success)
     {
       m_mat = tmp.m_mat;
@@ -137,15 +137,15 @@ class Transform3D {
     return *this;
   }
 
-  Transform3D inverse(bool& success) const
+  transform3d inverse(bool& success) const
   {
-    return Transform3D(*this).invert(success);
+    return transform3d(*this).invert(success);
   }
 
   /// return the underlying 3D rotation
-  Rotation3D<T> rotation() const 
+  rotation3d<T> rotation() const 
   {
-    Rotation3D<T> tmp;
+    rotation3d<T> tmp;
     for (unsigned int r = 0; r < 3; ++r)
     {
       for (unsigned int c = 0; c < 3; ++c)
@@ -157,9 +157,9 @@ class Transform3D {
   }
 
   /// return the underlying 3D translation
-  Translation3D<T> translation() const
+  translation3d<T> translation() const
   {
-    return Translation3D<T>(PointXYZD(m_mat(0,3), m_mat(1,3), m_mat(2,3)));
+    return translation3d<T>(pointxyzd(m_mat(0,3), m_mat(1,3), m_mat(2,3)));
   }
 
   std::ostream& print(std::ostream& out) const
@@ -168,14 +168,14 @@ class Transform3D {
   }
 
  private:
-  Matrix<T,3,4> m_mat;
+  matrix<T,3,4> m_mat;
 
 };
 
 template <typename T>
-inline std::ostream& operator<<(std::ostream& out, const Transform3D<T>& t)
+inline std::ostream& operator<<(std::ostream& out, const transform3d<T>& t)
 {
-  out << "Math::Transform3D\n";
+  out << "minimath::transform3d\n";
   return t.print(out) << "\n";
 }
 

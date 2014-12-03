@@ -1,34 +1,34 @@
 //
 // Copyright (c) 2012 Juan Palacios juan.palacios.puyana@gmail.com
 // This file is part of minimathlibs.
-// Subject to the BSD 2-Clause License 
+
 // - see < http://opensource.org/licenses/BSD-2-Clause>
 //
 
 
-#ifndef MATH_TRANSLATION3D_H_
-#define MATH_TRANSLATION3D_H_
+#ifndef MINIMATH_TRANSLATION3D_H_
+#define MINIMATH_TRANSLATION3D_H_
 
-#include "Math/Point3D.h"
-#include "Math/Matrix.h"
+#include "minimath/point3d.hpp"
+#include "minimath/matrix.hpp"
 
-namespace Math {
+namespace minimath {
 
 template <typename T>
-class Translation3D {
+class translation3d {
 
  public:
 
-  typedef Point3D<T> vector_type;
+  typedef point3d<T> vector_type;
   typedef typename vector_type::scalar_type scalar_type;
 
  public:
 
-  Translation3D() {}
+  translation3d() {}
 
   template <typename Vector>
-  explicit Translation3D(const Vector& v) : m_trans(v) {}
-  Translation3D(T x, T y, T z) : m_trans(x,y,z) {}
+  explicit translation3d(const Vector& v) : m_trans(v) {}
+  translation3d(T x, T y, T z) : m_trans(x,y,z) {}
 
   template <typename Point>
   Point operator*(const Point& point) const {
@@ -36,15 +36,15 @@ class Translation3D {
   }
 
   template <typename T1>
-  Translation3D operator*(const Translation3D<T1>& rhs) const {
-    return Translation3D( m_trans + rhs.m_trans );
+  translation3d operator*(const translation3d<T1>& rhs) const {
+    return translation3d( m_trans + rhs.m_trans );
   }
 
-  Translation3D inverse() const {
-    return Translation3D( m_trans * -1 );
+  translation3d inverse() const {
+    return translation3d( m_trans * -1 );
   }
 
-  Translation3D& invert() {
+  translation3d& invert() {
     m_trans *= -1;
     return *this;
   }
@@ -52,13 +52,13 @@ class Translation3D {
 
 
   template <typename T1>
-  bool operator==(const Translation3D<T1>& rhs) 
+  bool operator==(const translation3d<T1>& rhs) 
   {
     return m_trans == rhs.m_trans;
   }
 
   template <typename T1>
-  bool operator!=(const Translation3D<T1>& rhs)
+  bool operator!=(const translation3d<T1>& rhs)
   {
     return !operator==(rhs);
   }
@@ -77,10 +77,10 @@ class Translation3D {
 
 /// multiplication between a 3x3 matrix and a 3D translation 
 template <typename T1, typename T2>
-Translation3D<T2> operator*(const Matrix<T1,3>& rot, 
-                            const Translation3D<T2>&  point) 
+translation3d<T2> operator*(const matrix<T1,3>& rot, 
+                            const translation3d<T2>&  point) 
 {
-  typedef typename Translation3D<T2>::vector_type vector_type_;
+  typedef typename translation3d<T2>::vector_type vector_type_;
   T2 elements[3];
   for (unsigned int row = 0; row < 3; ++row) {
     T2 element = 0;
@@ -89,11 +89,11 @@ Translation3D<T2> operator*(const Matrix<T1,3>& rot,
     }
     elements[row] = element; // dot prod of LHS row, RHS col
   }
-  return Translation3D<T2>(vector_type_(elements[0], elements[1], elements[2]));
+  return translation3d<T2>(vector_type_(elements[0], elements[1], elements[2]));
 
 } 
 
 
 }
 
-#endif // MATH_TRANSLATION3D_H_
+#endif // MINIMATH_TRANSLATION3D_H_

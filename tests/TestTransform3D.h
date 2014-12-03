@@ -12,9 +12,6 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "Math/Point3D.h"
-
-
 class TestTransform3D : public CppUnit::TestFixture {
 
   CPPUNIT_TEST_SUITE(TestTransform3D);

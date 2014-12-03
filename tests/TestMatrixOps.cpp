@@ -13,19 +13,19 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "Math/Matrix.h"
-#include "Math/MatrixOps.h"
+#include "minimath/matrix.hpp"
+#include "minimath/matrix_ops.hpp"
 #include "Defines.h"
 #include "TestMatrixOps.h"
 
-typedef Math::Matrix<double,3,1> Point;
+typedef minimath::matrix<double,3,1> Point;
 
 namespace
 {
 
-Math::Matrix<double, 3> rotation3DX(double angle)
+minimath::matrix<double, 3> rotation3DX(double angle)
 {
-  Math::Matrix<double, 3> m = Math::IdentityMatrix();
+  minimath::matrix<double, 3> m = minimath::identity_matrix();
   const double c = std::cos(angle);
   const double s = std::sin(angle);
   m(1,1) = m(2,2) = c;
@@ -34,9 +34,9 @@ Math::Matrix<double, 3> rotation3DX(double angle)
   return m;
 }
 
-Math::Matrix<double, 3> rotation3DY(double angle)
+minimath::matrix<double, 3> rotation3DY(double angle)
 {
-  Math::Matrix<double, 3> m = Math::IdentityMatrix();
+  minimath::matrix<double, 3> m = minimath::identity_matrix();
   const double c = std::cos(angle);
   const double s = std::sin(angle);
   m(0,0) = m(2,2) = c;
@@ -45,9 +45,9 @@ Math::Matrix<double, 3> rotation3DY(double angle)
   return m;
 }
 
-Math::Matrix<double, 3> rotation3DZ(double angle)
+minimath::matrix<double, 3> rotation3DZ(double angle)
 {
-  Math::Matrix<double, 3> m = Math::IdentityMatrix();
+  minimath::matrix<double, 3> m = minimath::identity_matrix();
   const double c = std::cos(angle);
   const double s = std::sin(angle);
   m(0,0) = m(1,1) = c;
@@ -78,18 +78,18 @@ void TestMatrixOps::testXRotations()
 {
   for (int i = 1; i<9; ++i)
   {
-    Math::Matrix<double,3> rot = rotation3DX(PI/i);
-    Math::Matrix<double,3> orig;
-    Math::setColumn(orig, p100_, 0);
-    Math::setColumn(orig, p010_, 1);
-    Math::setColumn(orig, p111_, 2);
+    minimath::matrix<double,3> rot = rotation3DX(PI/i);
+    minimath::matrix<double,3> orig;
+    minimath::setColumn(orig, p100_, 0);
+    minimath::setColumn(orig, p010_, 1);
+    minimath::setColumn(orig, p111_, 2);
 
-    Math::Matrix<double,3> prime = rot*orig;
+    minimath::matrix<double,3> prime = rot*orig;
     bool success = true;
-    Math::Matrix<double,3> rot2 = Math::transformation(orig, prime, success);
+    minimath::matrix<double,3> rot2 = minimath::transformation(orig, prime, success);
     if (success)
     {
-      CPPUNIT_ASSERT(Math::equal(rot, rot2, 1));
+      CPPUNIT_ASSERT(minimath::equal(rot, rot2, 1));
     } else {
       std::cout << "\nInversion failed for angle: PI/" << i;
       std::cout <<"\nOriginal matrix:\n " << orig << "\n";
@@ -101,18 +101,18 @@ void TestMatrixOps::testYRotations()
 {
   for (int i = 1; i<9; ++i)
   {
-    Math::Matrix<double,3> rot = rotation3DY(PI/i);
-    Math::Matrix<double,3> orig;
-    Math::setColumn(orig, p100_, 0);
-    Math::setColumn(orig, p010_, 1);
-    Math::setColumn(orig, p111_, 2);
+    minimath::matrix<double,3> rot = rotation3DY(PI/i);
+    minimath::matrix<double,3> orig;
+    minimath::setColumn(orig, p100_, 0);
+    minimath::setColumn(orig, p010_, 1);
+    minimath::setColumn(orig, p111_, 2);
 
-    Math::Matrix<double,3> prime = rot*orig;
+    minimath::matrix<double,3> prime = rot*orig;
     bool success = true;
-    Math::Matrix<double,3> rot2 = Math::transformation(orig, prime, success);
+    minimath::matrix<double,3> rot2 = minimath::transformation(orig, prime, success);
     if (success)
     {
-      CPPUNIT_ASSERT(Math::equal(rot, rot2, 1));
+      CPPUNIT_ASSERT(minimath::equal(rot, rot2, 1));
     } else {
       std::cout << "\nInversion failed for angle: PI/" << i;
       std::cout <<"\nOriginal matrix:\n " << orig << "\n";
@@ -124,18 +124,18 @@ void TestMatrixOps::testZRotations()
 {
   for (int i = 1; i<9; ++i)
   {
-    Math::Matrix<double,3> rot = rotation3DZ(PI/i);
-    Math::Matrix<double,3> orig;
-    Math::setColumn(orig, p100_, 0);
-    Math::setColumn(orig, p010_, 1);
-    Math::setColumn(orig, p111_, 2);
+    minimath::matrix<double,3> rot = rotation3DZ(PI/i);
+    minimath::matrix<double,3> orig;
+    minimath::setColumn(orig, p100_, 0);
+    minimath::setColumn(orig, p010_, 1);
+    minimath::setColumn(orig, p111_, 2);
 
-    Math::Matrix<double,3> prime = rot*orig;
+    minimath::matrix<double,3> prime = rot*orig;
     bool success = true;
-    Math::Matrix<double,3> rot2 = Math::transformation(orig, prime, success);
+    minimath::matrix<double,3> rot2 = minimath::transformation(orig, prime, success);
     if (success)
     {
-      CPPUNIT_ASSERT(Math::equal(rot, rot2, 1));
+      CPPUNIT_ASSERT(minimath::equal(rot, rot2, 1));
     } else {
       std::cout << "\nInversion failed for angle: PI/" << i;
       std::cout <<"\nOriginal matrix:\n " << orig << "\n";

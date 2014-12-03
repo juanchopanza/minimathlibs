@@ -6,27 +6,28 @@
 //
 
 
-#ifndef MATH_POINT3D_H_
-#define MATH_POINT3D_H_
+#ifndef MINIMATH_POINT3D_H_
+#define MINIMATH_POINT3D_H_
 
 #include <cmath>
 #include <ostream>
 #include <limits>
-#include "Math/type_traits.hpp"
-#include "Math/Point3DOps.h"
+#include "minimath/type_traits.hpp"
+#include "minimath/point3d_ops.hpp"
 
-namespace Math {
+namespace minimath {
 
 template <typename T>
-class Point3D {
+class point3d {
 
  public :
 
   typedef T scalar_type;
   typedef T value_type;
 
-  Point3D() : data_() {} 
-  Point3D(T x, T y, T z)
+  point3d() : data_() {} 
+
+  point3d(T x, T y, T z)
   {
     data_[0] = x;
     data_[1] = y;
@@ -34,7 +35,7 @@ class Point3D {
   }
 
   template <typename P>
-  Point3D(const P& rhs)
+  point3d(const P& rhs)
   {
     data_[0] = rhs.x();
     data_[1] = rhs.y();
@@ -46,18 +47,18 @@ class Point3D {
   T y() const { return data_[1]; }
   T z() const { return data_[2]; }
 
-  Point3D& x(const value_type& x) 
+  point3d& x(const value_type& x) 
   { 
     data_[0] = x;
     return *this;
   }
 
-  Point3D& y(const value_type& y) 
+  point3d& y(const value_type& y) 
   { 
     data_[1] = y;
     return *this;
   }
-  Point3D& z(const value_type& z) 
+  point3d& z(const value_type& z) 
   { 
     data_[2] = z;
     return *this;
@@ -77,7 +78,7 @@ class Point3D {
 
 
   // increment
-  Point3D& operator += (const Point3D& rhs) {
+  point3d& operator += (const point3d& rhs) {
       data_[0] += rhs.data_[0];
       data_[1] += rhs.data_[1];
       data_[2] += rhs.data_[2];
@@ -86,7 +87,7 @@ class Point3D {
 
   // increment, generic XYZ point
   template <typename P>
-  typename enable_if<is_point3d<P>::value, Point3D&>::type
+  typename enable_if<is_point3d<P>::value, point3d&>::type
   operator += (const P& rhs)
   {
       data_[0] += rhs.x();
@@ -96,7 +97,7 @@ class Point3D {
   }
   
   // decrement
-  Point3D& operator -= (const Point3D& rhs) {
+  point3d& operator -= (const point3d& rhs) {
       data_[0] -= rhs.data_[0];
       data_[1] -= rhs.data_[1];
       data_[2] -= rhs.data_[2];
@@ -105,7 +106,7 @@ class Point3D {
 
   // decrement, generic XYZ point
   template <typename P>
-  typename enable_if<is_point3d<P>::value, Point3D&>::type
+  typename enable_if<is_point3d<P>::value, point3d&>::type
   operator -= (const P& rhs)
   {
       data_[0] -= rhs.x();
@@ -115,24 +116,24 @@ class Point3D {
   }
 
   // addition
-  Point3D operator+(const Point3D& rhs) const
+  point3d operator+(const point3d& rhs) const
   {
-    return Point3D(data_[0] + rhs.data_[0],
+    return point3d(data_[0] + rhs.data_[0],
                    data_[1] + rhs.data_[1],
                    data_[2] + rhs.data_[2]);
   }
 
   // addition, generic XYZ point
   template <typename P>
-  typename enable_if<is_point3d<P>::value, Point3D>::type
+  typename enable_if<is_point3d<P>::value, point3d>::type
   operator+(const P& rhs) const {
-    return Point3D(data_[0]+rhs.x(), data_[1]+rhs.y(), data_[2]+rhs.z());
+    return point3d(data_[0]+rhs.x(), data_[1]+rhs.y(), data_[2]+rhs.z());
   }
 
   // subtraction
-  Point3D operator-(const Point3D& rhs) const
+  point3d operator-(const point3d& rhs) const
   {
-      return Point3D(data_[0] - rhs.data_[0],
+      return point3d(data_[0] - rhs.data_[0],
                      data_[1] - rhs.data_[1],
                      data_[2] - rhs.data_[2]);
   }
@@ -140,13 +141,13 @@ class Point3D {
 
   // subtraction, generic XYZ point
   template <typename P>
-  typename enable_if<is_point3d<P>::value, Point3D>::type
+  typename enable_if<is_point3d<P>::value, point3d>::type
   operator-(const P& rhs) const {
-    return Point3D(data_[0]-rhs.x(), data_[1]-rhs.y(), data_[2]-rhs.z());
+    return point3d(data_[0]-rhs.x(), data_[1]-rhs.y(), data_[2]-rhs.z());
   }
 
   template <typename Scalar>
-  Point3D& operator *= (Scalar rhs) {
+  point3d& operator *= (Scalar rhs) {
     data_[0] *= rhs;
     data_[1] *= rhs;
     data_[2] *= rhs;
@@ -154,7 +155,7 @@ class Point3D {
   }
 
   template <typename Scalar>
-  Point3D& operator /= (Scalar rhs) {
+  point3d& operator /= (Scalar rhs) {
     data_[0] /= rhs;
     data_[1] /= rhs;
     data_[2] /= rhs;
@@ -187,15 +188,15 @@ class Point3D {
 };
 
 template <typename T>
-std::ostream& operator << (std::ostream& out, const Point3D<T>& point)
+std::ostream& operator << (std::ostream& out, const point3d<T>& point)
 {
-  return out << "Point3D XYZ( " << point.x() << ", " << point.y() << ", " << point.z() << ")";
+  return out << "point3d XYZ( " << point.x() << ", " << point.y() << ", " << point.z() << ")";
 }
 
 // addition with foreign vector on LHS
 template <typename P, typename T>
-typename enable_if<is_point3d<P>::value, Point3D<T> >::type
-operator+(const P& lhs, const Point3D<T>&  rhs)
+typename enable_if<is_point3d<P>::value, point3d<T> >::type
+operator+(const P& lhs, const point3d<T>&  rhs)
 {
   return rhs.operator+(lhs);
 }
@@ -203,35 +204,35 @@ operator+(const P& lhs, const Point3D<T>&  rhs)
 
 // scalar multiplication
 template <typename T>
-Point3D<T> operator*(const Point3D<T>&  point,
-                     const typename Point3D<T>::scalar_type& scalar)
+point3d<T> operator*(const point3d<T>&  point,
+                     const typename point3d<T>::scalar_type& scalar)
 {
-  Point3D<T> ret(point);
+  point3d<T> ret(point);
   ret *= scalar;
   return ret;
 }
 
 // scalar multiplication
 template <typename T>
-Point3D<T> operator*(const typename Point3D<T>::scalar_type& scalar,
-                     const Point3D<T>&  point)
+point3d<T> operator*(const typename point3d<T>::scalar_type& scalar,
+                     const point3d<T>&  point)
 {
   return point*scalar;
 }
 
 // scalar division: only allow Point on LHS
 template <typename T>
-Point3D<T> operator/(const Point3D<T>&  point,
-                     const typename Point3D<T>::scalar_type& scalar)
+point3d<T> operator/(const point3d<T>&  point,
+                     const typename point3d<T>::scalar_type& scalar)
 {
-  Point3D<T> ret(point);
+  point3d<T> ret(point);
   ret /= scalar;
   return ret;
 }
 
-typedef Point3D<double> PointXYZD;
-typedef Point3D<float> PointXYZF;
+typedef point3d<double> pointxyzd;
+typedef point3d<float> pointxyzf;
 
 } // namespace Math
 
-#endif // MATH_POINT3D_H_
+#endif // MINIMATH_POINT3D_H_

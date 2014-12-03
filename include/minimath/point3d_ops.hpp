@@ -11,11 +11,11 @@
 
 #include <cmath>
 #include <limits>
-#include "Math/type_traits.hpp"
-#include "Math/Utils.h"
+#include "minimath/type_traits.hpp"
+#include "minimath/numeric_utils.hpp"
 
 
-namespace Math {
+namespace minimath {
 
 ///
 /// Equality comparison between two 3D points.
@@ -98,8 +98,6 @@ typename P1::value_type dist2(const P1& p1, const P2& p2)
   const typename P1::value_type diffZ = p2.z()-p1.z();
   return (diffX*diffX) + (diffY*diffY) + (diffZ*diffZ);
 }
-
-
 
 }
 

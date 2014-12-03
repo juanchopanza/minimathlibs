@@ -21,7 +21,7 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 
 # Files
 # _____________________________________________________________________________
-set(MINIMATHLIBS_INCLUDEDIR ${CMAKE_SOURCE_DIR}/include/Math)
+set(MINIMATHLIBS_INCLUDEDIR ${CMAKE_SOURCE_DIR}/include/minimath)
 
 # Targets
 # _____________________________________________________________________________

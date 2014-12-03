@@ -11,9 +11,7 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "Math/Point3D.h"
-#include "Math/Point3DOps.h"
-#include "Math/Utils.h" // for FP comparisons
+#include "minimath/point3d.hpp"
 
 class TestPoint3D : public CppUnit::TestFixture {
 
@@ -43,7 +41,7 @@ class TestPoint3D : public CppUnit::TestFixture {
   CPPUNIT_TEST(testNormalizeNonMember);
   CPPUNIT_TEST_SUITE_END();
 
-  Math::PointXYZD::value_type EPS; 
+  minimath::pointxyzd::value_type EPS; 
 
  public:
 

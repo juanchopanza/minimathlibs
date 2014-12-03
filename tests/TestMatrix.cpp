@@ -13,10 +13,10 @@
 #include <cppunit/TestFixture.h>
 #include <cppunit/extensions/HelperMacros.h>
 
-#include "Math/Matrix.h"
-#include "Math/MatrixOps.h"
+#include "minimath/matrix.hpp"
+#include "minimath/matrix_ops.hpp"
 
-#include "Math/Utils.h"
+#include "minimath/numeric_utils.hpp"
 
 #include "TestMatrix.h"
 
@@ -77,18 +77,18 @@ bool isIdentity(const M& m,
 } // anonymous namespace
 
 
-typedef Math::Matrix<double, 2> M2x2;
-typedef Math::Matrix<double, 3> M3x3;
-typedef Math::Matrix<double, 4> M4x4;
-typedef Math::Matrix<double, 5> M5x5;
+typedef minimath::matrix<double, 2> M2x2;
+typedef minimath::matrix<double, 3> M3x3;
+typedef minimath::matrix<double, 4> M4x4;
+typedef minimath::matrix<double, 5> M5x5;
 
-typedef Math::Matrix<double, 2,1> M2x1;
-typedef Math::Matrix<double, 3,2> M3x2;
-typedef Math::Matrix<double, 4,3> M4x3;
-typedef Math::Matrix<double, 5,4> M5x4;
+typedef minimath::matrix<double, 2,1> M2x1;
+typedef minimath::matrix<double, 3,2> M3x2;
+typedef minimath::matrix<double, 4,3> M4x3;
+typedef minimath::matrix<double, 5,4> M5x4;
 
-typedef Math::Matrix<double, 3,4> M3x4;
-typedef Math::Matrix<double, 4,5> M4x5;
+typedef minimath::matrix<double, 3,4> M3x4;
+typedef minimath::matrix<double, 4,5> M4x5;
 
 void TestMatrix::testDefaultConstruction()
 {
@@ -120,23 +120,23 @@ void TestMatrix::testDefaultConstruction()
 
 void TestMatrix::testZeroMatrixConstruction()
 {
-  M4x3 m = Math::ZeroMatrix();
+  M4x3 m = minimath::zero_matrix();
   CPPUNIT_ASSERT(valueEquality(m, 0));
 }
 
 void TestMatrix::testZeroMatrixAssignment()
 {
   M4x3 m;
-  m = Math::ZeroMatrix();
+  m = minimath::zero_matrix();
   CPPUNIT_ASSERT(valueEquality(m, 0));
 }
 
 
 void TestMatrix::testIdentityMatrixConstruction()
 {
-  M4x4 m4 = Math::IdentityMatrix();
+  M4x4 m4 = minimath::identity_matrix();
   CPPUNIT_ASSERT(isIdentity(m4));
-  M5x5 m5 = Math::IdentityMatrix();
+  M5x5 m5 = minimath::identity_matrix();
   CPPUNIT_ASSERT(isIdentity(m5));
 
 }
@@ -144,7 +144,7 @@ void TestMatrix::testIdentityMatrixConstruction()
 void TestMatrix::testIdentityMatrixAssignment()
 {
   M4x4 m;
-  m = Math::IdentityMatrix();
+  m = minimath::identity_matrix();
   CPPUNIT_ASSERT(isIdentity(m));
 }
 
@@ -347,9 +347,9 @@ void TestMatrix::testLeftInverse()
       m[i] = std::rand()%m.size();
     }
     bool success = true;
-    M3x4 mInv = Math::leftInverse(m, success);
+    M3x4 mInv = minimath::left_inverse(m, success);
     CPPUNIT_ASSERT(success);
-    CPPUNIT_ASSERT(Math::equal(mInv*m, M3x3(Math::IdentityMatrix()), 128));
+    CPPUNIT_ASSERT(minimath::equal(mInv*m, M3x3(minimath::identity_matrix()), 128));
   }
 }
 
@@ -364,7 +364,7 @@ void TestMatrix::testInverse()
     bool success = true;
     M3x3 mInv = m.inverse(success);
     CPPUNIT_ASSERT(success);
-    CPPUNIT_ASSERT(Math::equal(mInv*m, M3x3(Math::IdentityMatrix()), 128));
+    CPPUNIT_ASSERT(minimath::equal(mInv*m, M3x3(minimath::identity_matrix()), 128));
   }
 }
 
@@ -380,7 +380,7 @@ void TestMatrix::testInvert()
     M3x3 mInv = m;
     mInv.invert(success);
     CPPUNIT_ASSERT(success);
-    CPPUNIT_ASSERT(Math::equal(mInv*m, M3x3(Math::IdentityMatrix()), 16));
+    CPPUNIT_ASSERT(minimath::equal(mInv*m, M3x3(minimath::identity_matrix()), 16));
   }
 }
 

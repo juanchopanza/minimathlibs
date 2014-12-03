@@ -9,7 +9,7 @@
 #ifndef MATH_MATRIXINVERSION_H_
 #define MATH_MATRIXINVERSION_H_
 
-#include "Math/Utils.h"
+#include "minimath/numeric_utils.hpp"
 #include <limits>
 //
 // functor to invert a matrix. The idea is that we specialize this for
@@ -18,15 +18,15 @@
 // @author Juan Palacios juan.palacios.puyana@gmail.com
 //
 
-namespace Math {
+namespace minimath {
 
 namespace detail {
 
 template <typename T, unsigned int N1, unsigned int N2>
-class MatrixInvertor;
+class matrix_invertor;
 
 template <typename T>
-class MatrixInvertor<T, 1, 1> {
+class matrix_invertor<T, 1, 1> {
  public:
   template <typename M>
   M& operator()(M& mat, bool& success) const 
@@ -44,14 +44,14 @@ class MatrixInvertor<T, 1, 1> {
 };
 
 template <typename T>
-class MatrixInvertor<T, 2, 2> {
+class matrix_invertor<T, 2, 2> {
  public:
   template <typename M>
   M& operator()(M& mat, bool& success) const
   {
     typedef typename M::value_type value_type;
     value_type det = mat(0,0)*mat(1,1) - mat(0,1)*mat(1,0);
-    if (compareWithTolerance(det, value_type(), std::numeric_limits<value_type>::epsilon())) 
+    if (compare_with_tolerance(det, value_type(), std::numeric_limits<value_type>::epsilon())) 
     {
       success = false;
       return mat;
@@ -67,7 +67,7 @@ class MatrixInvertor<T, 2, 2> {
 };
 
 template <typename T>
-class MatrixInvertor<T, 3, 3> {
+class matrix_invertor<T, 3, 3> {
  public:
   template <typename M>
   M& operator()(M& mat, bool& success) const 
@@ -80,7 +80,7 @@ class MatrixInvertor<T, 3, 3> {
 
     value_type det = a*mat(0,0) + b*mat(0,1) + c*mat(0,2);
 
-    if (compareWithTolerance(det, value_type(), std::numeric_limits<value_type>::epsilon())) 
+    if (compare_with_tolerance(det, value_type(), std::numeric_limits<value_type>::epsilon())) 
     {
       success = false;
       return mat;
@@ -111,6 +111,6 @@ class MatrixInvertor<T, 3, 3> {
 };
 
 } // detail
-} // Math
+} // minimath
 
 #endif

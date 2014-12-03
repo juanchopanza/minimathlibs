@@ -6,38 +6,39 @@
 //
 
 
-#ifndef MATH_MATRIXOPS_H_
-#define MATH_MATRIXOPS_H_
+#ifndef MINIMATH_MATRIXOPS_H_
+#define MINIMATH_MATRIXOPS_H_
 
 #include <limits>
-#include "Math/Utils.h"
+#include <algorithm>
+#include "minimath/numeric_utils.hpp"
 
 //
 // Some matrix-matrix operations
 // 
 
-namespace Math {
+namespace minimath {
 
 
-template <typename T, unsigned int N1, unsigned int N2> class Matrix;
+template <typename T, unsigned int N1, unsigned int N2> class matrix;
 
 ///
 /// Equality comparison between two matrices.
 /// The comparison is element-wise, according to a tolerance level tol:
 /// bool equals =  std::abs(b-a) <= tol;
 ///
-/// @param lhs: Matrix
-/// @param rhs: Matrix
+/// @param lhs: matrix
+/// @param rhs: matrix
 /// @param nEpsilon: number of epsilons to be used for tolerance calculation. 
 ///                  One epsilon is defined as 
 ///                  std::numeric_limits<T>::epsilon().
 ///
 template <typename T, unsigned int R, unsigned int C>
-bool equal(const Matrix<T,R,C>& lhs, 
-           const Matrix<T,R,C>& rhs, 
+bool equal(const matrix<T,R,C>& lhs, 
+           const matrix<T,R,C>& rhs, 
            unsigned int nEpsilons=0)
 {
-  typedef typename Matrix<T,R,C>::value_type value_type;
+  typedef typename matrix<T,R,C>::value_type value_type;
   const value_type epsilon = std::numeric_limits<value_type>::epsilon();
   CompareWithTolerance<value_type> comp(nEpsilons*epsilon); 
   return std::equal(lhs.begin(), lhs.end(), rhs.begin(), comp);
@@ -46,13 +47,13 @@ bool equal(const Matrix<T,R,C>& lhs,
 ///
 /// Set a row of a matrix to a row vector
 ///
-/// @param m:     Matrix whose row will be set
+/// @param m:     matrix whose row will be set
 /// @param r:     Row-matrix whose values will be copied into m
 /// @param index: Index of the row to set
 ///
 template <typename T, unsigned int R, unsigned int C>
-void setRow(Math::Matrix<T,R,C>& m, 
-            const Math::Matrix<T, 1, C>& r,
+void setRow(minimath::matrix<T,R,C>& m, 
+            const minimath::matrix<T, 1, C>& r,
             unsigned int index)
 {
   for (unsigned int i = 0; i < C; ++i)
@@ -64,13 +65,13 @@ void setRow(Math::Matrix<T,R,C>& m,
 ///
 /// Set a column of a matrix to a column vector
 ///
-/// @param m:     Matrix whose column will be set
+/// @param m:     matrix whose column will be set
 /// @param r:     Column-matrix whose values will be copied into m
 /// @param index: Index of the column to set
 ///
 template <typename T, unsigned int R, unsigned int C>
-void setColumn(Math::Matrix<T,R,C>& m, 
-               const Math::Matrix<T, R, 1>& c,
+void setColumn(minimath::matrix<T,R,C>& m, 
+               const minimath::matrix<T, R, 1>& c,
                unsigned int index)
 {
   for (unsigned int i = 0; i < R; ++i)
@@ -83,12 +84,12 @@ void setColumn(Math::Matrix<T,R,C>& m,
 ///
 /// Set a row of a matrix to an array-like
 ///
-/// @param m:     Matrix whose row will be set
+/// @param m:     matrix whose row will be set
 /// @param a:     Array-like object whose values will be copied into m
 /// @param index: Index of the row to set
 ///
 template <typename T, unsigned int R, unsigned int C, typename A>
-void setRow(Math::Matrix<T,R,C>& m, 
+void setRow(minimath::matrix<T,R,C>& m, 
             const A& a,
             unsigned int index)
 {
@@ -101,12 +102,12 @@ void setRow(Math::Matrix<T,R,C>& m,
 ///
 /// Set a column of a matrix to an array-like object
 ///
-/// @param m:     Matrix whose column will be set
+/// @param m:     matrix whose column will be set
 /// @param a:     Array-like object whose values will be copied into m
 /// @param index: Index of the column to set
 ///
 template <typename T, unsigned int R, unsigned int C, typename A>
-void setColumn(Math::Matrix<T,R,C>& m, 
+void setColumn(minimath::matrix<T,R,C>& m, 
                const A& a,
                unsigned int index)
 {
@@ -117,9 +118,9 @@ void setColumn(Math::Matrix<T,R,C>& m,
 }
 
 template <typename T, unsigned int N1, unsigned int N2>
-Matrix<T,N2,N1> leftInverse(const Matrix<T,N1,N2>& mat, bool& success)
+matrix<T,N2,N1> left_inverse(const matrix<T,N1,N2>& mat, bool& success)
 {
-  Matrix<T,N2,N1> matT = mat.transpose();
+  matrix<T,N2,N1> matT = mat.transpose();
   return ((matT*mat).inverse(success)) * matT;
 }
 
@@ -129,8 +130,8 @@ Matrix<T,N2,N1> leftInverse(const Matrix<T,N1,N2>& mat, bool& success)
 /// where lhs is a square matrix
 ///
 template <typename T, unsigned int N>
-Matrix<T,N> transformation(Matrix<T,N> lhs, 
-                           const Matrix<T,N>& rhs,
+matrix<T,N> transformation(matrix<T,N> lhs, 
+                           const matrix<T,N>& rhs,
                            bool& success)
 {
   return rhs*(lhs.inverse(success)); 
@@ -142,15 +143,15 @@ Matrix<T,N> transformation(Matrix<T,N> lhs,
 /// where lhs is an N1xN2 matrix and N1>N2
 
 template <typename T, unsigned int N1, unsigned int N2>
-Matrix<T, N2, N1> transformation(const Matrix<T, N1, N2>& ref,
-                                 const Matrix<T, N2, N2>& meas,
+matrix<T, N2, N1> transformation(const matrix<T, N1, N2>& ref,
+                                 const matrix<T, N2, N2>& meas,
                                  bool& success)
 {
-  return meas*Math::leftInverse(ref, success);
+  return meas*minimath::left_inverse(ref, success);
 }
 
 
-} // namespace Math
+} // namespace minimath
 
 #endif
 
