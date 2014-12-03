@@ -17,7 +17,7 @@ License: 2-clause BSD license.
 building
 --------
 
-Minimathlibs is a header only library, and has no external dependencies other than a C++03 compliant compiler and standard library plus an implementation of TR1. All necessary header files are in include/Math, and should be installed under ``Math``.
+Minimathlibs is a header only library, and has no external dependencies other than a C++03 compliant compiler and standard library plus an implementation of TR1. All necessary header files are in include/minimath, and should be installed under ``minimath``.
 
 To ease installment from source, CMake files are provided with the usual targets. This is an example of an installation into a custom location:
 
@@ -28,7 +28,7 @@ cmake -DCMAKE_INSTALL_PREFIX=/opt/local
 make install
 ```
 
-This will install the ``minimathlibs`` header files into ``/opt/local/include/Math``.
+This will install the ``minimathlibs`` header files into ``/opt/local/include/minimath``.
 
 testing
 -------
