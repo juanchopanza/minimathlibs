@@ -141,7 +141,7 @@ template <typename P, typename T, template <typename> class C>
 typename enable_if<is_point3d<P>::value, Point3D<T,C> >::type
 operator+(const P& lhs, const Point3D<T, C>&  rhs)
 {
-  return rhs + lhs;
+  return rhs.operator+(lhs);
 }
 
 

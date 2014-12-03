@@ -66,7 +66,7 @@ P1 cross(const P1& p1, const P2& p2) {
 // Return the normalized point
 // Uses optimized member function
 template <typename P>
-typename enable_if<has_normalize<P>::value, P>::type
+typename enable_if<has_member_normalize<P>::value, P>::type
 normalize(const P& p)
 {
   P n = p;
@@ -77,7 +77,7 @@ normalize(const P& p)
 // Return the normalized point
 // For points without optimized menber function
 template <typename P>
-typename enable_if<!has_normalize<P>::value, P>::type
+typename enable_if<!has_member_normalize<P>::value, P>::type
 normalize(const P& p) {
   using std::sqrt;
   typedef typename P::value_type value_type;
