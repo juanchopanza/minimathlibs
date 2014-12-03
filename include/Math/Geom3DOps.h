@@ -99,9 +99,9 @@ Transform3D<T> transformation3(IT begin, IT end, bool& success)
 } // namespace detail
 
 // multiplication between a 3x3 matrix and a 3D point
-template <typename T, template <typename> class C>
-Point3D<T, C> operator*(const Matrix<T,3>& rot, 
-                        const Point3D<T, C>&  point) 
+template <typename T>
+Point3D<T> operator*(const Matrix<T,3>& rot, 
+                     const Point3D<T>& point) 
 {
   double elements[3];
   for (unsigned int row = 0; row < 3; ++row) {
@@ -111,7 +111,7 @@ Point3D<T, C> operator*(const Matrix<T,3>& rot,
     }
     elements[row] = element; // dot prod of LHS row, RHS col
   }
-  return Point3D<T, C> (elements[0], elements[1], elements[2]);
+  return Point3D<T> (elements[0], elements[1], elements[2]);
 
 } 
 
@@ -131,9 +131,9 @@ operator*(const Matrix<T,3>& rot, const Point&  point)
 
 // Multiplication between a 3x4 matrix and a 3D point
 // The 4th column represents the translation
-template <typename T, template <typename> class C>
-Point3D<T, C> operator*(const Matrix<T,3,4>& rot, 
-                        const Point3D<T, C>&  point) 
+template <typename T>
+Point3D<T> operator*(const Matrix<T,3,4>& rot, 
+                     const Point3D<T>& point) 
 {
   double elements[3];
   for (unsigned int row = 0; row < 3; ++row) {
@@ -143,7 +143,7 @@ Point3D<T, C> operator*(const Matrix<T,3,4>& rot,
     }
     elements[row] = element + rot(row,3); // dot prod of LHS row, RHS col
   }
-  return Point3D<T, C> (elements[0], elements[1], elements[2]);
+  return Point3D<T> (elements[0], elements[1], elements[2]);
 
 } 
 

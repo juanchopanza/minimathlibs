@@ -6,7 +6,6 @@
 //
 
 // Test fixtures
-#include "TestCoordSystem3D.h"
 #include "TestPoint3D.h"
 #include "TestRotation3DX.h"
 #include "TestRotation3DY.h"
@@ -32,7 +31,6 @@
 #include <cppunit/CompilerOutputter.h>
 
 
-CPPUNIT_TEST_SUITE_REGISTRATION( TestCoordSystem3D );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestPoint3D );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestRotation3DX );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestRotation3DY );
