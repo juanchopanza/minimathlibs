@@ -1,0 +1,16 @@
+language: cpp
+sudo: false
+
+addons:
+    apt:
+        sources:
+            - libboost-all-dev
+            - cmake
+compiler:
+    - gcc
+script:
+    - mkdir Debug
+    - cd Debug
+    - cmake .. -DCMAKE_BUILD_TYPE=Debug
+    - make
+    - make test

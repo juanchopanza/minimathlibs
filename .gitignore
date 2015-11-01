@@ -11,9 +11,13 @@
 *.la
 *.a
 
+# Compied pythpn files
+*.pyc
+
 # editor backup files
 *~
 *.swp
+*.swo
 
 # known build directories
 Math/Tests/Build
