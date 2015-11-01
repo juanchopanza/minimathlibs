@@ -6,7 +6,7 @@ A collection of small mathematical tools for everyday problem solving.
 Two main aspects: 
 
 * 3D geometry: points and transformations.
-* small, statically sized matrices.
+* Small, statically sized matrices.
 
 Based on concepts used in code developed during my time at CERN.
 
@@ -14,7 +14,7 @@ Author: Juan Palacios https://github.com/juanchopanza
 
 License: 2-clause BSD license.
 
-building
+Building
 --------
 
 Minimathlibs is a header only library, and has no external dependencies other than a C++03 compliant compiler and standard library plus an implementation of TR1. All necessary header files are in include/minimath, and should be installed under ``minimath``.
@@ -30,10 +30,10 @@ make install
 
 This will install the ``minimathlibs`` header files into ``/opt/local/include/minimath``.
 
-testing
+Testing
 -------
 
-The tests require cppunit. They may be built and run either directly from a provided makefile, or usiong ``cmake``:
+The tests require `cppunit`. They may be built and run either directly from a provided makefile, or using `cmake`:
 
 To build and run the default tests from the makefile: from the minimathlibs directory, run
 
