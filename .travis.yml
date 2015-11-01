@@ -1,11 +1,8 @@
 language: cpp
-sudo: false
 
-addons:
-  apt:
-    sources:
-      - libboost-all-dev
-      - cmake
+before_install:
+  - sudo apt-get install boost-all-dev
+  - sudo apt-get install cmake
 compiler:
   - gcc
 script:
