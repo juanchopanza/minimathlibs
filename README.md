@@ -38,7 +38,7 @@ The tests require `boost.test`. They may be built and run either directly from a
 To build and run the default tests from the makefile: from the minimathlibs directory, run
 
 ```shell
-make test
+make && make test
 ```
 
 from the minimathlibs directory.
@@ -49,7 +49,7 @@ To build and run the default tests using cmake:
 mkdir build
 cd build
 cmake ..
-make test
+make && make test
 ```
 
 
