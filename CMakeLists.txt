@@ -13,6 +13,12 @@ set (VERSION ${MINIMATHLIBS_VERSION_MAJOR}.${MINIMATHLIBS_VERSION_MINOR}.${MINIM
 
 # Dependencies
 # _____________________________________________________________________________
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  # using regular Clang or AppleClang
+  # Clang doesn't have TR1, so pull it from boost
+  find_package(Boost REQUIRED)
+  include_directories("${Boost_INCLUDE_DIRS}/boost/tr1")
+endif()
 
 # Defines
 # _____________________________________________________________________________
@@ -31,5 +37,5 @@ set(MINIMATHLIBS_INCLUDEDIR ${CMAKE_SOURCE_DIR}/include/minimath)
 install(DIRECTORY ${MINIMATHLIBS_INCLUDEDIR} DESTINATION include/ )
 
 # Tests
-add_subdirectory(tests bin/tests EXCLUDE_FROM_ALL)
-
+enable_testing()
+add_subdirectory(tests)

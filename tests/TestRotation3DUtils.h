@@ -256,8 +256,8 @@ void testFindTransformationAxisRot()
     bool success = true;
 
     matrix<double,3> rot2 = transformation(orig, prime, success);
-    CPPUNIT_ASSERT_MESSAGE("Inversion failed", success);
-    CPPUNIT_ASSERT(rot.equal(rot2, 1));
+    BOOST_CHECK_MESSAGE("Inversion failed", success);
+    BOOST_CHECK(rot.equal(rot2, 1));
   }
 }
 

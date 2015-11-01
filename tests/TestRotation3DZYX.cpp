@@ -4,21 +4,19 @@
 // Subject to the BSD 2-Clause License 
 // - see < http://opensource.org/licenses/BSD-2-Clause>
 //
-
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE TestRotation3DZYX
+#include <boost/test/unit_test.hpp>
 #include <iostream>
 #include <cmath>
-
-#include <cppunit/TestFixture.h>
-#include <cppunit/extensions/HelperMacros.h>
-
 #include "minimath/rotation3d.hpp"
 #include "minimath/point3d.hpp"
-
 #include "Defines.h"
-#include "TestRotation3DZYX.h"
 #include "TestRotation3DUtils.h"
 
 using namespace minimath;
+
+BOOST_AUTO_TEST_SUITE(TestRotation3DZYX)
 
 namespace
 {
@@ -40,225 +38,226 @@ bool testRotationZYX(const minimath::pointxyzd& point,
 
 } // namespace
 
-void TestRotation3DZYX::testInstantiation()
+BOOST_AUTO_TEST_CASE(testInstantiation)
 {
   rotation3dzyx<double> rot1, rot2;
 }
 
-void TestRotation3DZYX::testDefaultEquality()
+BOOST_AUTO_TEST_CASE(testDefaultEquality)
 {
-  CPPUNIT_ASSERT(rotation3dzyx<double>() == rotation3dzyx<double>());
+  BOOST_CHECK(rotation3dzyx<double>() == rotation3dzyx<double>());
 }
 
-void TestRotation3DZYX::testCopyConstruction()
+BOOST_AUTO_TEST_CASE(testCopyConstruction)
 {
   rotation3dzyx<double> rot1;
   rotation3dzyx<double> rot2(rot1);
-  CPPUNIT_ASSERT(rot1 == rot2);
+  BOOST_CHECK(rot1 == rot2);
 }
 
-void TestRotation3DZYX::testAssignment()
+BOOST_AUTO_TEST_CASE(testAssignment)
 {
   rotation3dzyx<double> rot1, rot2;
   rot2 = rot1;
-  CPPUNIT_ASSERT(rot1 == rot2);
+  BOOST_CHECK(rot1 == rot2);
 }
 
-void TestRotation3DZYX::testNullRotation()
+BOOST_AUTO_TEST_CASE(testNullRotation)
 {
   rotation3dzyx<double> rot;
   pointxyzd pTest = rot*p100;
-  CPPUNIT_ASSERT(pTest == pointxyzd(1., 0., 0.));
+  BOOST_CHECK(pTest == pointxyzd(1., 0., 0.));
 
   pTest = rot*p010;
-  CPPUNIT_ASSERT(pTest == pointxyzd(0., 1., 0.));
+  BOOST_CHECK(pTest == pointxyzd(0., 1., 0.));
 
   pTest = rot*p001;
-  CPPUNIT_ASSERT(pTest == pointxyzd(0., 0., 1.));
+  BOOST_CHECK(pTest == pointxyzd(0., 0., 1.));
 }
 
-void TestRotation3DZYX::testRotatePoint45X()
+BOOST_AUTO_TEST_CASE(testRotatePoint45X)
 {
   rotation3dzyx<double> rot(0, 0, PI/4.); // 45 degree rotation about X
   pointxyzd pTest = rot*p100;
-  CPPUNIT_ASSERT(pTest == pointxyzd(1., 0., 0.));
+  BOOST_CHECK(pTest == pointxyzd(1., 0., 0.));
 
   pTest = rot*p010;
-  CPPUNIT_ASSERT(pTest == pointxyzd(0., cos45, cos45));
+  BOOST_CHECK(pTest == pointxyzd(0., cos45, cos45));
 
   pTest = rot*p001;
-  CPPUNIT_ASSERT(pTest == pointxyzd(0., -cos45, cos45));
+  BOOST_CHECK(pTest == pointxyzd(0., -cos45, cos45));
 }
 
-void TestRotation3DZYX::testRotatePoint90X()
+BOOST_AUTO_TEST_CASE(testRotatePoint90X)
 {
   rotation3dzyx<double> rot(0, 0, PI/2.); // 90 degree rotation about X
   pointxyzd pTest = rot*p100;
-  CPPUNIT_ASSERT(pTest == pointxyzd(1., 0., 0.));
+  BOOST_CHECK(pTest == pointxyzd(1., 0., 0.));
 
   pTest = rot*p010;
-  CPPUNIT_ASSERT(pTest == pointxyzd(0., 0., 1.));
+  BOOST_CHECK(pTest == pointxyzd(0., 0., 1.));
 
   pTest = rot*p001;
-  CPPUNIT_ASSERT(pTest == pointxyzd(0., -1., 0.));
+  BOOST_CHECK(pTest == pointxyzd(0., -1., 0.));
 }
 
-void TestRotation3DZYX::testRotatePoint180X()
+BOOST_AUTO_TEST_CASE(testRotatePoint180X)
 {
   rotation3dzyx<double> rot(0, 0, PI); // 180 degree rotation about X
 
   pointxyzd pTest = rot*p100;
-  CPPUNIT_ASSERT(pTest == pointxyzd(1., 0., 0.));
+  BOOST_CHECK(pTest == pointxyzd(1., 0., 0.));
 
   pTest = rot*p010;
-  CPPUNIT_ASSERT(pTest == pointxyzd(0., -1., 0.));
+  BOOST_CHECK(pTest == pointxyzd(0., -1., 0.));
 
   pTest = rot*p001;
-  CPPUNIT_ASSERT(pTest == pointxyzd(0., 0., -1.));
+  BOOST_CHECK(pTest == pointxyzd(0., 0., -1.));
 }
 
-void TestRotation3DZYX::testRotatePoint45Y()
+BOOST_AUTO_TEST_CASE(testRotatePoint45Y)
 {
   rotation3dzyx<double> rot(0, PI/4., 0); // 45 degree rotation about X
   pointxyzd pTest = rot*p100;
-  CPPUNIT_ASSERT(pTest == pointxyzd(cos45, 0., -cos45));
+  BOOST_CHECK(pTest == pointxyzd(cos45, 0., -cos45));
 
   pTest = rot*p010;
-  CPPUNIT_ASSERT(pTest == pointxyzd(0., 1., 0));
+  BOOST_CHECK(pTest == pointxyzd(0., 1., 0));
 
   pTest = rot*p001;
-  CPPUNIT_ASSERT(pTest == pointxyzd(cos45, 0, cos45));
+  BOOST_CHECK(pTest == pointxyzd(cos45, 0, cos45));
 }
 
-void TestRotation3DZYX::testRotatePoint90Y()
+BOOST_AUTO_TEST_CASE(testRotatePoint90Y)
 {
   rotation3dzyx<double> rot(0, PI/2., 0); // 90 degree rotation about X
   pointxyzd pTest = rot*p100;
-  CPPUNIT_ASSERT(pTest == pointxyzd(0., 0., -1.));
+  BOOST_CHECK(pTest == pointxyzd(0., 0., -1.));
 
   pTest = rot*p010;
-  CPPUNIT_ASSERT(pTest == pointxyzd(0., 1., 0.));
+  BOOST_CHECK(pTest == pointxyzd(0., 1., 0.));
 
   pTest = rot*p001;
-  CPPUNIT_ASSERT(pTest == pointxyzd(1., 0., 0.));
+  BOOST_CHECK(pTest == pointxyzd(1., 0., 0.));
 }
 
-void TestRotation3DZYX::testRotatePoint180Y()
+BOOST_AUTO_TEST_CASE(testRotatePoint180Y)
 {
   rotation3dzyx<double> rot(0, PI, 0); // 180 degree rotation about X
 
   pointxyzd pTest = rot*p100;
-  CPPUNIT_ASSERT(pTest == pointxyzd(-1., 0., 0.));
+  BOOST_CHECK(pTest == pointxyzd(-1., 0., 0.));
 
   pTest = rot*p010;
-  CPPUNIT_ASSERT(pTest == pointxyzd(0., 1., 0.));
+  BOOST_CHECK(pTest == pointxyzd(0., 1., 0.));
 
   pTest = rot*p001;
-  CPPUNIT_ASSERT(pTest == pointxyzd(0., 0., -1.));
+  BOOST_CHECK(pTest == pointxyzd(0., 0., -1.));
 }
 
-void TestRotation3DZYX::testRotatePoint45Z()
+BOOST_AUTO_TEST_CASE(testRotatePoint45Z)
 {
   rotation3dzyx<double> rot(PI/4., 0, 0); // 45 degree rotation about Z
   pointxyzd pTest = rot*p100;
-  CPPUNIT_ASSERT(pTest == pointxyzd(cos45, cos45, 0.));
+  BOOST_CHECK(pTest == pointxyzd(cos45, cos45, 0.));
 
   pTest = rot*p010;
-  CPPUNIT_ASSERT(pTest == pointxyzd(-cos45, cos45, 0));
+  BOOST_CHECK(pTest == pointxyzd(-cos45, cos45, 0));
 
   pTest = rot*p001;
-  CPPUNIT_ASSERT(pTest == pointxyzd(0, 0, 1));
+  BOOST_CHECK(pTest == pointxyzd(0, 0, 1));
 }
 
-void TestRotation3DZYX::testRotatePoint90Z()
+BOOST_AUTO_TEST_CASE(testRotatePoint90Z)
 {
   rotation3dzyx<double> rot(PI/2., 0, 0); // 90 degree rotation about Z
   pointxyzd pTest = rot*p100;
-  CPPUNIT_ASSERT(pTest == pointxyzd(0., 1., 0.));
+  BOOST_CHECK(pTest == pointxyzd(0., 1., 0.));
 
   pTest = rot*p010;
-  CPPUNIT_ASSERT(pTest == pointxyzd(-1., 0., 0.));
+  BOOST_CHECK(pTest == pointxyzd(-1., 0., 0.));
 
   pTest = rot*p001;
-  CPPUNIT_ASSERT(pTest == pointxyzd(0., 0., 1.));
+  BOOST_CHECK(pTest == pointxyzd(0., 0., 1.));
 }
 
-void TestRotation3DZYX::testRotatePoint180Z()
+BOOST_AUTO_TEST_CASE(testRotatePoint180Z)
 {
   rotation3dzyx<double> rot(PI, 0, 0); // 180 degree rotation about Z
 
   pointxyzd pTest = rot*p100;
-  CPPUNIT_ASSERT(pTest == pointxyzd(-1., 0., 0.));
+  BOOST_CHECK(pTest == pointxyzd(-1., 0., 0.));
 
   pTest = rot*p010;
-  CPPUNIT_ASSERT(pTest == pointxyzd(0., -1., 0.));
+  BOOST_CHECK(pTest == pointxyzd(0., -1., 0.));
 
   pTest = rot*p001;
-  CPPUNIT_ASSERT(pTest == pointxyzd(0., 0., 1.));
+  BOOST_CHECK(pTest == pointxyzd(0., 0., 1.));
 }
 
-void TestRotation3DZYX::testAssignRotation3DX()
+BOOST_AUTO_TEST_CASE(testAssignRotation3DX)
 {
   for (int i = 1; i < 9; ++i) {
-    CPPUNIT_ASSERT(rotation3dzyx<double>(0, 0, PI/i) == rotation3dx<double>(PI/i));
+    BOOST_CHECK(rotation3dzyx<double>(0, 0, PI/i) == rotation3dx<double>(PI/i));
   }
 }
 
-void TestRotation3DZYX::testAssignRotation3DY()
+BOOST_AUTO_TEST_CASE(testAssignRotation3DY)
 {
   for (int i = 1; i < 9; ++i) {
-    CPPUNIT_ASSERT(rotation3dzyx<double>(0, PI/i, 0) == rotation3dy<double>(PI/i));
+    BOOST_CHECK(rotation3dzyx<double>(0, PI/i, 0) == rotation3dy<double>(PI/i));
   }
 }
 
 
-void TestRotation3DZYX::testAssignRotation3DZ()
+BOOST_AUTO_TEST_CASE(testAssignRotation3DZ)
 {
   for (int i = 1; i < 9; ++i) {
-    CPPUNIT_ASSERT(rotation3dzyx<double>(PI/i, 0, 0) == rotation3dz<double>(PI/i));
+    BOOST_CHECK(rotation3dzyx<double>(PI/i, 0, 0) == rotation3dz<double>(PI/i));
   }
 }
 
-void TestRotation3DZYX::testZYXRotations()
+BOOST_AUTO_TEST_CASE(testZYXRotations)
 {
   for (int i = 1; i < 9; ++i) {
 
     const double angle = PI/i;
 
-    CPPUNIT_ASSERT(testRotationZYX(p100, angle, angle, angle));
-    CPPUNIT_ASSERT(testRotationZYX(p010, angle, angle, angle));
-    CPPUNIT_ASSERT(testRotationZYX(p001, angle, angle, angle)); 
+    BOOST_CHECK(testRotationZYX(p100, angle, angle, angle));
+    BOOST_CHECK(testRotationZYX(p010, angle, angle, angle));
+    BOOST_CHECK(testRotationZYX(p001, angle, angle, angle)); 
 
-    CPPUNIT_ASSERT(testRotationZYX(p100, -angle, angle, angle));
-    CPPUNIT_ASSERT(testRotationZYX(p010, angle, angle, angle));
-    CPPUNIT_ASSERT(testRotationZYX(p001, angle, angle, angle)); 
+    BOOST_CHECK(testRotationZYX(p100, -angle, angle, angle));
+    BOOST_CHECK(testRotationZYX(p010, angle, angle, angle));
+    BOOST_CHECK(testRotationZYX(p001, angle, angle, angle)); 
 
-    CPPUNIT_ASSERT(testRotationZYX(p100, angle, angle, angle));
-    CPPUNIT_ASSERT(testRotationZYX(p010, -angle, angle, angle));
-    CPPUNIT_ASSERT(testRotationZYX(p001, angle, angle, angle)); 
+    BOOST_CHECK(testRotationZYX(p100, angle, angle, angle));
+    BOOST_CHECK(testRotationZYX(p010, -angle, angle, angle));
+    BOOST_CHECK(testRotationZYX(p001, angle, angle, angle)); 
 
-    CPPUNIT_ASSERT(testRotationZYX(p100, angle, -angle, angle));
-    CPPUNIT_ASSERT(testRotationZYX(p010, angle, -angle, angle));
-    CPPUNIT_ASSERT(testRotationZYX(p001, angle, -angle, angle)); 
+    BOOST_CHECK(testRotationZYX(p100, angle, -angle, angle));
+    BOOST_CHECK(testRotationZYX(p010, angle, -angle, angle));
+    BOOST_CHECK(testRotationZYX(p001, angle, -angle, angle)); 
 
-    CPPUNIT_ASSERT(testRotationZYX(p100, -angle, -angle, -angle));
-    CPPUNIT_ASSERT(testRotationZYX(p010, -angle, -angle, -angle));
-    CPPUNIT_ASSERT(testRotationZYX(p001, -angle, -angle, -angle)); 
+    BOOST_CHECK(testRotationZYX(p100, -angle, -angle, -angle));
+    BOOST_CHECK(testRotationZYX(p010, -angle, -angle, -angle));
+    BOOST_CHECK(testRotationZYX(p001, -angle, -angle, -angle)); 
 
   }
 }
 
-void TestRotation3DZYX::testInverse()
+BOOST_AUTO_TEST_CASE(testInverse)
 {
-  CPPUNIT_ASSERT(TestUtils::testInverseRotation3DZYX<rotation3dx<double> >());
-  CPPUNIT_ASSERT(TestUtils::testInverseRotation3DZYX<rotation3dy<double> >());
-  CPPUNIT_ASSERT(TestUtils::testInverseRotation3DZYX<rotation3dz<double> >());
+  BOOST_CHECK(TestUtils::testInverseRotation3DZYX<rotation3dx<double> >());
+  BOOST_CHECK(TestUtils::testInverseRotation3DZYX<rotation3dy<double> >());
+  BOOST_CHECK(TestUtils::testInverseRotation3DZYX<rotation3dz<double> >());
 }
 
-void TestRotation3DZYX::testInvert()
+BOOST_AUTO_TEST_CASE(testInvert)
 {
-  CPPUNIT_ASSERT(TestUtils::testInvertRotation3DZYX<rotation3dx<double> >());
-  CPPUNIT_ASSERT(TestUtils::testInvertRotation3DZYX<rotation3dy<double> >());
-  CPPUNIT_ASSERT(TestUtils::testInvertRotation3DZYX<rotation3dz<double> >());
+  BOOST_CHECK(TestUtils::testInvertRotation3DZYX<rotation3dx<double> >());
+  BOOST_CHECK(TestUtils::testInvertRotation3DZYX<rotation3dy<double> >());
+  BOOST_CHECK(TestUtils::testInvertRotation3DZYX<rotation3dz<double> >());
 }
 
+BOOST_AUTO_TEST_SUITE_END()

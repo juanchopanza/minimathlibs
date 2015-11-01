@@ -5,20 +5,19 @@
 // - see < http://opensource.org/licenses/BSD-2-Clause>
 //
 
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE TestAlignment
+#include <boost/test/unit_test.hpp>
+
 #include <iostream>
 #include <iomanip>
 #include <cstdlib>
-
-#include <cppunit/TestFixture.h>
-#include <cppunit/extensions/HelperMacros.h>
-
 #include "minimath/rotation3d.hpp"
 #include "minimath/transform3d.hpp"
 #include "minimath/point3d.hpp"
 #include "minimath/geom3d_ops.hpp"
 
 #include "Defines.h"
-#include "TestAlignment.h"
 #include <tr1/array>
 
 using namespace minimath;
@@ -28,7 +27,7 @@ namespace
 // check that results of calculated transformation and
 // reference transformation are the same to within 64 epsilons.
 template <typename T>
-void testTransformation(const T& transf)
+void checkTransformation(const T& transf)
 {
   pointxyzd pA = transf*p100;
   pointxyzd pB = transf*p010;
@@ -46,15 +45,15 @@ void testTransformation(const T& transf)
                                                        pointPairs.end(),
                                                        success);
 
-  CPPUNIT_ASSERT(success);
-  CPPUNIT_ASSERT(minimath::equal(transf1*p100, pA, 128u));
-  CPPUNIT_ASSERT(minimath::equal(transf1*p010, pB, 128u));
-  CPPUNIT_ASSERT(minimath::equal(transf1*p001, pC, 64u));
+  BOOST_CHECK(success);
+  BOOST_CHECK(minimath::equal(transf1*p100, pA, 128u));
+  BOOST_CHECK(minimath::equal(transf1*p010, pB, 128u));
+  BOOST_CHECK(minimath::equal(transf1*p001, pC, 64u));
 
 }
 
 template <typename R>
-void testRotationAndTranslation()
+void checkRotationAndTranslation()
 {
   for (int i = 1; i < 9;  ++i) {
     double x = std::rand()%100;
@@ -63,12 +62,12 @@ void testRotationAndTranslation()
     translation3d<double> transl(pointxyzd(x,y,z));
     rotation3d<double> rot(R(PI/i));
     transform3d<double> transf(rot, transl);
-    testTransformation(transf);
+    checkTransformation(transf);
   }
 }
 
 template <typename R>
-void testTranslationAndRotation()
+void checkTranslationAndRotation()
 {
   for (int i = 1; i < 9;  ++i) {
     double x = std::rand()%100;
@@ -77,54 +76,57 @@ void testTranslationAndRotation()
     translation3d<double> transl(pointxyzd(x,y,z));
     rotation3d<double> rot(R(PI/i));
     transform3d<double> transf(transl, rot);
-    testTransformation(transf);
+    checkTransformation(transf);
   }
 }
 
 
 } // anonymous namespace
 
-void TestAlignment::testTranslation()
+BOOST_AUTO_TEST_SUITE(test_awesome_grower)
+
+BOOST_AUTO_TEST_CASE(testTranslation)
 {
   // rotate reference points
   translation3d<double> transl(pointxyzd(100, 100, 100));
-  testTransformation(transl);
+  checkTransformation(transl);
 }
 
-void TestAlignment::testRotation()
+BOOST_AUTO_TEST_CASE(testRotation)
 {
   // rotate reference points
   rotation3dzyx<double>  rot(PI/4, 0, PI/4);
-  testTransformation(rot);
+  checkTransformation(rot);
 }
 
-void TestAlignment::testRotation3DXAndTranslation()
+BOOST_AUTO_TEST_CASE(testRotation3DXAndTranslation)
 {
-  testRotationAndTranslation<rotation3dx<double> >();
+  checkRotationAndTranslation<rotation3dx<double> >();
 }
 
-void TestAlignment::testRotation3DYAndTranslation()
+BOOST_AUTO_TEST_CASE(testRotation3DYAndTranslation)
 {
-  testRotationAndTranslation<rotation3dy<double> >();
+  checkRotationAndTranslation<rotation3dy<double> >();
 }
 
-void TestAlignment::testRotation3DZAndTranslation()
+BOOST_AUTO_TEST_CASE(testRotation3DZAndTranslation)
 {
-  testRotationAndTranslation<rotation3dz<double> >();
+  checkRotationAndTranslation<rotation3dz<double> >();
 }
 
-void TestAlignment::testTranslationAndRotation3DX()
+BOOST_AUTO_TEST_CASE(testTranslationAndRotation3DX)
 {
-  testTranslationAndRotation<rotation3dx<double> >();
+  checkTranslationAndRotation<rotation3dx<double> >();
 }
 
-void TestAlignment::testTranslationAndRotation3DY()
+BOOST_AUTO_TEST_CASE(testTranslationAndRotation3DY)
 {
-  testTranslationAndRotation<rotation3dy<double> >();
+  checkTranslationAndRotation<rotation3dy<double> >();
 }
 
-void TestAlignment::testTranslationAndRotation3DZ()
+BOOST_AUTO_TEST_CASE(testTranslationAndRotation3DZ)
 {
-  testTranslationAndRotation<rotation3dz<double> >();
+  checkTranslationAndRotation<rotation3dz<double> >();
 }
 
+BOOST_AUTO_TEST_SUITE_END()

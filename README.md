@@ -33,7 +33,7 @@ This will install the ``minimathlibs`` header files into ``/opt/local/include/mi
 Testing
 -------
 
-The tests require `cppunit`. They may be built and run either directly from a provided makefile, or using `cmake`:
+The tests require `boost.test`. They may be built and run either directly from a provided makefile, or using `cmake`:
 
 To build and run the default tests from the makefile: from the minimathlibs directory, run
 

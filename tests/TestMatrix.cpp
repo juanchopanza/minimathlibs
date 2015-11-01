@@ -5,20 +5,17 @@
 // - see < http://opensource.org/licenses/BSD-2-Clause>
 //
 
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE TestMatrix
+#include <boost/test/unit_test.hpp>
+
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
 #include <limits>
-
-#include <cppunit/TestFixture.h>
-#include <cppunit/extensions/HelperMacros.h>
-
 #include "minimath/matrix.hpp"
 #include "minimath/matrix_ops.hpp"
-
 #include "minimath/numeric_utils.hpp"
-
-#include "TestMatrix.h"
 
 namespace 
 {
@@ -90,84 +87,87 @@ typedef minimath::matrix<double, 5,4> M5x4;
 typedef minimath::matrix<double, 3,4> M3x4;
 typedef minimath::matrix<double, 4,5> M4x5;
 
-void TestMatrix::testDefaultConstruction()
+BOOST_AUTO_TEST_SUITE(TestMatrix)
+
+
+BOOST_AUTO_TEST_CASE(testDefaultConstruction)
 {
   M2x2 a;
   M2x2 b;
   M2x2 c;
-  CPPUNIT_ASSERT(valueEquality(a, 0.));
-  CPPUNIT_ASSERT(valueEquality(b, 0.));
-  CPPUNIT_ASSERT(valueEquality(c, 0.));
-  CPPUNIT_ASSERT(2==a.rows());
-  CPPUNIT_ASSERT(2==a.cols());
-  CPPUNIT_ASSERT(4==a.size());
-  CPPUNIT_ASSERT(a==b);
-  CPPUNIT_ASSERT(a==c);
-  CPPUNIT_ASSERT(b==c);
+  BOOST_CHECK(valueEquality(a, 0.));
+  BOOST_CHECK(valueEquality(b, 0.));
+  BOOST_CHECK(valueEquality(c, 0.));
+  BOOST_CHECK(2==a.rows());
+  BOOST_CHECK(2==a.cols());
+  BOOST_CHECK(4==a.size());
+  BOOST_CHECK(a==b);
+  BOOST_CHECK(a==c);
+  BOOST_CHECK(b==c);
 
   M5x4 d, e, f;
-  CPPUNIT_ASSERT(valueEquality(d, 0));
-  CPPUNIT_ASSERT(valueEquality(e, 0));
-  CPPUNIT_ASSERT(valueEquality(f, 0));
-  CPPUNIT_ASSERT(5==e.rows());
-  CPPUNIT_ASSERT(4==e.cols());
-  CPPUNIT_ASSERT(20==e.size());
-  CPPUNIT_ASSERT(d==e);
-  CPPUNIT_ASSERT(d==f);
-  CPPUNIT_ASSERT(e==f);
+  BOOST_CHECK(valueEquality(d, 0));
+  BOOST_CHECK(valueEquality(e, 0));
+  BOOST_CHECK(valueEquality(f, 0));
+  BOOST_CHECK(5==e.rows());
+  BOOST_CHECK(4==e.cols());
+  BOOST_CHECK(20==e.size());
+  BOOST_CHECK(d==e);
+  BOOST_CHECK(d==f);
+  BOOST_CHECK(e==f);
 
 }
 
-void TestMatrix::testZeroMatrixConstruction()
+BOOST_AUTO_TEST_CASE(testZeroMatrixConstruction)
 {
   M4x3 m = minimath::zero_matrix();
-  CPPUNIT_ASSERT(valueEquality(m, 0));
+  BOOST_CHECK(valueEquality(m, 0));
 }
 
-void TestMatrix::testZeroMatrixAssignment()
+BOOST_AUTO_TEST_CASE(testZeroMatrixAssignment)
 {
   M4x3 m;
   m = minimath::zero_matrix();
-  CPPUNIT_ASSERT(valueEquality(m, 0));
+  BOOST_CHECK(valueEquality(m, 0));
 }
 
 
-void TestMatrix::testIdentityMatrixConstruction()
+BOOST_AUTO_TEST_CASE(testIdentityMatrixConstruction)
 {
   M4x4 m4 = minimath::identity_matrix();
-  CPPUNIT_ASSERT(isIdentity(m4));
+  BOOST_CHECK(isIdentity(m4));
   M5x5 m5 = minimath::identity_matrix();
-  CPPUNIT_ASSERT(isIdentity(m5));
+  BOOST_CHECK(isIdentity(m5));
 
 }
 
-void TestMatrix::testIdentityMatrixAssignment()
+BOOST_AUTO_TEST_CASE(testIdentityMatrixAssignment)
 {
   M4x4 m;
   m = minimath::identity_matrix();
-  CPPUNIT_ASSERT(isIdentity(m));
+  BOOST_CHECK(isIdentity(m));
 }
 
 
-void TestMatrix::testScalarConstruction()
+BOOST_AUTO_TEST_CASE(testScalarConstruction)
 {
   for (int  i = -20; i < 21; ++i) {
     M5x5 m(i);
-    CPPUNIT_ASSERT(valueEquality(m, i));
+    BOOST_CHECK(valueEquality(m, i));
   }
 }
 
-void TestMatrix::testCopyConstruction()
+BOOST_AUTO_TEST_CASE(testCopyConstruction)
 {
   M4x3 m;
   for (unsigned int i = 0; i< m.size(); ++i) {
     m[i] = i;
   }
   M4x3 m2(m);
-  CPPUNIT_ASSERT(m2==m);
+  BOOST_CHECK(m2==m);
 }
 
-void TestMatrix::testAssignment()
+BOOST_AUTO_TEST_CASE(testAssignment)
 {
   M4x3 m;
   for (unsigned int i = 0; i< m.size(); ++i) {
@@ -175,33 +175,33 @@ void TestMatrix::testAssignment()
   }
   M4x3 m2;
   m2 = m;
-  CPPUNIT_ASSERT(m2==m);
+  BOOST_CHECK(m2==m);
 
 }
 
-void TestMatrix::testEquality()
+BOOST_AUTO_TEST_CASE(testEquality)
 {
   M4x3 m1, m2;
   for (unsigned int i = 0; i< m1.size(); ++i) {
     m1[i] = i;
     m2[i] = i;
   }
-  CPPUNIT_ASSERT(m2==m1);
+  BOOST_CHECK(m2==m1);
 
 }
 
-void TestMatrix::testInequality()
+BOOST_AUTO_TEST_CASE(testInequality)
 {
   M4x3 m;
   for (unsigned int i = 0; i< m.size(); ++i) {
     m[i] = i;
   }
   M4x3 m2;
-  CPPUNIT_ASSERT(m2!=m);
+  BOOST_CHECK(m2!=m);
 }
 
 
-void TestMatrix::testPlusEqualsScalar()
+BOOST_AUTO_TEST_CASE(testPlusEqualsScalar)
 {
   M4x3 m;
   for (unsigned int i = 0; i< m.size(); ++i) {
@@ -209,11 +209,11 @@ void TestMatrix::testPlusEqualsScalar()
   }
   m += 100;
   for (unsigned int i = 0; i< m.size(); ++i) {
-    CPPUNIT_ASSERT(valueEquality(m[i], M4x3::value_type(i) + 100));
+    BOOST_CHECK(valueEquality(m[i], M4x3::value_type(i) + 100));
   }
 }
 
-void TestMatrix::testMinusEqualsScalar()
+BOOST_AUTO_TEST_CASE(testMinusEqualsScalar)
 {
   M4x3 m;
   for (unsigned int i = 0; i< m.size(); ++i) {
@@ -221,11 +221,11 @@ void TestMatrix::testMinusEqualsScalar()
   }
   m -= 100;
   for (unsigned int i = 0; i< m.size(); ++i) {
-    CPPUNIT_ASSERT(valueEquality(m[i], M4x3::value_type(i) - 100.));
+    BOOST_CHECK(valueEquality(m[i], M4x3::value_type(i) - 100.));
   }
 }
 
-void TestMatrix::testPlusEquals()
+BOOST_AUTO_TEST_CASE(testPlusEquals)
 {
   M3x3 m1;
   for (unsigned int i = 0; i< m1.size(); ++i) {
@@ -234,12 +234,12 @@ void TestMatrix::testPlusEquals()
   M3x3 m2(10);
   m1 += m2;
   for (unsigned int i = 0; i< m1.size(); ++i) {
-    CPPUNIT_ASSERT(valueEquality(m1[i], M3x3::value_type(i) + 10));
+    BOOST_CHECK(valueEquality(m1[i], M3x3::value_type(i) + 10));
   }
 
 }
 
-void TestMatrix::testMinusEquals()
+BOOST_AUTO_TEST_CASE(testMinusEquals)
 {
   M3x3 m1;
   for (unsigned int i = 0; i< m1.size(); ++i) {
@@ -248,11 +248,11 @@ void TestMatrix::testMinusEquals()
   M3x3 m2(10);
   m1 -= m2;
   for (unsigned int i = 0; i< m1.size(); ++i) {
-    CPPUNIT_ASSERT(valueEquality(m1[i], M3x3::value_type(10)*(int(i) -1) ));
+    BOOST_CHECK(valueEquality(m1[i], M3x3::value_type(10)*(int(i) -1) ));
   }
 }
 
-void TestMatrix::testTimesEqualsScalar()
+BOOST_AUTO_TEST_CASE(testTimesEqualsScalar)
 {
   M4x3 m;
   for (unsigned int i = 0; i< m.size(); ++i) {
@@ -260,11 +260,11 @@ void TestMatrix::testTimesEqualsScalar()
   }
   m *= 100;
   for (unsigned int i = 0; i< m.size(); ++i) {
-    CPPUNIT_ASSERT(valueEquality(m[i], M4x3::value_type(i) * 100));
+    BOOST_CHECK(valueEquality(m[i], M4x3::value_type(i) * 100));
   }
 }
 
-void TestMatrix::testDivideEqualsScalar()
+BOOST_AUTO_TEST_CASE(testDivideEqualsScalar)
 {
   M4x3 m;
   for (unsigned int i = 0; i< m.size(); ++i) {
@@ -272,57 +272,57 @@ void TestMatrix::testDivideEqualsScalar()
   }
   m /= 100;
   for (unsigned int i = 0; i< m.size(); ++i) {
-    CPPUNIT_ASSERT(valueEquality(m[i], M4x4::value_type(i) * 10));
+    BOOST_CHECK(valueEquality(m[i], M4x4::value_type(i) * 10));
   }
 }
 
-void TestMatrix::testMatrixPlusScalar()
+BOOST_AUTO_TEST_CASE(testMatrixPlusScalar)
 {
   M4x3 m(11);
   M4x3 m2 = m + 100;
   for (unsigned int i = 0; i< m2.size(); ++i) {
-    CPPUNIT_ASSERT(valueEquality(m2, 111));    
+    BOOST_CHECK(valueEquality(m2, 111));    
   }
 }
 
-void TestMatrix::testMatrixMinusScalar()
+BOOST_AUTO_TEST_CASE(testMatrixMinusScalar)
 {
   M4x3 m(111);
   M4x3 m2 = m - 101;
   for (unsigned int i = 0; i< m2.size(); ++i) {
-    CPPUNIT_ASSERT(valueEquality(m2, 10));    
+    BOOST_CHECK(valueEquality(m2, 10));    
   }
 }
 
-void TestMatrix::testScalarPlusMatrix()
+BOOST_AUTO_TEST_CASE(testScalarPlusMatrix)
 {
   M4x3 m(11);
   M4x3 m2 = 100 + m;
   for (unsigned int i = 0; i< m2.size(); ++i) {
-    CPPUNIT_ASSERT(valueEquality(m2, 111));    
+    BOOST_CHECK(valueEquality(m2, 111));    
   }
 }
 
-void TestMatrix::testScalarMinusMatrix()
+BOOST_AUTO_TEST_CASE(testScalarMinusMatrix)
 {
   M4x3 m(101);
   M4x3 m2 = 111 - m;
   for (unsigned int i = 0; i< m2.size(); ++i) {
-    CPPUNIT_ASSERT(valueEquality(m2, 10));    
+    BOOST_CHECK(valueEquality(m2, 10));    
   }
 }
 
 
-void TestMatrix::testMatrixTimesScalar()
+BOOST_AUTO_TEST_CASE(testMatrixTimesScalar)
 {
   M4x3 m(11);
   M4x3 m2 = m * 100;
   for (unsigned int i = 0; i< m2.size(); ++i) {
-    CPPUNIT_ASSERT(valueEquality(m2, 1100));    
+    BOOST_CHECK(valueEquality(m2, 1100));    
   }
 }
 
-void TestMatrix::testTranspose()
+BOOST_AUTO_TEST_CASE(testTranspose)
 {
   M4x3 m;
   for (unsigned int i = 0; i< m.size(); ++i) {
@@ -333,12 +333,12 @@ void TestMatrix::testTranspose()
   {
     for (unsigned int c = 0; c < m.cols(); ++c)
     {
-      CPPUNIT_ASSERT(valueEquality(m(r,c), mT(c,r)));
+      BOOST_CHECK(valueEquality(m(r,c), mT(c,r)));
     }
   }
 }
 
-void TestMatrix::testLeftInverse()
+BOOST_AUTO_TEST_CASE(testLeftInverse)
 {
   for (unsigned int attempt = 0; attempt <5; ++attempt)
   {
@@ -348,12 +348,12 @@ void TestMatrix::testLeftInverse()
     }
     bool success = true;
     M3x4 mInv = minimath::left_inverse(m, success);
-    CPPUNIT_ASSERT(success);
-    CPPUNIT_ASSERT(minimath::equal(mInv*m, M3x3(minimath::identity_matrix()), 128));
+    BOOST_CHECK(success);
+    BOOST_CHECK(minimath::equal(mInv*m, M3x3(minimath::identity_matrix()), 128));
   }
 }
 
-void TestMatrix::testInverse()
+BOOST_AUTO_TEST_CASE(testInverse)
 {
   for (unsigned int attempt = 0; attempt <5; ++attempt)
   {
@@ -363,12 +363,12 @@ void TestMatrix::testInverse()
     }
     bool success = true;
     M3x3 mInv = m.inverse(success);
-    CPPUNIT_ASSERT(success);
-    CPPUNIT_ASSERT(minimath::equal(mInv*m, M3x3(minimath::identity_matrix()), 128));
+    BOOST_CHECK(success);
+    BOOST_CHECK(minimath::equal(mInv*m, M3x3(minimath::identity_matrix()), 128));
   }
 }
 
-void TestMatrix::testInvert()
+BOOST_AUTO_TEST_CASE(testInvert)
 {
   for (unsigned int attempt = 0; attempt <5; ++attempt)
   {
@@ -379,8 +379,9 @@ void TestMatrix::testInvert()
     bool success = true;
     M3x3 mInv = m;
     mInv.invert(success);
-    CPPUNIT_ASSERT(success);
-    CPPUNIT_ASSERT(minimath::equal(mInv*m, M3x3(minimath::identity_matrix()), 16));
+    BOOST_CHECK(success);
+    BOOST_CHECK(minimath::equal(mInv*m, M3x3(minimath::identity_matrix()), 16));
   }
 }
 
+BOOST_AUTO_TEST_SUITE_END()

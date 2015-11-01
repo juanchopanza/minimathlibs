@@ -5,18 +5,17 @@
 // - see < http://opensource.org/licenses/BSD-2-Clause>
 //
 
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE TestMatrixOps
+#include <boost/test/unit_test.hpp>
+
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
 #include <limits>
-
-#include <cppunit/TestFixture.h>
-#include <cppunit/extensions/HelperMacros.h>
-
 #include "minimath/matrix.hpp"
 #include "minimath/matrix_ops.hpp"
 #include "Defines.h"
-#include "TestMatrixOps.h"
 
 typedef minimath::matrix<double,3,1> Point;
 
@@ -56,25 +55,39 @@ minimath::matrix<double, 3> rotation3DZ(double angle)
   return m;
 }
 
-}
-
-void TestMatrixOps::setUp()
+struct FixturePoints
 {
-  std::cout << std::boolalpha;
-  p100_(0,0) = 1;
-  p010_(1,0) = 1;
-  p001_(2,0) = 1;
-  p110_(0,0) = 1;
-  p110_(1,0) = 1;
-  p011_(1,0) = 1;
-  p011_(2,0) = 1;
-  p101_(0,0) = 1;
-  p101_(2,0) = 1;
-  p111_ += 1;
+    FixturePoints()
+    {
+        p100_(0,0) = 1;
+        p010_(1,0) = 1;
+        p001_(2,0) = 1;
+        p110_(0,0) = 1;
+        p110_(1,0) = 1;
+        p011_(1,0) = 1;
+        p011_(2,0) = 1;
+        p101_(0,0) = 1;
+        p101_(2,0) = 1;
+        p111_ += 1;
 
-}
+    }
 
-void TestMatrixOps::testXRotations()
+    Point p100_;
+    Point p010_;
+    Point p001_;
+    Point p110_;
+    Point p011_;
+    Point p101_;
+    Point p111_;
+};
+
+
+} // anonymous namespace
+
+BOOST_FIXTURE_TEST_SUITE(TestMatrixOps, FixturePoints)
+
+
+BOOST_AUTO_TEST_CASE(testXRotations)
 {
   for (int i = 1; i<9; ++i)
   {
@@ -89,7 +102,7 @@ void TestMatrixOps::testXRotations()
     minimath::matrix<double,3> rot2 = minimath::transformation(orig, prime, success);
     if (success)
     {
-      CPPUNIT_ASSERT(minimath::equal(rot, rot2, 1));
+      BOOST_CHECK(minimath::equal(rot, rot2, 1));
     } else {
       std::cout << "\nInversion failed for angle: PI/" << i;
       std::cout <<"\nOriginal matrix:\n " << orig << "\n";
@@ -97,7 +110,7 @@ void TestMatrixOps::testXRotations()
   }
 }
 
-void TestMatrixOps::testYRotations()
+BOOST_AUTO_TEST_CASE(testYRotations)
 {
   for (int i = 1; i<9; ++i)
   {
@@ -112,7 +125,7 @@ void TestMatrixOps::testYRotations()
     minimath::matrix<double,3> rot2 = minimath::transformation(orig, prime, success);
     if (success)
     {
-      CPPUNIT_ASSERT(minimath::equal(rot, rot2, 1));
+      BOOST_CHECK(minimath::equal(rot, rot2, 1));
     } else {
       std::cout << "\nInversion failed for angle: PI/" << i;
       std::cout <<"\nOriginal matrix:\n " << orig << "\n";
@@ -120,7 +133,7 @@ void TestMatrixOps::testYRotations()
   }
 }
 
-void TestMatrixOps::testZRotations()
+BOOST_AUTO_TEST_CASE(testZRotations)
 {
   for (int i = 1; i<9; ++i)
   {
@@ -135,7 +148,7 @@ void TestMatrixOps::testZRotations()
     minimath::matrix<double,3> rot2 = minimath::transformation(orig, prime, success);
     if (success)
     {
-      CPPUNIT_ASSERT(minimath::equal(rot, rot2, 1));
+      BOOST_CHECK(minimath::equal(rot, rot2, 1));
     } else {
       std::cout << "\nInversion failed for angle: PI/" << i;
       std::cout <<"\nOriginal matrix:\n " << orig << "\n";
@@ -143,3 +156,4 @@ void TestMatrixOps::testZRotations()
   }
 }
 
+BOOST_AUTO_TEST_SUITE_END()
