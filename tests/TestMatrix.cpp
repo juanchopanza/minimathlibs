@@ -71,6 +71,11 @@ bool isIdentity(const M& m,
   return true;
 }
 
+struct setup
+{
+    setup() { std::srand(42); }
+};
+
 } // anonymous namespace
 
 
@@ -87,7 +92,7 @@ typedef minimath::matrix<double, 5,4> M5x4;
 typedef minimath::matrix<double, 3,4> M3x4;
 typedef minimath::matrix<double, 4,5> M4x5;
 
-BOOST_AUTO_TEST_SUITE(TestMatrix)
+BOOST_FIXTURE_TEST_SUITE(TestMatrix, setup)
 
 
 BOOST_AUTO_TEST_CASE(testDefaultConstruction)
