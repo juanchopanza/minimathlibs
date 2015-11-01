@@ -3,7 +3,9 @@ minimathlibs
 
 A collection of small mathematical tools for everyday problem solving.
 
-Two main aspects: 
+[![Build Status](https://travis-ci.org/juanchopanza/minimathlibs.svg?branch=master)](https://travis-ci.org/juanchopanza/minimathlibs)
+
+Two main features:
 
 * 3D geometry: points and transformations.
 * Small, statically sized matrices.
